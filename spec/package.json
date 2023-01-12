@@ -1,0 +1,13 @@
+{
+  "name": "chassis-base-types",
+  "description": "Chassis Base Typings",
+  "authors": "Muze Innovation",
+  "version": "0.0.1",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "make": "tsc -p ."
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
