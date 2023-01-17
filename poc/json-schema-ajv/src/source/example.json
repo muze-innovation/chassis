@@ -1,0 +1,18 @@
+{
+  "id": "<ID>",
+  "viewType": "<VIEW_TYPE>",
+  "data": {
+    "type": "static",
+    "source": "<CONTENT_PROVIDER>",
+    "slug": "<SPECIFIC_PROP>"
+  },
+  "attribute": {
+    "margin": "s",
+    "backgroundColor": "<HEX_CODE>"
+  },
+  "actions": {
+    "type": "url",
+    "value": "<URL>",
+    "text": "<TEXT>"
+  }
+}
