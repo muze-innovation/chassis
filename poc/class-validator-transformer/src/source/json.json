@@ -1,0 +1,38 @@
+[
+  {
+    "id": "<ID>",
+    "viewType": "<VIEW_TYPE>",
+    "data": {
+      "type": "test",
+      "source": {
+        "customerName": "hello name"
+      }
+    },
+    "attribute": {
+      "margin": "s",
+      "backgroudColor": "<HEX_CODE>"
+    },
+    "action": {
+      "type": "url",
+      "value": "<URL>",
+      "text": "<TEXT>"
+    }
+  },
+  {
+    "id": "<ID>",
+    "viewType": "<VIEW_TYPE>",
+    "data": {
+      "type": "dynamic",
+      "slug": "get-user-name"
+    },
+    "attribute": {
+      "margin": "s",
+      "backgroudColor": "<HEX_CODE>"
+    },
+    "action": {
+      "type": "url",
+      "value": "<URL>",
+      "text": "<TEXT>"
+    }
+  }
+]

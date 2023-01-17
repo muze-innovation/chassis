@@ -12,7 +12,10 @@
     }
   },
   "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "lodash": "^4.17.21",
+    "reflect-metadata": "^0.1.13",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
