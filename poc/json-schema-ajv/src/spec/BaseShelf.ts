@@ -38,7 +38,7 @@ export class BaseShelfAttribute {
 
   @IsString()
   @IsOptional()
-  public backgroudColor?: string
+  public backgroundColor?: string
 }
 
 export class BaseAction {

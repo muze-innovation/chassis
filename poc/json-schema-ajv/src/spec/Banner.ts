@@ -52,8 +52,8 @@ export default class Banner extends BaseShelf {
     // console.log(validationMetadatasToSchemas({}).BaseAction);
 
     const ajv = new Ajv()
-    const validate = ajv.compile(schema)
-    if (validate(this)) {
+    const valid = ajv.validate(schema, this)
+    if (valid) {
       console.log('Validation succeeded.')
     } else {
       console.log('Validation failed. Errors: ', ajv.errors)
