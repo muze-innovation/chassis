@@ -7,8 +7,8 @@
 | id                      |     Y     |                                    ID of each item                                     |
 | viewType                |     Y     | Component view type [Banner, Quick Access, Shelf Content, Search Bar, Feed Content...] |
 | attributes              |     Y     |                  The field used to define the style of the component                   |
-| attributes.heightPolicy |     Y     |                  The field used to define the style of the component                   |
-| attributes.heightValue  |     Y     |                  The field used to define the style of the component                   |
+| attributes.heightPolicy |     Y     |                                    View height type                                    |
+| attributes.heightValue  |     Y     |                                   View height value                                    |
 | parameters              |           |                           The field used to display directly                           |
 | payload                 |           |   Data payloads that may need to be resolve (can be known by type static or remote)    |
 
@@ -48,15 +48,12 @@
       }
     },
     {
-      "id": "promo_banner",
+      "id": "promo_banner_super_brand",
       "viewType": "Banner",
       "attributes": {
         "heightPolicy": "fixed",
         "heightValue": 50,
         "ratio": "4:1"
-      },
-      "parameters": {
-        "title": null
       },
       "payload": {
         "type": "static",
@@ -93,6 +90,19 @@
             .
           ]
         }
+      }
+    },
+    {
+      "id": "promo_banner_mid_month",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 50,
+        "ratio": "4:1"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "get-banner-image"
       }
     }
   ]
