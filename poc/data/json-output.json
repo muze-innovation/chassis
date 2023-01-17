@@ -1,46 +1,81 @@
-[
-  {
-    "id": "recommend_banner_001",
-    "viewType": "Banner",
-    "attributes": {
-      "ratio": "16:9 | 1.78",
-      "fit": "cover | contain"
-    },
-    "parameters": {
-      "title": "Product for you"
-    },
-    "payload": {
-      "type": "remote",
-      "resolvedWith": "get-banner",
-      "input": {
-        "slug": "best-seller"
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "recommend_banner_001",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 100,
+        "ratio": "16:9 | 1.78"
+      },
+      "parameters": {
+        "title": "Product for you"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "get-banner",
+        "input": {
+          "slug": "best-seller"
+        }
       }
     },
-    "action": {
-      "type": "url | deeplink | tel",
-      "value": "<URL>"
-    }
-  },
-  {
-    "id": "recommend_banner_002",
-    "viewType": "Banner",
-    "attributes": {
-      "ratio": "16:9 | 1.78",
-      "fit": "cover | contain"
-    },
-    "parameters": {
-      "title": "Product for you too"
-    },
-    "payload": {
-      "type": "static",
-      "data": {
-        "asset": "banner.png",
-        "placeholder": "placeholder_banner.png"
+    {
+      "id": "recommend_banner_002",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 100,
+        "ratio": "16:9 | 1.78"
+      },
+      "parameters": {
+        "title": "Product for you too"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "asset": "banner.png",
+          "placeholder": "placeholder_banner.png"
+        }
       }
     },
-    "action": {
-      "type": "url | deeplink | tel",
-      "value": "<URL>"
+    {
+      "id": "quick_access_001",
+      "viewType": "QuickAccess",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 100
+      },
+      "parameters": {
+        "title": "Flash sale"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "item": [
+            {
+              "title": "title",
+              "asset": "product.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "quick_access_002",
+      "viewType": "QuickAccess",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 100
+      },
+      "parameters": {
+        "title": "Discovery item"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "get-quick-access-item"
+      }
     }
-  }
-]
+  ]
+}

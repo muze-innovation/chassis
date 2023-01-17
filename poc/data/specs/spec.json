@@ -13,10 +13,22 @@
       "payloadType": {
         "asset": "string",
         "placeholder": "string"
+      }
+    },
+    "quickAccess": {
+      "id": "string",
+      "viewType": "string",
+      "attributesType": {
+        "fit": "string"
       },
-      "action": {
-        "type": "string",
-        "value": "string"
+      "parametersType": {
+        "title": "string"
+      },
+      "payloadType": {
+        "item[]": {
+          "title": "string",
+          "asset": "string"
+        }
       }
     }
   },
@@ -28,6 +40,15 @@
       "output": {
         "asset": "string",
         "placeholder": "string"
+      }
+    },
+    "get-quick-access-item": {
+      "input": {},
+      "output": {
+        "item[]": {
+          "title": "string",
+          "asset": "string"
+        }
       }
     }
   }
