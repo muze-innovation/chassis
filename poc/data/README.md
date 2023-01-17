@@ -14,7 +14,8 @@
 
 **Example JSON**
 
-```json{
+```json
+{
   "version": "1.0.0",
   "name": "default-landing-page",
   "items": [
