@@ -4,8 +4,8 @@
       "id": "string",
       "viewType": "string",
       "attributesType": {
-        "ratio": "string",
-        "fit": "string"
+        "heightPolicy": "string",
+        "heightValue": "string"
       },
       "parametersType": {
         "title": "string"
@@ -19,7 +19,25 @@
       "id": "string",
       "viewType": "string",
       "attributesType": {
-        "fit": "string"
+        "heightPolicy": "string",
+        "heightValue": "string"
+      },
+      "parametersType": {
+        "title": "string"
+      },
+      "payloadType": {
+        "item[]": {
+          "title": "string",
+          "asset": "string"
+        }
+      }
+    },
+    "shelfContent": {
+      "id": "string",
+      "viewType": "string",
+      "attributesType": {
+        "heightPolicy": "string",
+        "heightValue": "string"
       },
       "parametersType": {
         "title": "string"

@@ -24,7 +24,7 @@
       "viewType": "ShelfContent",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": 100
+        "heightValue": "100"
       },
       "parameters": {
         "title": "Recent orders"
@@ -52,9 +52,8 @@
       "id": "promo_banner_super_brand",
       "viewType": "Banner",
       "attributes": {
-        "heightPolicy": "fixed",
-        "heightValue": 50,
-        "ratio": "4:1"
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
       },
       "payload": {
         "type": "static",
@@ -69,7 +68,7 @@
       "viewType": "QuickAccess",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": 200
+        "heightValue": "200"
       },
       "parameters": {
         "title": "Recommended categories"
@@ -97,13 +96,12 @@
       "id": "promo_banner_mid_month",
       "viewType": "Banner",
       "attributes": {
-        "heightPolicy": "fixed",
-        "heightValue": 50,
-        "ratio": "4:1"
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "get-banner-image"
+        "resolvedWith": "get-banner"
       }
     }
   ]
