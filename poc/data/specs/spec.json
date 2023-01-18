@@ -4,7 +4,7 @@
       "id": "string",
       "viewType": "string",
       "attributesType": {
-        "heightPolicy": "string",
+        "heightPolicy": "fixed | ratio",
         "heightValue": "string"
       },
       "parametersType": {
@@ -19,7 +19,7 @@
       "id": "string",
       "viewType": "string",
       "attributesType": {
-        "heightPolicy": "string",
+        "heightPolicy": "fixed | ratio",
         "heightValue": "string"
       },
       "parametersType": {
@@ -36,7 +36,7 @@
       "id": "string",
       "viewType": "string",
       "attributesType": {
-        "heightPolicy": "string",
+        "heightPolicy": "fixed | ratio",
         "heightValue": "string"
       },
       "parametersType": {
