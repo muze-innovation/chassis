@@ -78,7 +78,10 @@
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "get-banner"
+        "resolvedWith": "GetBannerResolver",
+        "input": {
+          "slug": "best-seller"
+        }
       }
     },
     {
@@ -93,7 +96,7 @@
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "get-quick-access-item"
+        "resolvedWith": "GetQuickAccessResolver"
       }
     }
   ]
