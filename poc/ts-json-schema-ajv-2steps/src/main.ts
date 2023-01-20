@@ -7,12 +7,13 @@ import { generator } from "./TJSconfig";
 const ajv = new Ajv();
 
 // Validate Basic Field (Not nested field)
-const basicSpec = generator.getSchemaForSymbol("Spec");
-function validateBasic(): void {
+function validateBasic(): boolean {
+  const basicSpec = generator.getSchemaForSymbol("Spec");
   const basicValidate = ajv.compile(basicSpec);
   const basicValid = basicValidate(data);
 
   if (!basicValid) console.log(basicValidate.errors);
+  return basicValid;
 }
 
 // Validate by viewType with payload type "static" or "remote".
@@ -23,15 +24,19 @@ function validatePayload(): void {
   for (const shelfData of allShelfFromData) {
     const viewType = shelfData.viewType;
 
-    const viewTypeSchema = generator.getSchemaForSymbol(viewType);
-    const payloadSchema = viewTypeSchema;
-    const validate = ajv.compile(payloadSchema);
-    const valid = validate(shelfData);
+    if (typeof viewType !== "string" || !viewType) {
+      console.log(`viewType of ${shelfData.id} is invalid`);
+    } else {
+      const viewTypeSchema = generator.getSchemaForSymbol(viewType);
+      const payloadSchema = viewTypeSchema;
+      const validate = ajv.compile(payloadSchema);
+      const valid = validate(shelfData);
 
-    if (!valid)
-      console.log(`${JSON.stringify(validate.errors, null, 2)}
-    Error ${shelfData.id} from ${viewType}`);
+      if (!valid)
+        console.log(`${JSON.stringify(validate.errors, null, 2)}
+      Error ${shelfData.id} from ${viewType}`);
+    }
   }
 }
-validateBasic();
-validatePayload();
+
+if (validateBasic()) validatePayload();
