@@ -29,5 +29,5 @@ export interface QuickAccessStaticItem {
 //// ViewType QuickAccess and type remote.
 export interface QuickAccessPayloadRemote {
   type: "remote";
-  resolvedWith: "get-quick-access-item";
+  resolvedWith: "get-quick-access-item" | "GetQuickAccessResolver";
 }

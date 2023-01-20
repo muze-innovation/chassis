@@ -34,5 +34,6 @@ export interface BaseShelfParameter {
 export interface BaseShelfPayload {
   type: "static" | "remote";
   resolvedWith?: string;
+  input?: any;
   data?: any;
 }

@@ -19,5 +19,10 @@ export interface BannerStaticData {
 //// ViewType Banner and type remote.
 export interface BannerPayloadRemote {
   type: "remote";
-  resolvedWith: "get-banner";
+  resolvedWith: "get-banner" | "GetBannerResolver";
+  input: BannerSlug;
+}
+
+export interface BannerSlug {
+  slug: string;
 }
