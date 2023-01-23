@@ -40,10 +40,7 @@
             {
               "title": "Texas Chicken",
               "asset": "texas-chicken.png"
-            },
-            .
-            .
-            .
+            }
           ]
         }
       }
@@ -53,7 +50,7 @@
       "viewType": "Banner",
       "attributes": {
         "heightPolicy": "ratio",
-        "heightValue": "4:1",
+        "heightValue": "4:1"
       },
       "payload": {
         "type": "static",
@@ -84,10 +81,7 @@
             {
               "title": "เครป / โตเกียว",
               "asset": "food-icon-002.png"
-            },
-            .
-            .
-            .
+            }
           ]
         }
       }
@@ -97,11 +91,14 @@
       "viewType": "Banner",
       "attributes": {
         "heightPolicy": "ratio",
-        "heightValue": "4:1",
+        "heightValue": "4:1"
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "get-banner"
+        "resolvedWith": "GetBannerResolver",
+        "input": {
+          "slug": "best-seller"
+        }
       }
     }
   ]
