@@ -12,6 +12,7 @@
     }
   },
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^10.0.0",
     "ajv": "^8.12.0",
     "lodash": "^4.17.21",
     "typescript-json-schema": "^0.55.0",
