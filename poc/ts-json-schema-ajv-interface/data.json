@@ -83,20 +83,5 @@
         "placeholder": "lalala.png"
       }
     }
-  },
-  {
-    "id": "quick_access_product",
-    "viewType": "QuickAccess",
-    "attributes": {
-      "heightPolicy": "fixed",
-      "heightValue": "200"
-    },
-    "parameters": {
-      "title": "Recommended product"
-    },
-    "payload": {
-      "type": "remote",
-      "resolvedWith": "GetQuickAccessItem"
-    }
   }
 ]

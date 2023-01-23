@@ -4,6 +4,7 @@ import * as TJS from "typescript-json-schema";
 import Ajv from "ajv";
 import { BaseShelf } from "./spec/BaseShelf";
 import { diffSchemas } from "json-schema-diff";
+import { JSONSchema } from "@apidevtools/json-schema-ref-parser";
 
 const ajv = new Ajv();
 
@@ -35,25 +36,29 @@ json.forEach(async (shelf) => {
   if (!valid) console.log(JSON.stringify(validate.errors, null, 2));
 
   if (shelf.payload!.type == "remote") {
-    const schemaPayload = generator.getSchemaForSymbol(shelf.payload!.resolvedWith!);
-    //console.log(schemaPayload);
-    // if (shelf.payload?.input != undefined) {
-    //   const validateInput = ajv.compile(schemaPayload.definitions!.input);
-    //   const validInput = validateInput(shelf.payload!.input);
-    //   if (!validInput) console.log(JSON.stringify(validate.errors, null, 2));
-    // }
+    const schemaResolver = generator.getSchemaForSymbol(shelf.payload!.resolvedWith!);
 
-    // console.log(jsonSchema.definitions!["Data"]);
-    // console.log(schemaPayload.definitions?.output);
+    const output = schemaResolver.properties!.output as unknown as Record<string, any>;
+    const refOutput = output["$ref"].split("/");
+    const schemaResolveOutput = schemaResolver.definitions![refOutput[refOutput.length - 1]] as JSONSchema;
+    console.log(schemaResolveOutput);
 
-    // const result = await diffSchemas({
-    //   sourceSchema: jsonSchema.definitions!["Data"] as any,
-    //   destinationSchema: schemaPayload.definitions?.output as any,
-    // });
-    // if (result.additionsFound == false && result.removalsFound == false) {
-    //   console.log("true");
-    // } else {
-    //   console.log("false");
-    // }
+    const payload = jsonSchema.properties!.payload as unknown as Record<string, any>;
+    const refPayload = payload["$ref"].split("/");
+    const schemaPayload = jsonSchema.definitions![refPayload[refPayload.length - 1]] as JSONSchema;
+    const data = schemaPayload.properties!.data as unknown as Record<string, any>;
+    const refData = data["$ref"].split("/");
+    const schemaData = jsonSchema.definitions![refData[refData.length - 1]];
+    console.log(schemaData);
+
+    const result = await diffSchemas({
+      sourceSchema: schemaResolveOutput as any,
+      destinationSchema: schemaData as any,
+    });
+    if (result.additionsFound == false && result.removalsFound == false) {
+      console.log("true");
+    } else {
+      console.log("false");
+    }
   }
 });

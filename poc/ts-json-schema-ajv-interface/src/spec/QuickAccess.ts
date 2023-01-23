@@ -24,7 +24,7 @@ interface Payload {
 }
 
 interface Data {
-  item: { title: string; asset: string }[];
+  item: ContentItem[];
 }
 interface ContentItem {
   title: string;
