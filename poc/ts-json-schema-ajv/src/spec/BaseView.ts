@@ -24,8 +24,20 @@ export interface BaseViewPayloadRemote {
   input?: any
 }
 
-
-export interface BaseViewAttribute {
-  heightPolicy?: 'fixed' | 'ratio' 
-  heightValue?: string
+interface FixedHeightPolicy {
+  heightPolicy: 'fixed'
+  heightValue: number
 }
+
+interface RatioHeightPolicy {
+  heightPolicy: 'ratio'
+  heightValue: string
+}
+
+type HeightPolicy = FixedHeightPolicy | RatioHeightPolicy
+
+interface _BaseViewAttribute {
+  version: string
+}
+
+export type BaseViewAttribute = _BaseViewAttribute & HeightPolicy
