@@ -2,9 +2,10 @@ import { resolve } from "path";
 import { readFileSync, readdirSync } from "fs";
 import * as TJS from "typescript-json-schema";
 import Ajv from "ajv";
-import { BaseShelf } from "./spec/BaseShelf";
+import { BaseShelf, BaseShelfPayload } from "./spec/BaseShelf";
 import { diffSchemas } from "json-schema-diff";
 import { JSONSchema } from "@apidevtools/json-schema-ref-parser";
+import $RefParser from "@apidevtools/json-schema-ref-parser";
 
 const ajv = new Ajv();
 
@@ -28,37 +29,58 @@ const json = JSON.parse(data.toString()) as BaseShelf[];
 
 const generator = TJS.buildGenerator(program, settings)!;
 
-json.forEach(async (shelf) => {
-  const jsonSchema = generator.getSchemaForSymbol(shelf.viewType);
+const validateJsonSchema = (schema: JSONSchema, json: Object) => {
+  // validate jsonschema by ajv
+  const validate = ajv.compile(schema);
+  const valid = validate(json);
+  if (!valid) console.log("validate failed :", JSON.stringify(validate.errors, null, 2));
+  return valid;
+};
 
-  const validate = ajv.compile(jsonSchema);
-  const valid = validate(shelf);
-  if (!valid) console.log(JSON.stringify(validate.errors, null, 2));
+const validateResolverSpec = async (inputSpec: JSONSchema, outputSpec: JSONSchema, dataSpec: JSONSchema, shelfPayload: BaseShelfPayload) => {
+  let isValidInputSpec = true;
+  if (inputSpec) isValidInputSpec = validateJsonSchema(inputSpec, shelfPayload.input);
 
-  if (shelf.payload!.type == "remote") {
-    const schemaResolver = generator.getSchemaForSymbol(shelf.payload!.resolvedWith!);
+  const validateOutputSpec = await diffSchemas({
+    sourceSchema: outputSpec as any,
+    destinationSchema: dataSpec as any,
+  });
 
-    const output = schemaResolver.properties!.output as unknown as Record<string, any>;
-    const refOutput = output["$ref"].split("/");
-    const schemaResolveOutput = schemaResolver.definitions![refOutput[refOutput.length - 1]] as JSONSchema;
-    console.log(schemaResolveOutput);
+  const isValidOutputSpec = !validateOutputSpec.additionsFound && !validateOutputSpec.removalsFound;
+  if (!isValidOutputSpec) console.log("validate resolver failed ", validateOutputSpec.addedJsonSchema);
 
-    const payload = jsonSchema.properties!.payload as unknown as Record<string, any>;
-    const refPayload = payload["$ref"].split("/");
-    const schemaPayload = jsonSchema.definitions![refPayload[refPayload.length - 1]] as JSONSchema;
-    const data = schemaPayload.properties!.data as unknown as Record<string, any>;
-    const refData = data["$ref"].split("/");
-    const schemaData = jsonSchema.definitions![refData[refData.length - 1]];
-    console.log(schemaData);
+  return isValidInputSpec && isValidOutputSpec;
+};
 
-    const result = await diffSchemas({
-      sourceSchema: schemaResolveOutput as any,
-      destinationSchema: schemaData as any,
-    });
-    if (result.additionsFound == false && result.removalsFound == false) {
-      console.log("true");
-    } else {
-      console.log("false");
+async function validateJsonSpec() {
+  for (const shelf of json) {
+    const { viewType, id, payload } = shelf;
+    console.log("ID :", id);
+
+    const schemaViewSpec = generator.getSchemaForSymbol(viewType) as JSONSchema;
+    // validate json view spec
+    const isValidViewSpec = validateJsonSchema(schemaViewSpec, shelf);
+    let isValidResolverSpec = true;
+
+    // validate payload type remote by resolver
+    if (payload?.type === "remote") {
+      const schemaResolverSpec = generator.getSchemaForSymbol(payload?.resolvedWith!) as JSONSchema;
+      // Json schema resolve reference
+      const resolverSpec = await $RefParser.dereference(schemaResolverSpec);
+      const viewSpec = await $RefParser.dereference(schemaViewSpec);
+      // validate resolver spec
+      const { input, output } = resolverSpec.properties!;
+
+      if (viewSpec.properties) {
+        const payloadViewSpec = viewSpec.properties.payload as JSONSchema;
+        const dataSpec = payloadViewSpec.properties?.data as JSONSchema;
+        isValidResolverSpec = await validateResolverSpec(input as JSONSchema, output as JSONSchema, dataSpec, payload!);
+      }
     }
+
+    if (isValidViewSpec && isValidResolverSpec) console.log("<----------------------PASS---------------------->");
+    else console.log("<---------------------FAILED--------------------->");
   }
-});
+}
+
+validateJsonSpec();
