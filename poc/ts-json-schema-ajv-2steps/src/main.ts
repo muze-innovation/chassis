@@ -1,7 +1,7 @@
 import Ajv from "ajv";
 import JsonSchemaDiff from "json-schema-diff";
 
-import data from "../../data/json-output.json";
+import data from "../../../example/data/json-output.json";
 import { generator } from "./TJSconfig";
 
 // Declare AJV that used to validate between schema and data.
