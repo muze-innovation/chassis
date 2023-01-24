@@ -16,7 +16,7 @@ export interface GetQuickAccessItem {
   output: QuickAccessItemOutput;
 }
 
-export interface QuickAccessItemOutput {
+interface QuickAccessItemOutput {
   item: ContentItem[];
 }
 interface ContentItem {
