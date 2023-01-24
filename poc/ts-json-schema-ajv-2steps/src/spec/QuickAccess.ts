@@ -14,20 +14,18 @@ export interface QuickAccess extends BaseShelf {
  */
 export interface QuickAccessPayloadStatic {
   type: "static";
-  data: QuickAccessStaticData;
+  data: QuickAccessData;
 }
 
-export interface QuickAccessStaticData {
-  item: QuickAccessStaticItem[];
-}
-
-export interface QuickAccessStaticItem {
-  title: string;
-  asset: string;
+export interface QuickAccessData {
+  item: {
+    title: string;
+    asset: string;
+  }[];
 }
 
 //// ViewType QuickAccess and type remote.
 export interface QuickAccessPayloadRemote {
   type: "remote";
-  resolvedWith: "get-quick-access-item" | "GetQuickAccessResolver";
+  resolvedWith: string;
 }
