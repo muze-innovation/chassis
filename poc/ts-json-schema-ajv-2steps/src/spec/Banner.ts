@@ -8,10 +8,10 @@ export interface Banner extends BaseShelf {
 //// ViewType Banner and type static.
 export interface BannerPayloadStatic {
   type: "static";
-  data: BannerStaticData;
+  data: BannerData;
 }
 
-export interface BannerStaticData {
+export interface BannerData {
   asset: string;
   placeholder: string;
 }
@@ -19,10 +19,6 @@ export interface BannerStaticData {
 //// ViewType Banner and type remote.
 export interface BannerPayloadRemote {
   type: "remote";
-  resolvedWith: "get-banner" | "GetBannerResolver";
-  input: BannerSlug;
-}
-
-export interface BannerSlug {
-  slug: string;
+  resolvedWith: string;
+  input: { slug: string };
 }
