@@ -36,8 +36,6 @@ interface RatioHeightPolicy {
 
 type HeightPolicy = FixedHeightPolicy | RatioHeightPolicy
 
-interface _BaseViewAttribute {
-  version: string
-}
+interface _BaseViewAttribute {}
 
 export type BaseViewAttribute = _BaseViewAttribute & HeightPolicy
