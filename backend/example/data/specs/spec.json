@@ -1,0 +1,73 @@
+{
+  "viewSpecs": {
+    "banner": {
+      "id": "string",
+      "viewType": "string",
+      "attributesType": {
+        "heightPolicy": "fixed | ratio",
+        "heightValue": "string"
+      },
+      "parametersType": {
+        "title": "string"
+      },
+      "payloadType": {
+        "asset": "string",
+        "placeholder": "string"
+      }
+    },
+    "quickAccess": {
+      "id": "string",
+      "viewType": "string",
+      "attributesType": {
+        "heightPolicy": "fixed | ratio",
+        "heightValue": "string"
+      },
+      "parametersType": {
+        "title": "string"
+      },
+      "payloadType": {
+        "item[]": {
+          "title": "string",
+          "asset": "string"
+        }
+      }
+    },
+    "shelfContent": {
+      "id": "string",
+      "viewType": "string",
+      "attributesType": {
+        "heightPolicy": "fixed | ratio",
+        "heightValue": "string"
+      },
+      "parametersType": {
+        "title": "string"
+      },
+      "payloadType": {
+        "item[]": {
+          "title": "string",
+          "asset": "string"
+        }
+      }
+    }
+  },
+  "resolverSpecs": {
+    "get-banner": {
+      "input": {
+        "slug": "string"
+      },
+      "output": {
+        "asset": "string",
+        "placeholder": "string"
+      }
+    },
+    "get-quick-access-item": {
+      "input": {},
+      "output": {
+        "item[]": {
+          "title": "string",
+          "asset": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "recent_orders_shelf_content",
+      "viewType": "ShelfContent",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 100.00
+      },
+      "parameters": {
+        "title": "Recent orders"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "item": [
+            {
+              "title": "ตามใจสั่ง ลาดพร้าว48",
+              "asset": "thai-restaurant-001.png"
+            },
+            {
+              "title": "Texas Chicken",
+              "asset": "texas-chicken.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "promo_banner_super_brand",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "asset": "promo-banner.png",
+          "placeholder": "placeholder-banner.png"
+        }
+      }
+    },
+    {
+      "id": "quick_access_menu",
+      "viewType": "QuickAccess",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 200.00
+      },
+      "parameters": {
+        "title": "Recommended categories"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "item": [
+            {
+              "title": "ส้มตำ / ไก่ย่าง",
+              "asset": "food-icon-001.png"
+            },
+            {
+              "title": "เครป / โตเกียว",
+              "asset": "food-icon-002.png"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "promo_banner_mid_month",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "GetBannerResolver",
+        "input": {
+          "slug": "best-seller"
+        }
+      }
+    },
+    {
+      "id": "quick_access_product",
+      "viewType": "QuickAccess",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 200.00
+      },
+      "parameters": {
+        "title": "Recommended product"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "GetQuickAccessResolver"
+      }
+    }
+  ]
+}
