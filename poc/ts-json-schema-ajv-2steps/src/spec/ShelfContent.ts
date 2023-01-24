@@ -18,12 +18,10 @@ export interface ShelfContentPayloadStatic {
 }
 
 export interface ShelfContentData {
-  item: ShelfContentStaticData[];
-}
-
-export interface ShelfContentStaticData {
-  title: string;
-  asset: string;
+  item: {
+    title: string;
+    asset: string;
+  }[];
 }
 
 // /**
