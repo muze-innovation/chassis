@@ -12,4 +12,4 @@ This spec use [JSON Schema](https://json-schema.org/) syntax for validate the js
 https://www.jsonschemavalidator.net/
 
 ## Examnple
-[JSON Source/Output](../data/README.md)
+[JSON Source/Output](../data/source.json)
