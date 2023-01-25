@@ -1,23 +1,15 @@
+type ResolverSpec = GetBanner | GetQuickAccessItem;
 export interface GetBanner {
-  input: BannerInput;
-  output: BannerOutput;
+  input: { slug: string };
+  output: {
+    asset: string;
+    placeholder: string;
+  };
 }
-
-interface BannerInput {
-  slug: string;
-}
-
-interface BannerOutput {
-  asset: string;
-  placeholder: string;
-}
-
 export interface GetQuickAccessItem {
-  output: QuickAccessItemOutput;
-}
-
-interface QuickAccessItemOutput {
-  item: ContentItem[];
+  output: {
+    item: ContentItem[];
+  };
 }
 interface ContentItem {
   title: string;

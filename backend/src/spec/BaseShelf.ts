@@ -1,10 +1,9 @@
 export type DataSourceType = "static" | "remote";
-export type HeightPolicy = "fixed" | "ratio" | "wrap";
-export type ViewType = "Banner" | "ShelfContent" | "QuickAccess";
+export type HeightPolicy = "fixed" | "ratio";
 
 export interface BaseShelf {
   id: string;
-  viewType: ViewType;
+  viewType: string;
   attributes: BaseShelfAttribute;
   payload?: any;
 }

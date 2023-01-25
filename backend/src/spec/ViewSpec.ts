@@ -1,46 +1,26 @@
-import { BaseShelf, BaseShelfAttribute, HeightPolicy, ViewType } from "./BaseShelf";
+import { BaseShelf } from "./BaseShelf";
+
+type ViewSpec = Banner | QuickAccess;
 
 export interface Banner extends BaseShelf {
   id: string;
-  viewType: ViewType;
-  attributes: BannerAttributes;
-  parameters?: BannerParameters;
-  payload?: BannerPayload;
-}
-
-interface BannerAttributes extends BaseShelfAttribute {
-  heightPolicy: HeightPolicy;
-  heightValue: string;
-}
-
-interface BannerParameters {
-  title: string;
-}
-
-interface BannerPayload {
-  asset: string;
-  placeholder: string;
+  viewType: "Banner";
+  parameters?: { title: string };
+  payload?: {
+    asset: string;
+    placeholder: string;
+  };
 }
 
 export interface QuickAccess extends BaseShelf {
   id: string;
-  viewType: ViewType;
-  attributes: QuickAccessAttributes;
-  parameters?: QuickAccessParameters;
-  payload?: QuickAccessPayload;
-}
-
-interface QuickAccessAttributes extends BaseShelfAttribute {
-  heightPolicy: HeightPolicy;
-  heightValue: string;
-}
-
-interface QuickAccessParameters {
-  title: string;
-}
-
-interface QuickAccessPayload {
-  item: QuickAccessItem[];
+  viewType: "QuickAccess";
+  parameters?: {
+    title: string;
+  };
+  payload?: {
+    item: QuickAccessItem[];
+  };
 }
 
 interface QuickAccessItem {
@@ -50,23 +30,13 @@ interface QuickAccessItem {
 
 export interface ShelfContent extends BaseShelf {
   id: string;
-  viewType: ViewType;
-  attributes: ShelfContentAttributes;
-  parameters?: ShelfContentParameters;
-  payload?: ShelfContentPayload;
-}
-
-interface ShelfContentAttributes extends BaseShelfAttribute {
-  heightPolicy: HeightPolicy;
-  heightValue: string;
-}
-
-interface ShelfContentParameters {
-  title: string;
-}
-
-interface ShelfContentPayload {
-  item: ShelfContentItem[];
+  viewType: "ShelfContent";
+  parameters?: {
+    title: string;
+  };
+  payload?: {
+    item: ShelfContentItem[];
+  };
 }
 
 interface ShelfContentItem {
