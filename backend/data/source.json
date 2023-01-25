@@ -7,7 +7,8 @@
       "viewType": "ShelfContent",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": 100.00
+        "heightValue": "100",
+        "color": "red"
       },
       "parameters": {
         "title": "Recent orders"
@@ -29,26 +30,11 @@
       }
     },
     {
-      "id": "promo_banner_super_brand",
-      "viewType": "Banner",
-      "attributes": {
-        "heightPolicy": "ratio",
-        "heightValue": "4:1"
-      },
-      "payload": {
-        "type": "static",
-        "data": {
-          "asset": "promo-banner.png",
-          "placeholder": "placeholder-banner.png"
-        }
-      }
-    },
-    {
       "id": "quick_access_menu",
       "viewType": "QuickAccess",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": 200.00
+        "heightValue": "200"
       },
       "parameters": {
         "title": "Recommended categories"
@@ -74,13 +60,30 @@
       "viewType": "Banner",
       "attributes": {
         "heightPolicy": "ratio",
-        "heightValue": "4:1"
+        "heightValue": "4:1",
+        "color": "red"
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "GetBannerResolver",
+        "resolvedWith": "GetBanner",
         "input": {
           "slug": "best-seller"
+        }
+      }
+    },
+    {
+      "id": "promo_banner_mid_year",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "asset": "asset.png",
+          "placeholder": "lalala.png"
         }
       }
     },
@@ -89,15 +92,15 @@
       "viewType": "QuickAccess",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": 200.00
+        "heightValue": "200"
       },
       "parameters": {
         "title": "Recommended product"
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "GetQuickAccessResolver"
+        "resolvedWith": "GetQuickAccessItem"
       }
     }
-  ]
+  ]  
 }

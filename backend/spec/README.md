@@ -10,3 +10,6 @@ This spec use [JSON Schema](https://json-schema.org/) syntax for validate the js
 
 ## Validation Tools
 https://www.jsonschemavalidator.net/
+
+## Examnple
+[JSON Source/Output](../data/README.md)

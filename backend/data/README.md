@@ -1,4 +1,4 @@
-# OUTPUT
+# SOURCE/OUTPUT JSON
 
 ### Default field
 
@@ -24,7 +24,8 @@
       "viewType": "ShelfContent",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": "100"
+        "heightValue": "100",
+        "color": "red"
       },
       "parameters": {
         "title": "Recent orders"
@@ -42,21 +43,6 @@
               "asset": "texas-chicken.png"
             }
           ]
-        }
-      }
-    },
-    {
-      "id": "promo_banner_super_brand",
-      "viewType": "Banner",
-      "attributes": {
-        "heightPolicy": "ratio",
-        "heightValue": "4:1"
-      },
-      "payload": {
-        "type": "static",
-        "data": {
-          "asset": "promo-banner.png",
-          "placeholder": "placeholder-banner.png"
         }
       }
     },
@@ -91,17 +77,50 @@
       "viewType": "Banner",
       "attributes": {
         "heightPolicy": "ratio",
-        "heightValue": "4:1"
+        "heightValue": "4:1",
+        "color": "red"
       },
       "payload": {
         "type": "remote",
-        "resolvedWith": "GetBannerResolver",
+        "resolvedWith": "GetBanner",
         "input": {
           "slug": "best-seller"
         }
       }
+    },
+    {
+      "id": "promo_banner_mid_year",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "asset": "asset.png",
+          "placeholder": "lalala.png"
+        }
+      }
+    },
+    {
+      "id": "quick_access_product",
+      "viewType": "QuickAccess",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": "200"
+      },
+      "parameters": {
+        "title": "Recommended product"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "GetQuickAccessItem"
+      }
     }
   ]
+
 }
 ```
 
