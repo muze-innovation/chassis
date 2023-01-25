@@ -7,6 +7,7 @@ This spec use [JSON Schema](https://json-schema.org/) syntax for validate the js
 - [ViewSpec](./ViewSpec.json)
 - [ResolverSpec](./ResovlerSpec.json)
 - [Banner](./Banner.json)
+- [TBC] [ScreenSpec](./ScreenSpec.json)
 
 ## Validation Tools
 https://www.jsonschemavalidator.net/
