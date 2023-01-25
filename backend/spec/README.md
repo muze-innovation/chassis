@@ -4,9 +4,9 @@
 This spec use [JSON Schema](https://json-schema.org/) syntax for validate the json.
 
 ## Schema
-- [ViewSpec](./ViewSpec.md)
-- [ResolverSpec](./ResovlerSpec.md)
-- [Banner](./Banner.md)
+- [ViewSpec](./ViewSpec.json)
+- [ResolverSpec](./ResovlerSpec.json)
+- [Banner](./Banner.json)
 
 ## Validation Tools
 https://www.jsonschemavalidator.net/
