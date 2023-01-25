@@ -12,5 +12,5 @@ This spec use [JSON Schema](https://json-schema.org/) syntax for validate the js
 ## Validation Tools
 https://www.jsonschemavalidator.net/
 
-## Examnple
+## Example
 [JSON Source/Output](../data/source.json)
