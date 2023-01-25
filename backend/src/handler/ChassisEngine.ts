@@ -18,7 +18,10 @@ export default class ChassisEngine {
     }
   }
 
-  private static async validateSchemaDiff(sourceSchema: JSONSchema, destinationSchema: JSONSchema): Promise<void> {
+  private static async validateSchemaDiff(
+    sourceSchema: JSONSchema,
+    destinationSchema: JSONSchema
+  ): Promise<void> {
     const validate = await diffSchemas({
       sourceSchema: sourceSchema as any,
       destinationSchema: destinationSchema as any,
@@ -36,7 +39,11 @@ export default class ChassisEngine {
     const compilerOptions: TJS.CompilerOptions = { strictNullChecks: true };
 
     const program = TJS.getProgramFromFiles(
-      [resolve("./src/spec/BaseShelf.ts"), resolve("./src/spec/ViewSpec.ts"), resolve("./src/spec/ResolverSpec.ts")],
+      [
+        resolve("./src/spec/BaseShelf.ts"),
+        resolve("./src/spec/ViewSpec.ts"),
+        resolve("./src/spec/ResolverSpec.ts"),
+      ],
       compilerOptions
     );
     this._generator = TJS.buildGenerator(program, settings)!;
@@ -74,28 +81,42 @@ export default class ChassisEngine {
         console.log("<----------------------PASS---------------------->");
       } catch (e) {
         const error = e as Error;
-        console.log(`Validate failed : ${error.message}\n<---------------------FAILED--------------------->`);
+        console.log(
+          `Validate failed : ${error.message}\n<---------------------FAILED--------------------->`
+        );
       }
     }
+
+    const resolverSpec = await this.generateJsonSchema("ViewSpec");
+    console.log(JSON.stringify(resolverSpec, null, 2));
   }
 
-  private static async validatePayload(payload: any, spec: JSONSchema): Promise<void> {
+  private static async validatePayload(
+    payload: any,
+    spec: JSONSchema
+  ): Promise<void> {
     if (payload.type === "static") {
-      const staticPayload = await this.generateJsonSchema("BaseShelfStaticPayload");
+      const staticPayload = await this.generateJsonSchema(
+        "BaseShelfStaticPayload"
+      );
 
       this.validateJsonSchema(staticPayload, payload);
 
       // validate data static by static payload
       this.validateJsonSchema(spec, payload?.data);
     } else if (payload.type === "remote") {
-      const remotePayload = await this.generateJsonSchema("BaseShelfRemotePayload");
+      const remotePayload = await this.generateJsonSchema(
+        "BaseShelfRemotePayload"
+      );
 
       this.validateJsonSchema(remotePayload, payload);
 
       // validate data output remote by resolver
       // genarate Json schema by resolvedWith
 
-      const resolverSpec = await this.generateJsonSchema(payload?.resolvedWith!);
+      const resolverSpec = await this.generateJsonSchema(
+        payload?.resolvedWith!
+      );
 
       // validate resolver spec
       const { input, output } = resolverSpec.properties!;
