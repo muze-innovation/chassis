@@ -1,10 +1,13 @@
 {
   "name": "ts-json-schema-ajv",
-  "main": "main.js",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "version": "0.0.1",
   "scripts": {
     "dev": "ts-node ./src/main.ts",
     "test": "jest __tests__/",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc"
   },
   "jest": {
     "testEnvironment": "node",
@@ -15,6 +18,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^10.0.0",
     "ajv": "^8.12.0",
+    "json-schema-diff": "^0.18.0",
     "lodash": "^4.17.21",
     "prettier": "^2.8.3",
     "typescript-json-schema": "^0.55.0",
@@ -23,7 +27,6 @@
   "devDependencies": {
     "@types/jest": "^29.0.3",
     "jest": "^27.5.1",
-    "json-schema-diff": "^0.18.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.8.3"
