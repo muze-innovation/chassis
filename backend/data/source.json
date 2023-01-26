@@ -7,7 +7,7 @@
       "viewType": "ShelfContent",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": "100",
+        "heightValue": 100,
         "color": "red"
       },
       "parameters": {
@@ -34,7 +34,7 @@
       "viewType": "QuickAccess",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": "200"
+        "heightValue": 200
       },
       "parameters": {
         "title": "Recommended categories"
@@ -92,7 +92,7 @@
       "viewType": "QuickAccess",
       "attributes": {
         "heightPolicy": "fixed",
-        "heightValue": "200"
+        "heightValue": 200
       },
       "parameters": {
         "title": "Recommended product"

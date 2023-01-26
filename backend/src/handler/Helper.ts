@@ -20,33 +20,44 @@ export class Helper {
    * Validate Json with Json Schema
    * @param schema JsonSchema
    * @param json Input json
-   * @param throwable Throw exception when json is invalid.
+   * @param throwable Throw exception when json is invalid
    * @returns validation result
    */
-  public static validateJsonSchema(schema: JSONSchema, json: Object, throwable: boolean = false): boolean {
+  public static validateJsonSchema(schema: JSONSchema, json: Object, throwable: boolean = true): boolean {
     const ajv = new Ajv()
-    const validate = ajv.compile(schema)
-    const valid = validate(json)
-    if (!valid && throwable) {
-      throw new Error(JSON.stringify(validate.errors, null, 2))
+    const validation = ajv.compile(schema)
+    const isValid = validation(json)
+    if (!isValid && throwable) {
+      const err = JSON.stringify(validation.errors, null, 2)
+      console.error(err)
+      throw new Error(err)
     }
-    return valid
+    return isValid
   }
 
+  /**
+   *
+   * @param sourceSchema
+   * @param destinationSchema
+   * @param throwable Throw exception when json is invalid
+   * @returns validation result
+   */
   public static async validateSchemaDiff(
     sourceSchema: JSONSchema,
     destinationSchema: JSONSchema,
-    throwable: boolean = false
+    throwable: boolean = true
   ): Promise<boolean> {
-    const validate = await diffSchemas({
+    const validation = await diffSchemas({
       sourceSchema: sourceSchema as any,
       destinationSchema: destinationSchema as any,
     })
 
-    const valid = !validate.additionsFound && !validate.removalsFound
-    if (!valid && throwable) {
-      throw new Error(JSON.stringify(validate.addedJsonSchema, null, 2))
+    const isValid = !validation.additionsFound && !validation.removalsFound
+    if (!isValid && throwable) {
+      const err = JSON.stringify(validation.addedJsonSchema, null, 2)
+      console.error(err)
+      throw new Error(err)
     }
-    return valid
+    return isValid
   }
 }
