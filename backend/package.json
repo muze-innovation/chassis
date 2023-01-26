@@ -3,7 +3,8 @@
   "main": "main.js",
   "scripts": {
     "dev": "ts-node ./src/main.ts",
-    "test": "jest __tests__/"
+    "test": "jest __tests__/",
+    "format": "prettier . --write"
   },
   "jest": {
     "testEnvironment": "node",
@@ -15,6 +16,7 @@
     "@apidevtools/json-schema-ref-parser": "^10.0.0",
     "ajv": "^8.12.0",
     "lodash": "^4.17.21",
+    "prettier": "^2.8.3",
     "typescript-json-schema": "^0.55.0",
     "yargs": "^17.5.1"
   },
