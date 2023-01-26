@@ -29,7 +29,6 @@ export class Helper {
     const isValid = validation(json)
     if (!isValid && throwable) {
       const err = JSON.stringify(validation.errors, null, 2)
-      console.error(err)
       throw new Error(err)
     }
     return isValid
@@ -54,9 +53,7 @@ export class Helper {
 
     const isValid = !validation.additionsFound && !validation.removalsFound
     if (!isValid && throwable) {
-      const err = JSON.stringify(validation.addedJsonSchema, null, 2)
-      console.error(err)
-      throw new Error(err)
+      throw new Error(JSON.stringify(validation, null, 2))
     }
     return isValid
   }

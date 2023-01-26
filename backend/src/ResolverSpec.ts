@@ -2,7 +2,9 @@ import { ChassisResolverSpec } from './spec/ChassisResolverSpec'
 
 type ResolverSpec = GetBanner | GetQuickAccessItem
 interface GetBanner extends ChassisResolverSpec {
-  input: { slug: string }
+  input: {
+    slug: string
+  }
   output: {
     asset: string
     placeholder: string

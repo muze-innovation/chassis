@@ -99,14 +99,14 @@ export default class ChassisEngine {
    * @param Payload
    * @param Spec
    */
-  private async validateResolverSpec(payload: any, spec: JSONSchema): Promise<boolean> {
+  private async validateResolverSpec(payload: any, viewSpec: JSONSchema): Promise<boolean> {
     if (payload.type === 'static') {
       const staticPayload = await this.generateJsonSchema('ChassisViewPayloadStatic')
       // Validate ChassisViewPayloadStatic Schema
       Helper.validateJsonSchema(staticPayload, payload)
 
       // Validate type of payload.data by viewSpec
-      Helper.validateJsonSchema(spec, payload?.data)
+      Helper.validateJsonSchema(viewSpec, payload?.data)
     } else if (payload.type === 'remote') {
       const remotePayload = await this.generateJsonSchema('ChassisViewPayloadRemote')
       // Validate ChassisViewPayloadRemote Schema
@@ -127,7 +127,7 @@ export default class ChassisEngine {
         Helper.validateJsonSchema(input as JSONSchema, payload.input)
       }
       // Validate Output
-      Helper.validateSchemaDiff(output as JSONSchema, spec)
+      Helper.validateSchemaDiff(viewSpec, output as JSONSchema)
     } else {
       throw new Error(`Unknown payload type: ${payload.type}`)
     }
