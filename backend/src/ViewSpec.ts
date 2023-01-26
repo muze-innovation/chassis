@@ -5,7 +5,6 @@ type ViewSpec = Banner | QuickAccess | ShelfContent
 interface Banner extends ChassisViewSpec {
   id: string
   viewType: 'Banner'
-  parameters: { title: string }
   payload: {
     asset: string
     placeholder: string
