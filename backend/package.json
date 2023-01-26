@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "ts-node ./src/main.ts",
     "test": "jest __tests__/",
-    "format": "prettier . --write"
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc",
+    "format": "prettier . --write",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc"
   },
   "jest": {
     "testEnvironment": "node",
