@@ -1,9 +1,9 @@
-export interface BaseViewSpec {
+export interface ChassisViewSpec {
   id: string
   viewType: string
   parameters?: any
   payload?: any
-  attributes: BaseViewAttribute
+  attributes: ChassisViewAttribute
 }
 
 interface FixedHeightPolicy {
@@ -18,6 +18,6 @@ interface RatioHeightPolicy {
 
 type HeightPolicy = FixedHeightPolicy | RatioHeightPolicy
 
-interface _BaseViewAttribute {}
+interface _ChassisViewAttribute {}
 
-type BaseViewAttribute = _BaseViewAttribute & HeightPolicy
+type ChassisViewAttribute = _ChassisViewAttribute & HeightPolicy

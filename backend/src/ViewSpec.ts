@@ -1,18 +1,18 @@
-import { BaseViewSpec } from './BaseViewSpec'
+import { ChassisViewSpec } from './spec/ChassisViewSpec'
 
 type ViewSpec = Banner | QuickAccess | ShelfContent
 
-interface Banner extends BaseViewSpec {
+interface Banner extends ChassisViewSpec {
   id: string
   viewType: 'Banner'
-  parameters?: { title: string }
+  parameters: { title: string }
   payload: {
     asset: string
     placeholder: string
   }
 }
 
-interface QuickAccess extends BaseViewSpec {
+interface QuickAccess extends ChassisViewSpec {
   id: string
   viewType: 'QuickAccess'
   parameters?: {
@@ -28,7 +28,7 @@ interface QuickAccessItem {
   asset: string
 }
 
-interface ShelfContent extends BaseViewSpec {
+interface ShelfContent extends ChassisViewSpec {
   id: string
   viewType: 'ShelfContent'
   parameters?: {

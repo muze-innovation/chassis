@@ -1,7 +1,7 @@
-import { BaseResolverSpec } from './spec/BaseResolverSpec'
+import { ChassisResolverSpec } from './spec/ChassisResolverSpec'
 
 type ResolverSpec = GetBanner | GetQuickAccessItem
-interface GetBanner extends BaseResolverSpec {
+interface GetBanner extends ChassisResolverSpec {
   input: { slug: string }
   output: {
     asset: string
@@ -9,7 +9,7 @@ interface GetBanner extends BaseResolverSpec {
   }
 }
 
-interface GetQuickAccessItem extends BaseResolverSpec {
+interface GetQuickAccessItem extends ChassisResolverSpec {
   output: {
     item: ContentItem[]
   }

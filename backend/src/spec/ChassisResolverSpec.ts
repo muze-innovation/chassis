@@ -1,14 +1,14 @@
-export interface BaseResolverSpec {
+export interface ChassisResolverSpec {
   input?: any
   output: any
 }
 
-interface BaseViewPayloadStatic {
+interface ChassisViewPayloadStatic {
   type: 'static'
   data: any
 }
 
-interface BaseViewPayloadRemote {
+interface ChassisViewPayloadRemote {
   type: 'remote'
   resolvedWith: string
   input?: any

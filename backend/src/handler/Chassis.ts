@@ -1,74 +1,60 @@
 import { resolve } from 'path'
 import * as TJS from 'typescript-json-schema'
-import Ajv from 'ajv'
-import { diffSchemas } from 'json-schema-diff'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
 import { Helper } from './Helper'
 
 export default class ChassisEngine {
-  private static _generator: TJS.JsonSchemaGenerator
+  private _generator: TJS.JsonSchemaGenerator
 
-  private static validateJsonSchema(schema: JSONSchema, json: Object): void {
-    const ajv = new Ajv()
-    const validate = ajv.compile(schema)
-    const valid = validate(json)
-    if (!valid) {
-      throw new Error(JSON.stringify(validate.errors, null, 2))
-    }
-  }
-
-  private static async validateSchemaDiff(sourceSchema: JSONSchema, destinationSchema: JSONSchema): Promise<void> {
-    const validate = await diffSchemas({
-      sourceSchema: sourceSchema as any,
-      destinationSchema: destinationSchema as any,
-    })
-
-    const valid = !validate.additionsFound && !validate.removalsFound
-    if (!valid) {
-      throw new Error(JSON.stringify(validate.addedJsonSchema, null, 2))
-    }
-  }
-
-  private static initJsonSchemaGenerator(): void {
+  /**
+   * Initial json schema generator
+   * @param files File path list(ViewSpec, ResolverSpec)
+   */
+  constructor(files: string[]) {
     // init json schema generator by spec file
     const settings: TJS.PartialArgs = { required: true }
     const compilerOptions: TJS.CompilerOptions = { strictNullChecks: true }
 
     const program = TJS.getProgramFromFiles(
-      [resolve('./src/spec/BaseShelf.ts'), resolve('./src/spec/ViewSpec.ts'), resolve('./src/spec/ResolverSpec.ts')],
+      [resolve('./src/spec/BaseViewSpec.ts'), resolve('./src/spec/BaseResolverSpec.ts')].concat(files),
       compilerOptions
     )
     this._generator = TJS.buildGenerator(program, settings)!
   }
 
-  private static async generateJsonSchema(symbol: string): Promise<JSONSchema> {
+  /**
+   * Generate Json Schema
+   * @param symbol Data Type
+   * @returns JSONSchema
+   */
+  private async generateJsonSchema(symbol: string): Promise<JSONSchema> {
     const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
     // Json schema resolve reference
     return await $RefParser.dereference(schema)
   }
 
   /**
-   * validate json with ts file spec
+   *
+   * @param json
+   * @returns Validation Result
    */
-  public static async validateSpec(inputPath: string) {
-    this.initJsonSchemaGenerator()
-    // read json file data need to validate
-    const shelfList = Helper.parseJsonToShelf(inputPath)
+  public async validateSpec(json: any): Promise<boolean> {
+    // Validate Screen Spec
 
-    for (const shelf of shelfList) {
+    for (const shelf of json.shelfList) {
       const { viewType, id, payload } = shelf
       console.log('ID :', id)
-      // genarate Json schema by viewType
+      // Genarate Json schema by viewType
       const viewSpec = await this.generateJsonSchema(viewType)
       const payloadSpec = viewSpec.properties?.payload as JSONSchema
 
       try {
-        // validate json view spec
+        // Validate json view spec
         delete viewSpec.properties?.payload
-        this.validateJsonSchema(viewSpec, shelf)
+        Helper.validateJsonSchema(viewSpec, shelf)
         if (payload) {
-          // validate payload
+          // Validate payload
           await this.validatePayload(payload, payloadSpec)
         }
         console.log('<----------------------PASS---------------------->')
@@ -80,20 +66,21 @@ export default class ChassisEngine {
 
     const resolverSpec = await this.generateJsonSchema('ViewSpec')
     console.log(JSON.stringify(resolverSpec, null, 2))
+    return true
   }
 
-  private static async validatePayload(payload: any, spec: JSONSchema): Promise<void> {
+  private async validatePayload(payload: any, spec: JSONSchema): Promise<void> {
     if (payload.type === 'static') {
       const staticPayload = await this.generateJsonSchema('BaseShelfStaticPayload')
 
-      this.validateJsonSchema(staticPayload, payload)
+      Helper.validateJsonSchema(staticPayload, payload)
 
       // validate data static by static payload
-      this.validateJsonSchema(spec, payload?.data)
+      Helper.validateJsonSchema(spec, payload?.data)
     } else if (payload.type === 'remote') {
       const remotePayload = await this.generateJsonSchema('BaseShelfRemotePayload')
 
-      this.validateJsonSchema(remotePayload, payload)
+      Helper.validateJsonSchema(remotePayload, payload)
 
       // validate data output remote by resolver
       // genarate Json schema by resolvedWith
@@ -102,9 +89,9 @@ export default class ChassisEngine {
 
       // validate resolver spec
       const { input, output } = resolverSpec.properties!
-      if (input) this.validateJsonSchema(input as JSONSchema, payload.input)
+      if (input) Helper.validateJsonSchema(input as JSONSchema, payload.input)
 
-      this.validateSchemaDiff(output as JSONSchema, spec)
+      Helper.validateSchemaDiff(output as JSONSchema, spec)
     } else {
       throw new Error(`Unknown payload type ${payload.type}`)
     }
