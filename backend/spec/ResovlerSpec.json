@@ -10,9 +10,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "slug"
-          ]
+          "required": ["slug"]
         },
         "output": {
           "type": "object",
@@ -24,16 +22,10 @@
               "type": "string"
             }
           },
-          "required": [
-            "asset",
-            "placeholder"
-          ]
+          "required": ["asset", "placeholder"]
         }
       },
-      "required": [
-        "input",
-        "output"
-      ]
+      "required": ["input", "output"]
     },
     {
       "type": "object",
@@ -53,21 +45,14 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "asset",
-                  "title"
-                ]
+                "required": ["asset", "title"]
               }
             }
           },
-          "required": [
-            "item"
-          ]
+          "required": ["item"]
         }
       },
-      "required": [
-        "output"
-      ]
+      "required": ["output"]
     }
   ],
   "definitions": {
@@ -81,9 +66,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "slug"
-          ]
+          "required": ["slug"]
         },
         "output": {
           "type": "object",
@@ -95,16 +78,10 @@
               "type": "string"
             }
           },
-          "required": [
-            "asset",
-            "placeholder"
-          ]
+          "required": ["asset", "placeholder"]
         }
       },
-      "required": [
-        "input",
-        "output"
-      ]
+      "required": ["input", "output"]
     },
     "GetQuickAccessItem": {
       "type": "object",
@@ -124,21 +101,14 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "asset",
-                  "title"
-                ]
+                "required": ["asset", "title"]
               }
             }
           },
-          "required": [
-            "item"
-          ]
+          "required": ["item"]
         }
       },
-      "required": [
-        "output"
-      ]
+      "required": ["output"]
     },
     "ContentItem": {
       "type": "object",
@@ -150,10 +120,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "asset",
-        "title"
-      ]
+      "required": ["asset", "title"]
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#"

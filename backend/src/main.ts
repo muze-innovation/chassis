@@ -1,3 +1,3 @@
-import ChassisEngine from "./handler/ChassisEngine";
+import ChassisEngine from './handler/ChassisEngine'
 
-ChassisEngine.validateSpec("/data.json");
+ChassisEngine.validateSpec('/data.json')

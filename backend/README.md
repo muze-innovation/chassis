@@ -31,7 +31,7 @@ end
 libt --Validate Spec & Source--> libt
 libt --> output
 libt --> sdart
-output --> libd 
+output --> libd
 sdart --> libd
 
 subgraph Frontend

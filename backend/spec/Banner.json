@@ -6,9 +6,7 @@
     },
     "viewType": {
       "type": "string",
-      "enum": [
-        "Banner"
-      ]
+      "enum": ["Banner"]
     },
     "parameters": {
       "type": "object",
@@ -17,9 +15,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "title"
-      ]
+      "required": ["title"]
     },
     "payload": {
       "type": "object",
@@ -31,61 +27,39 @@
           "type": "string"
         }
       },
-      "required": [
-        "asset",
-        "placeholder"
-      ]
+      "required": ["asset", "placeholder"]
     },
     "attributes": {
       "type": "object",
       "properties": {
         "heightPolicy": {
-          "enum": [
-            "fixed",
-            "ratio"
-          ],
+          "enum": ["fixed", "ratio"],
           "type": "string"
         },
         "heightValue": {
           "type": "string"
         }
       },
-      "required": [
-        "heightPolicy",
-        "heightValue"
-      ]
+      "required": ["heightPolicy", "heightValue"]
     }
   },
-  "required": [
-    "attributes",
-    "id",
-    "viewType"
-  ],
+  "required": ["attributes", "id", "viewType"],
   "definitions": {
     "BaseShelfAttribute": {
       "type": "object",
       "properties": {
         "heightPolicy": {
-          "enum": [
-            "fixed",
-            "ratio"
-          ],
+          "enum": ["fixed", "ratio"],
           "type": "string"
         },
         "heightValue": {
           "type": "string"
         }
       },
-      "required": [
-        "heightPolicy",
-        "heightValue"
-      ]
+      "required": ["heightPolicy", "heightValue"]
     },
     "HeightPolicy": {
-      "enum": [
-        "fixed",
-        "ratio"
-      ],
+      "enum": ["fixed", "ratio"],
       "type": "string"
     }
   },
