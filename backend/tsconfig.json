@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
     "experimentalDecorators": true,
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -7,7 +9,7 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "module": "CommonJS",
     "moduleResolution": "node",
@@ -16,6 +18,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
+    "declaration": true,
     "paths": {
       "@/*": ["./*"]
     }
