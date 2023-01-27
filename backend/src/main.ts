@@ -4,15 +4,13 @@ import json from '../data/source.json'
 
 function bootstrap(specPaths?: string[]) {
   // initial spec path
-  let specPathResolvers: string[] | [] = []
+  let specPathResolves: string[] = [
+    ...specPaths?.map(path => resolve(path)) ?? [],
+    resolve('./src/ViewSpec.ts'),
+    resolve('./src/ResolverSpec.ts')
+  ]
 
-  // spec path guard
-  if (specPaths && specPaths.length) {
-    // loop spec path with resolve path
-    specPathResolvers = specPaths.map(path => resolve(path))
-  }
-
-  const chassis = new Chassis([...specPathResolvers, resolve('./src/ViewSpec.ts'), resolve('./src/ResolverSpec.ts')])
+  const chassis = new Chassis(specPathResolves)
   chassis.validateSpec(json)
 }
 
