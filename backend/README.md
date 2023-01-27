@@ -96,7 +96,7 @@ Chassis validate for objects under the field `items`. These are matched specific
 "viewType": "Banner"
 ```
 
-This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](/data/README.md)
+This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./data/README.md)
 
 ### Spec
 
@@ -126,7 +126,7 @@ From the above specification, `Banner` has a type of each field such as `id must
 If Chassis takes the above [Source](#Source) and [Spec](#Spec) to validate and returns true. When the front-end uses the source(JSON), it displays the banner correctly.
 
 Example Banner :
-![Image](./asset/banner.png)
+![ImageBanner](./asset/banner.png)
 
 # Getting Started
 
