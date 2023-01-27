@@ -2,7 +2,7 @@ import Chassis from './handler/Chassis'
 import { resolve } from 'path'
 import json from '../data/source.json'
 
-function bootstrap(specPaths?: string[]) {
+const validateSpec = (specPaths?: string[]) => {
   // initial spec path
   const specPathResolves: string[] = [
     ...specPaths?.map(path => resolve(path)) ?? [],
@@ -15,6 +15,11 @@ function bootstrap(specPaths?: string[]) {
 }
 
 // TODO:: This execute only develop mode when deploy will remove this
-bootstrap()
+validateSpec()
 
-export default bootstrap
+
+// Example for use import { validateSpec} from 'chassis'
+
+export {
+  validateSpec
+}

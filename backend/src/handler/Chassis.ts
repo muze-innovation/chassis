@@ -19,9 +19,9 @@ export default class Chassis {
 
     const program = TJS.getProgramFromFiles(
       [
-        resolve(ChassisConfig.screenSpecPath),
-        resolve(ChassisConfig.viewSpecPath),
-        resolve(ChassisConfig.resolverSpecPath),
+        resolve(__dirname, ChassisConfig.screenSpecPath),
+        resolve(__dirname, ChassisConfig.viewSpecPath),
+        resolve(__dirname, ChassisConfig.resolverSpecPath),
       ].concat(files),
       compilerOptions
     )
