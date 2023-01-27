@@ -8,7 +8,7 @@
     "test": "jest __tests__/",
     "format": "prettier . --write",
     "build": "rm -rf dist tsconfig.tsbuildinfo && tsc",
-    "cli": "node ./dist/src/cli.js"
+    "cli": "ts-node ./src/cli.ts"
   },
   "jest": {
     "testEnvironment": "node",

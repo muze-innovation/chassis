@@ -3,6 +3,7 @@
 import Chassis from './handler/Chassis'
 import { resolve } from 'path'
 import yargs from 'yargs'
+import { readFileSync } from 'fs'
 
 yargs.command({
   command: 'validate',
@@ -30,7 +31,14 @@ yargs.command({
     console.log(`Resolver Spec: ${argv.resolverSpec}`)
 
     const chassis = new Chassis([resolve(argv.viewSpec), resolve(argv.resolverSpec)])
-    chassis.validateSpec(argv.source)
+
+    try {
+      const fileData: string = readFileSync(argv.source, 'utf8')
+      const data = JSON.parse(fileData)
+      chassis.validateSpec(data)
+    } catch (err) {
+      console.error(err)
+    }
   },
 })
 
