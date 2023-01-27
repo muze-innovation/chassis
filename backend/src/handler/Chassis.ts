@@ -5,7 +5,7 @@ import $RefParser from '@apidevtools/json-schema-ref-parser'
 import ChassisHelper from './ChassisHelper'
 import ChassisConfig from './ChassisConfig'
 
-export default class ChassisEngine {
+export default class Chassis {
   private _generator: TJS.JsonSchemaGenerator
 
   /**
