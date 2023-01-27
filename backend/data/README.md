@@ -17,4 +17,4 @@
 [Specification](../spec/)
 [JSON Source/Output](./source.json)
 
-![Image](ui.png)
+![Image](/asset/ui.png)
