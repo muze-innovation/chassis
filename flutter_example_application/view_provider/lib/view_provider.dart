@@ -1,7 +1,10 @@
 library view_provider;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
+import 'package:chassis/chassis.dart';
+
+class ExampleViewProvider implements IViewProvider {
+  @override
+  void getView(Stream stream, Map<String, dynamic> config) {
+    // TODO: implement getView
+  }
 }
