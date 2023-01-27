@@ -41,15 +41,15 @@ export default class Chassis {
 
   /**
    *
-   * @param json
+   * @param sourceJson
    * @returns Validation Result
    */
-  public async validateSpec(json: any): Promise<boolean> {
+  public async validateSpec(sourceJson: any): Promise<boolean> {
     // Validate Screen Spec
-    await this.validateScreenSpec(json)
+    await this.validateScreenSpec(sourceJson)
 
     // Validate ViewSpec
-    await this.validateViewSpec(json)
+    await this.validateViewSpec(sourceJson)
     return true
   }
 
