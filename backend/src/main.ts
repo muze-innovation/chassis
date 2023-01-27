@@ -4,7 +4,7 @@ import json from '../data/source.json'
 
 function bootstrap(specPaths?: string[]) {
   // initial spec path
-  let specPathResolves: string[] = [
+  const specPathResolves: string[] = [
     ...specPaths?.map(path => resolve(path)) ?? [],
     resolve('./src/ViewSpec.ts'),
     resolve('./src/ResolverSpec.ts')
