@@ -2,7 +2,8 @@ import { resolve } from 'path'
 import * as TJS from 'typescript-json-schema'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
-import { Helper } from './Helper'
+import ChassisHelper from './ChassisHelper'
+import ChassisConfig from './ChassisConfig'
 
 export default class ChassisEngine {
   private _generator: TJS.JsonSchemaGenerator
@@ -18,9 +19,9 @@ export default class ChassisEngine {
 
     const program = TJS.getProgramFromFiles(
       [
-        resolve('./src/spec/ChassisScreenSpec.ts'),
-        resolve('./src/spec/ChassisViewSpec.ts'),
-        resolve('./src/spec/ChassisResolverSpec.ts'),
+        resolve(ChassisConfig.screenSpecPath),
+        resolve(ChassisConfig.viewSpecPath),
+        resolve(ChassisConfig.resolverSpecPath),
       ].concat(files),
       compilerOptions
     )
@@ -32,7 +33,7 @@ export default class ChassisEngine {
    * @param symbol Data Type
    * @returns JSONSchema
    */
-  private async generateJsonSchema(symbol: string): Promise<JSONSchema> {
+  public async generateJsonSchema(symbol: string): Promise<JSONSchema> {
     const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
     // Json schema resolve reference
     return await $RefParser.dereference(schema)
@@ -59,8 +60,8 @@ export default class ChassisEngine {
    * @throws Validation Error
    */
   public async validateScreenSpec(json: any): Promise<boolean> {
-    const schema = await this.generateJsonSchema('ChassisScreenSpec')
-    return Helper.validateJsonSchema(schema, json)
+    const schema = await this.generateJsonSchema(ChassisConfig.screenSpec)
+    return ChassisHelper.validateJsonSchema(schema, json)
   }
 
   /**
@@ -80,7 +81,7 @@ export default class ChassisEngine {
       // Delete payload field from JsonSchema spec
       delete viewSpecNoPayload.properties?.payload
       // Validate without payload
-      Helper.validateJsonSchema(viewSpecNoPayload, shelf)
+      ChassisHelper.validateJsonSchema(viewSpecNoPayload, shelf)
 
       const payloadSpec = viewSpec.properties?.payload as JSONSchema
 
@@ -101,16 +102,16 @@ export default class ChassisEngine {
    */
   private async validateResolverSpec(payload: any, viewSpec: JSONSchema): Promise<boolean> {
     if (payload.type === 'static') {
-      const staticPayload = await this.generateJsonSchema('ChassisViewPayloadStatic')
+      const staticPayload = await this.generateJsonSchema(ChassisConfig.viewPayloadStatic)
       // Validate ChassisViewPayloadStatic Schema
-      Helper.validateJsonSchema(staticPayload, payload)
+      ChassisHelper.validateJsonSchema(staticPayload, payload)
 
       // Validate type of payload.data by viewSpec
-      Helper.validateJsonSchema(viewSpec, payload?.data)
+      ChassisHelper.validateJsonSchema(viewSpec, payload?.data)
     } else if (payload.type === 'remote') {
-      const remotePayload = await this.generateJsonSchema('ChassisViewPayloadRemote')
+      const remotePayload = await this.generateJsonSchema(ChassisConfig.viewPayloadRemote)
       // Validate ChassisViewPayloadRemote Schema
-      Helper.validateJsonSchema(remotePayload, payload)
+      ChassisHelper.validateJsonSchema(remotePayload, payload)
 
       // Validate ResolverSpec
       // Validate type of payload.output remote by resolver spec
@@ -124,10 +125,10 @@ export default class ChassisEngine {
       const { input, output } = resolverSpec.properties
       // Validate Input
       if (input) {
-        Helper.validateJsonSchema(input as JSONSchema, payload.input)
+        ChassisHelper.validateJsonSchema(input as JSONSchema, payload.input)
       }
       // Validate Output
-      Helper.validateSchemaDiff(viewSpec, output as JSONSchema)
+      ChassisHelper.validateSchemaDiff(viewSpec, output as JSONSchema)
     } else {
       throw new Error(`Unknown payload type: ${payload.type}`)
     }

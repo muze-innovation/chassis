@@ -4,7 +4,7 @@ import { readFileSync } from 'fs'
 import { diffSchemas } from 'json-schema-diff'
 import { ChassisViewSpec } from '../spec/ChassisViewSpec'
 
-export class Helper {
+export default class ChassisHelper {
   /**
    * Read Json Input File
    * @param inputPath

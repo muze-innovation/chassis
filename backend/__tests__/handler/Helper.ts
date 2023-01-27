@@ -1,5 +1,5 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
-import { Helper } from '../../src/handler/Helper'
+import { ChassisHelper } from '../../src/handler/ChassisHelper'
 
 describe('Helper', () => {
   describe('validateJsonSchema', () => {
@@ -18,7 +18,7 @@ describe('Helper', () => {
       } as JSONSchema
       const json = { id: 'recent_orders_shelf_content', viewType: 'Banner' }
 
-      expect(Helper.validateJsonSchema(schema, json)).toBe(true)
+      expect(ChassisHelper.validateJsonSchema(schema, json)).toBe(true)
     })
 
     it('invalid JSON', () => {
@@ -36,7 +36,7 @@ describe('Helper', () => {
       } as JSONSchema
       const json = { id: 'recent_orders_shelf_content', viewType: 'QuickAccess' }
 
-      expect(Helper.validateJsonSchema(schema, json)).toBe(false)
+      expect(ChassisHelper.validateJsonSchema(schema, json)).toBe(false)
     })
 
     it('throws error on invalid JSON', () => {
@@ -54,7 +54,7 @@ describe('Helper', () => {
       } as JSONSchema
       const json = { id: 'recent_orders_shelf_content', viewType: 'QuickAccess' }
 
-      expect(() => Helper.validateJsonSchema(schema, json)).toThrow()
+      expect(() => ChassisHelper.validateJsonSchema(schema, json)).toThrow()
     })
   })
 
@@ -69,7 +69,7 @@ describe('Helper', () => {
         properties: { asset: { type: 'string' }, placeholder: { type: 'string' } },
       } as JSONSchema
 
-      expect(await Helper.validateSchemaDiff(sourceSchema, destinationSchema)).toBe(true)
+      expect(await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema)).toBe(true)
     })
 
     it('invalid schema diff', async () => {
@@ -82,7 +82,7 @@ describe('Helper', () => {
         properties: { asset: { type: 'string' } },
       } as JSONSchema
 
-      expect(await Helper.validateSchemaDiff(sourceSchema, destinationSchema)).toBe(false)
+      expect(await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema)).toBe(false)
     })
 
     it('throws error on invalid schema diff', async () => {
@@ -95,7 +95,7 @@ describe('Helper', () => {
         properties: { asset: { type: 'string' } },
       } as JSONSchema
 
-      expect(async () => await Helper.validateSchemaDiff(sourceSchema, destinationSchema)).rejects.toThrow()
+      expect(async () => await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema)).rejects.toThrow()
     })
   })
 })
