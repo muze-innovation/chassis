@@ -126,7 +126,7 @@ From the above specification, `Banner` has a type of each field such as `id must
 If Chassis takes the above [Source](#Source) and [Spec](#Spec) to validate and returns true. When the front-end uses the source(JSON), it displays the banner correctly.
 
 Example Banner :
-![Image](/asset/banner.png)
+![Image](./asset/banner.png)
 
 # Getting Started
 
