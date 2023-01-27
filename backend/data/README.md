@@ -14,6 +14,7 @@
 
 ## Example
 
+[Specification](../spec/)
 [JSON Source/Output](./source.json)
 
 ![Image](ui.png)
