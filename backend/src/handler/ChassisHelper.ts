@@ -1,8 +1,6 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import Ajv from 'ajv'
-import { readFileSync } from 'fs'
 import { diffSchemas } from 'json-schema-diff'
-import { ChassisViewSpec } from '../spec/ChassisViewSpec'
 
 export default class ChassisHelper {
   /**
