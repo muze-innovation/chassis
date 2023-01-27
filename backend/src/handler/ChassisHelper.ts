@@ -6,17 +6,6 @@ import { ChassisViewSpec } from '../spec/ChassisViewSpec'
 
 export default class ChassisHelper {
   /**
-   * Read Json Input File
-   * @param inputPath
-   * @returns
-   */
-  public static parseJsonToShelf(inputPath: string): ChassisViewSpec[] {
-    // Read json file data need to validate
-    const data = readFileSync(process.cwd() + inputPath)
-    return JSON.parse(data.toString()) as ChassisViewSpec[]
-  }
-
-  /**
    * Validate Json with Json Schema
    * @param schema JsonSchema
    * @param json Input json
