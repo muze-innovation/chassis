@@ -1,5 +1,5 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
-import { ChassisHelper } from '../../src/handler/ChassisHelper'
+import ChassisHelper from '../../src/handler/ChassisHelper'
 
 describe('Helper', () => {
   describe('validateJsonSchema', () => {
@@ -36,7 +36,7 @@ describe('Helper', () => {
       } as JSONSchema
       const json = { id: 'recent_orders_shelf_content', viewType: 'QuickAccess' }
 
-      expect(ChassisHelper.validateJsonSchema(schema, json)).toBe(false)
+      expect(ChassisHelper.validateJsonSchema(schema, json, false)).toBe(false)
     })
 
     it('throws error on invalid JSON', () => {
@@ -82,7 +82,7 @@ describe('Helper', () => {
         properties: { asset: { type: 'string' } },
       } as JSONSchema
 
-      expect(await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema)).toBe(false)
+      expect(await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema, false)).toBe(false)
     })
 
     it('throws error on invalid schema diff', async () => {
