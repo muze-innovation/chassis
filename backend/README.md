@@ -47,7 +47,7 @@ end
 
 ## What's Chassis?
 
-Chassis helps verify the accuracy of source based on the type and specifications required by the user.
+Chassis helps validate the accuracy of the source based on the specifications required by the user.
 
 ### Features
 
@@ -59,6 +59,13 @@ Users can ensure that the source used to create the front-end UI is correct when
 ## Input(Source,Spec)
 
 Chassis input is divided into two parts: the source and spec files.
+
+### Display on UI
+
+Example Banner :
+![ImageBanner](./asset/banner.png)
+
+When Chassis uses the [Source](#Source) and [Spec](#Spec) to validate and return `TRUE`, the front end uses the source (JSON) to render the `Banner` correctly.
 
 ### Source
 
@@ -120,13 +127,6 @@ interface Banner {
 ```
 
 From the above specification, `Banner` has a type of each field, such as `id must be a string`. If the `id` from the source(JSON) is not a string, Chassis will show an error.
-
-## Display on UI
-
-When Chassis uses the [Source](#Source) and [Spec](#Spec) above to validate and return True, the front end uses the source (JSON) to render the `Banner` correctly.
-
-Example Banner :
-![ImageBanner](./asset/banner.png)
 
 # Getting Started
 
@@ -197,7 +197,7 @@ Error: [
 ]
 ```
 
-The error shows that the asset value must be of type string only.
+The error shows that the asset value type must be string only.
 
 ### `getJsonSchema(jsonPath)`
 
@@ -222,7 +222,7 @@ interface Banner {
 }
 ```
 
-Call a function using a `Banner.ts` as an example TS file to convert it to a schema.
+Call a function using a `Banner.ts` as an example TS file to convert to a schema.
 
 ```ts
 getJsonSchema('path/spec/Banner.ts')
