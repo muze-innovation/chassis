@@ -52,13 +52,13 @@ Chassis helps verify the accuracy of data based on the type and specifications r
 ### Features
 
 - Validate the format of the data and displays the errors found
-- Command line interface that pass input data to validate or execute Chassis other commands
+- Command line interface that passes input data to validate or execute Chassis other commands
 
-Users will be able to ensure that the data used to create the front-end UI is correct when validate with the chassis.
+Users can ensure that the data used to create the front-end UI is correct when validated with the chassis.
 
 ## Input(Source,Spec)
 
-Chassis input is divided into 2 parts: the source file and the spec file.
+Chassis input is divided into two parts: the source and spec files.
 
 ### Source
 
@@ -100,9 +100,9 @@ This object uses `Banner` specifications to validate. You can read more about ea
 
 ### Spec
 
-The specifications file is a rule to validate the format of the source(JSON) in the form of a TS file.
+The specification file is a TS file for validating the source format (JSON).
 
-Example ViewSpec.json :
+Example ViewSpec.ts :
 
 ```ts
 interface Banner {
@@ -119,11 +119,11 @@ interface Banner {
 }
 ```
 
-From the above specification, `Banner` has a type of each field such as `id must be string`.If the `id` from the source(JSON) is not string, Chassis will show an error.
+From the above specification, `Banner` has a type of each field, such as `id must be a string`. If the `id` from the source(JSON) is not a string, Chassis will show an error.
 
 ## Display on UI
 
-If Chassis takes the above [Source](#Source) and [Spec](#Spec) to validate and returns true. When the front-end uses the source(JSON), it displays the banner correctly.
+When Chassis uses the [Source](#Source) and [Spec](#Spec) above to validate and return True, the front end uses the source (JSON) to render the `Banner` correctly.
 
 Example Banner :
 ![ImageBanner](./asset/banner.png)
@@ -164,7 +164,7 @@ import { validateSpec } from 'Chassis'
 
 ### `validateSpec(specPath[],sourcePath)`
 
-Call a function to validate data(JSON) with a specifications(TS).
+Call a function to validate the source(JSON) with specifications(TS).
 
 If the function returns a value:
 
@@ -185,4 +185,4 @@ Validate Pass!
 
 ### `getJsonSchema(json)`
 
-This Method converts TS file to JsonSchema
+This Method converts the TS file to JsonSchema.
