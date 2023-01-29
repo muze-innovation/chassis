@@ -73,9 +73,10 @@ export default class Chassis {
    */
   public async validateViewSpec(json: any): Promise<boolean> {
     for (const shelf of json.items) {
-      const { viewType, id, payload } = shelf
+      const { viewType, payload } = shelf
       // Genarate Json schema by viewType
       const viewSpec = await this.generateJsonSchema(viewType)
+
       // Clone viewSpec
       const viewSpecNoPayload = JSON.parse(JSON.stringify(viewSpec))
       // Delete payload field from JsonSchema spec
