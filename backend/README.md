@@ -47,14 +47,14 @@ end
 
 ## What's Chassis?
 
-Chassis helps verify the accuracy of data based on the type and specifications required by the user.
+Chassis helps verify the accuracy of source based on the type and specifications required by the user.
 
 ### Features
 
-- Validate the format of the data and displays the errors found
-- Command line interface that passes input data to validate or execute Chassis other commands
+- Validate the format of the source and displays the errors found
+- Command line interface that passes input source to validate or execute Chassis other commands
 
-Users can ensure that the data used to create the front-end UI is correct when validated with the chassis.
+Users can ensure that the source used to create the front-end UI is correct when validated with the chassis.
 
 ## Input(Source,Spec)
 
@@ -168,8 +168,8 @@ Call a function to validate the source(JSON) with specifications(TS).
 
 If the function returns a value:
 
-`TRUE` The data is valid.
-`FALSE` The data is invalid and will show an error.
+`TRUE` The source is valid.
+`FALSE` The source is invalid and will show an error.
 
 Example using method:
 
