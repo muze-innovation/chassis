@@ -159,8 +159,8 @@ import { validateSpec } from 'Chassis'
 
 ### Methods
 
-- [validateSpec(specPath[],sourcePath)](<#validateSpec(specPath[],sourcePath)>)
-- [getJsonSchema(jsonPath)](<#getJsonSchema(jsonPath)>)
+- [validateSpec(specPath[],sourcePath)](#validatespecspecpathsourcepath)
+- [getJsonSchema(jsonPath)](#getJsonSchemajsonPath)
 
 ### `validateSpec(specPath[],sourcePath)`
 
