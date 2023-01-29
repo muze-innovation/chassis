@@ -54,7 +54,7 @@ Chassis helps verify the accuracy of source based on the type and specifications
 - Validate the format of the source and displays the errors found
 - Command line interface that passes input source to validate or execute Chassis other commands
 
-Users can ensure that the source used to create the front-end UI is correct when validated with the chassis.
+Users can ensure that the source used to create the front-end UI is correct when validated with Chassis.
 
 ## Input(Source,Spec)
 
@@ -151,7 +151,7 @@ Usage:
 
 ### Programmatic use
 
-import Chassis APIs:
+Import Chassis APIs method:
 
 ```ts
 import { validateSpec } from 'Chassis'
@@ -160,29 +160,86 @@ import { validateSpec } from 'Chassis'
 ### Methods
 
 - [validateSpec(specPath[],sourcePath)](<#validateSpec(specPath[],sourcePath)>)
-- [getJsonSchema(json)](<#getJsonSchema(json)>)
+- [getJsonSchema(jsonPath)](<#getJsonSchema(jsonPath)>)
 
 ### `validateSpec(specPath[],sourcePath)`
 
 Call a function to validate the source(JSON) with specifications(TS).
 
-If the function returns a value:
-
-`TRUE` The source is valid.
-`FALSE` The source is invalid and will show an error.
-
 Example using method:
 
 ```ts
-chassis.validateSpec(['path/spec/Spec1.ts', 'path/spec/Spec2.ts'], 'path/source.json')
+validateSpec(['path/spec/Spec1.ts', 'path/spec/Spec2.ts'], 'path/source.json')
 ```
 
-output
+If the function returns a value:
 
-```ts
+`TRUE` output is a valid source
+
+```bash
 Validate Pass!
 ```
 
-### `getJsonSchema(json)`
+`FALSE` output is an invalid source and will show an error.
 
-This Method converts the TS file to JsonSchema.
+```bash
+Validate Failed :
+Error: [
+  {
+    "instancePath": "/asset",
+    "schemaPath": "#/properties/asset/type",
+    "keyword": "type",
+    "params": {
+      "type": "string"
+    },
+    "message": "must be string"
+  }
+]
+```
+
+The error shows that the asset value must be of type string only.
+
+### `getJsonSchema(jsonPath)`
+
+This method converts the TS file to JsonSchema.
+
+Example using method:
+
+Banner.ts
+
+```ts
+interface Banner {
+  id: string
+  viewType: 'Banner'
+  attributes: {
+    heightPolicy: 'ratio'
+    heightValue: string
+  }
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+Call a function using a `Banner.ts` as an example TS file to convert it to a schema.
+
+```ts
+getJsonSchema('path/spec/Banner.ts')
+```
+
+Output JsonSchema for `Banner`:
+
+```bash
+{
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    viewType: { type: 'string', enum: [Array] },
+    attributes: { type: 'object', properties: [Object], required: [Array] },
+    payload: { type: 'object', properties: [Object], required: [Array] }
+  },
+  required: [ 'attributes', 'id', 'payload', 'viewType' ],
+  '$schema': 'http://json-schema.org/draft-07/schema#'
+}
+```
