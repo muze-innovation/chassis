@@ -56,16 +56,39 @@ Chassis helps validate the accuracy of the source based on the specifications re
 
 Users can ensure that the source used to create the front-end UI is correct when validated with Chassis.
 
-## Input(Source,Spec)
+## Input(Spec,Source)
 
-Chassis input is divided into two parts: the source and spec files.
+Chassis input is divided into two parts: the spec and source files.
 
 ### Display on UI
 
 Example Banner :
 ![ImageBanner](./asset/banner.png)
 
-When Chassis uses the [Source](#Source) and [Spec](#Spec) to validate and return `TRUE`, the front end uses the source (JSON) to render the `Banner` correctly.
+When Chassis uses the [Spec](#Spec) and [Source](#Source) to validate and return `TRUE`, the front end uses the source (JSON) to render the `Banner` correctly.
+
+### Spec
+
+The specification file is a TS file for validating the source format (JSON).
+
+Example ViewSpec.ts :
+
+```ts
+interface Banner {
+  id: string
+  viewType: 'Banner'
+  attributes: {
+    heightPolicy: 'ratio'
+    heightValue: string
+  }
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+`Banner` has a type of each field, such as `id must be a string`. If the `id` from the source(JSON) is not a string, Chassis will show an error.
 
 ### Source
 
@@ -104,29 +127,6 @@ Chassis validate for objects under the field `items`. These are matched specific
 ```
 
 This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./data/README.md)
-
-### Spec
-
-The specification file is a TS file for validating the source format (JSON).
-
-Example ViewSpec.ts :
-
-```ts
-interface Banner {
-  id: string
-  viewType: 'Banner'
-  attributes: {
-    heightPolicy: 'ratio'
-    heightValue: string
-  }
-  payload: {
-    asset: string
-    placeholder: string
-  }
-}
-```
-
-From the above specification, `Banner` has a type of each field, such as `id must be a string`. If the `id` from the source(JSON) is not a string, Chassis will show an error.
 
 # Getting Started
 
@@ -243,3 +243,12 @@ Output JsonSchema for `Banner`:
   '$schema': 'http://json-schema.org/draft-07/schema#'
 }
 ```
+
+# Improve
+
+- Handle error output
+
+# Working
+
+- Test case
+- Doc
