@@ -9,8 +9,7 @@
     "format": "prettier . --write",
     "cp": "cp ./src/ResolverSpec.ts ./src/ViewSpec.ts ./dist/",
     "cp:spec": "cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/spec/",
-    "cp:folder": "cp -r ./src/ ./dist/src",
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp && npm run cp:spec && npm run cp:folder && npm pack",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp && npm run cp:spec && npm pack",
     "cli": "ts-node ./src/cli.ts"
   },
   "jest": {
