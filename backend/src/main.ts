@@ -18,8 +18,6 @@ const validateSpec = (specPaths?: string[]) => {
 validateSpec()
 
 
-// Example for use import { validateSpec} from 'chassis'
-
 export {
   validateSpec
 }
