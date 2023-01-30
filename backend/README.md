@@ -47,29 +47,29 @@ end
 
 ## What's Chassis?
 
-Chassis helps validate the accuracy of the source based on the specifications required by the user.
+Chassis helps validate the accuracy of the source, based on the specifications required by the user.
 
 ### Features
 
-- Validate the format of the source and displays the errors found
-- Command line interface that passes input source to validate or execute Chassis other commands
+- The source's format is validated, and any errors found are displayed.
+- The command line interface passes the input source to validate or execute other Chassis commands.
 
-Users can ensure that the source used to create the front-end UI is correct when validated with Chassis.
+Chassis allows users to validate the source used for creating the front-end UI, ensuring its accuracy.
 
 ## Input(Spec,Source)
 
-Chassis input is divided into two parts: the spec and source files.
+Chassis input is comprised of two components: specification and source files.
 
 ### Display on UI
 
 Example Banner :
 ![ImageBanner](./asset/banner.png)
 
-When Chassis uses the [Spec](#Spec) and [Source](#Source) to validate and return `TRUE`, the front end uses the source (JSON) to render the `Banner` correctly.
+Chassis validation of the front-end UI is based on the [Spec](#Spec) and [Source](#Source) files. If the validation returns `TRUE`, the front end will correctly render the `Banner` using the source in JSON format.
 
 ### Spec
 
-The specification file is a TS file for validating the source format (JSON).
+The specification file validates the source format (JSON) as a TypeScript file.
 
 ```ts
 // ViewSpec.ts
@@ -90,13 +90,13 @@ interface Banner {
 }
 ```
 
-`Banner` has a type of each field, such as `id must be a string`. If the `id` from the source(JSON) is not a string, Chassis will show an error.
+`Banner` fields, like `id`, must be specific data types. Chassis displays error if source `id` (in JSON) is not a `string`."
 
 ### Source
 
-The source file is the data that will be used to create the front-end UI in JSON format.
+The source file is JSON data used to create the front-end UI.
 
-Example source.json
+source.json
 
 ```json
 {
@@ -125,20 +125,15 @@ Example source.json
 }
 ```
 
-Chassis validate for objects under the field `items`. These are matched specifications by `viewType`, such as
-
-```json
-"viewType": "Banner"
-```
-
 This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./data/README.md)
 
 ## Problem
 
 Payload value may need resolving, `static` or `remote`. Normal specs can't validate `remote` type.
 
-```ts
-// source.json
+source.json
+
+```json
 {
   "id": "promo_banner_mid_month",
   "viewType": "Banner",
@@ -240,7 +235,7 @@ Details about operation and parameters of other CLI features can be read in [CLI
 
 ### Programmatic use
 
-Import Chassis APIs method:
+Import Chassis APIs:
 
 ```ts
 import Chassis from 'chassis'
@@ -250,10 +245,10 @@ const chassis = new Chassis([resolve(__dirname, 'path/spec/Spec1.ts'), resolve(_
 
 ### Methods
 
-- [validateSpec(specPath[],sourcePath)](#validatespecspecpathsourcepath)
+- [validateSpec(sourcePath)](#validateSpecsourcePath)
 - [getJsonSchemaBySymbol(symbol)](#getJsonSchemaBySymbolsymbol)
 
-### `validateSpec(specPath[],sourcePath)`
+### `validateSpec(sourcePath)`
 
 Call a function to validate the source(JSON) with specifications(TS).
 
