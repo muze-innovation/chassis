@@ -1,4 +1,5 @@
 import { resolve } from 'path'
+import { readFileSync } from 'fs'
 import * as TJS from 'typescript-json-schema'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
@@ -17,12 +18,16 @@ export default class Chassis {
     const settings: TJS.PartialArgs = { required: true }
     const compilerOptions: TJS.CompilerOptions = { strictNullChecks: true }
 
+    const specPathResolves: string[] = [
+      ...files?.map(path => resolve(path)) ?? [],
+    ]
+
     const program = TJS.getProgramFromFiles(
       [
         resolve(__dirname, ChassisConfig.screenSpecPath),
         resolve(__dirname, ChassisConfig.viewSpecPath),
         resolve(__dirname, ChassisConfig.resolverSpecPath),
-      ].concat(files),
+      ].concat(specPathResolves),
       compilerOptions
     )
     this._generator = TJS.buildGenerator(program, settings)!
@@ -44,12 +49,16 @@ export default class Chassis {
    * @param sourceJson
    * @returns Validation Result
    */
-  public async validateSpec(sourceJson: any): Promise<boolean> {
+  public async validateSpec(sourcePath: string): Promise<boolean> {
+    const json = readFileSync(sourcePath, 'utf8')
+
+    const data = JSON.parse(json)
+
     // Validate Screen Spec
-    await this.validateScreenSpec(sourceJson)
+    await this.validateScreenSpec(data)
 
     // Validate ViewSpec
-    await this.validateViewSpec(sourceJson)
+    await this.validateViewSpec(data)
     return true
   }
 
