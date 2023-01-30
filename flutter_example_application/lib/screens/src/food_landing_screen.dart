@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:chassis/chassis.dart';
 import 'package:flutter_example_application/repository/repository.dart';
 
 class FoodLandingScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final IChassisRepository _chassisRepository = ChassisRepository();
-  final List<Widget> _items = [];
+  List<Widget> _items = [];
   bool _isLoading = true;
 
   @override
@@ -27,24 +28,19 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   }
 
   Future loadData() async {
-    clearData();
     return _chassisRepository.getData().then((data) => setData(data));
   }
 
   void setData(Map<String, dynamic> data) {
     setState(() {
       _isLoading = false;
-      // call chassis here
-      _items.add(const Text('data1'));
-      _items.add(const Text('data2'));
-      _items.add(const Text('data3'));
-      _items.add(const Text('data4'));
-    });
-  }
 
-  void clearData() {
-    setState(() {
-      _items.clear();
+      // ## Call chassis here
+      //
+      // Chassis.setDataProvider(dataProvider);
+      // Chassis.setViewProvider(viewProvider);
+      //
+      _items = Chassis.getView(data);
     });
   }
 
