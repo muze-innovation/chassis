@@ -96,8 +96,9 @@ interface Banner {
 
 The source file is the data that will be used to create the front-end UI in JSON format.
 
+Example source.json
+
 ```json
-// source.json
 {
   "version": "1.0.0",
   "name": "default-landing-page",
@@ -132,34 +133,9 @@ Chassis validate for objects under the field `items`. These are matched specific
 
 This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./data/README.md)
 
-## Resolver
-
-Chassis doesn't just manage static values. Dynamic values can be manipulated with `Resolver`.
-
-### Problem
+## Problem
 
 Payload value may need resolving, `static` or `remote`. Normal specs can't validate `remote` type.
-
-```ts
-// ViewSpec.ts
-interface Banner {
-  id: string
-  viewType: 'Banner'
-  attributes: {
-    heightPolicy: 'ratio'
-    heightValue: string
-  }
-  parameter: {
-    title: string
-  }
-  payload: {
-    asset: string
-    placeholder: string
-  }
-}
-```
-
-Payload defines `assets` and `placeholder` as string types to validate data in source file.
 
 ```ts
 // source.json
@@ -185,7 +161,51 @@ Payload defines `assets` and `placeholder` as string types to validate data in s
 
 The `remote` payload type does not have the `assets` and `placeholder` fields to validate with `Banner` specifications, but it has an `resolvedWith` field to handle with the resolver spec file.
 
-### Solution
+## Solution
+
+### Resolver
+
+Chassis doesn't just manage static values. Dynamic values can be manipulated with `Resolver`.
+
+Chassis enables the user to add a file input `resolver` specification for validating input and output by mapping spec with `resolverWith` field.
+
+```json
+"resolvedWith": "GetBanner"
+```
+
+```ts
+// ResolverSpec.ts
+interface GetBanner {
+  input: {
+    slug: string
+  }
+  output: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+```ts
+// ViewSpec.ts
+interface Banner {
+  id: string
+  viewType: 'Banner'
+  attributes: {
+    heightPolicy: 'ratio'
+    heightValue: string
+  }
+  parameter: {
+    title: string
+  }
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+Resolver specification will define the type of output, either asset or placeholder, to validate with the payload in the Banner specification.
 
 # Getting Started
 
@@ -212,24 +232,26 @@ chassis validate -- --source 'path/source.json' --spec 'path/source/spec.ts'
 ### CLI Features
 
 - validateSpec
-- getJsonSchema
+- getJsonSchemaBySymbol
 - generateJsonSchemaBySymbol
-- generateJsonSchemaAll
+- generateJsonSchema
 
-Details about operation and parameters of other CLI features can be read in in [CLI](./docs/cli.md).
+Details about operation and parameters of other CLI features can be read in [CLI](./docs/cli.md).
 
 ### Programmatic use
 
 Import Chassis APIs method:
 
 ```ts
-import { validateSpec } from 'Chassis'
+import Chassis from 'chassis'
+
+const chassis = new Chassis([resolve(__dirname, 'path/spec/Spec1.ts'), resolve(__dirname, 'path/spec/Spec2.ts')])
 ```
 
 ### Methods
 
 - [validateSpec(specPath[],sourcePath)](#validatespecspecpathsourcepath)
-- [getJsonSchema(symbol)](<#getJsonSchema(symbol)>)
+- [getJsonSchemaBySymbol(symbol)](#getJsonSchemaBySymbolsymbol)
 
 ### `validateSpec(specPath[],sourcePath)`
 
@@ -238,7 +260,8 @@ Call a function to validate the source(JSON) with specifications(TS).
 Example using method:
 
 ```ts
-validateSpec(['path/spec/Spec1.ts', 'path/spec/Spec2.ts'], 'path/source.json')
+// Valdiate Spec
+await chassis.validateSpec(resolve(__dirname, 'path/source.json'))
 ```
 
 If the function returns a value:
@@ -268,7 +291,7 @@ Error: [
 
 The error shows that the asset value type must be string only.
 
-### `getJsonSchema(symbol)`
+### `getJsonSchemaBySymbol(symbol)`
 
 This method converts the TS file to JsonSchema.
 
@@ -283,6 +306,9 @@ interface Banner {
     heightPolicy: 'ratio'
     heightValue: string
   }
+  parameter: {
+    title: string
+  }
   payload: {
     asset: string
     placeholder: string
@@ -293,22 +319,79 @@ interface Banner {
 Call a function using a `Banner.ts` as an example TS file to convert to a schema.
 
 ```ts
-getJsonSchema('Banner')
+// Get json schema by symbol
+await chassis.getJsonSchemaBySymbol('Banner')
 ```
 
 Output JsonSchema for `Banner`:
 
 ```bash
 {
-  type: 'object',
-  properties: {
-    id: { type: 'string' },
-    viewType: { type: 'string', enum: [Array] },
-    attributes: { type: 'object', properties: [Object], required: [Array] },
-    payload: { type: 'object', properties: [Object], required: [Array] }
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "viewType": {
+      "type": "string",
+      "enum": [
+        "Banner"
+      ]
+    },
+    "attributes": {
+      "type": "object",
+      "properties": {
+        "heightPolicy": {
+          "type": "string",
+          "enum": [
+            "ratio"
+          ]
+        },
+        "heightValue": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "heightPolicy",
+        "heightValue"
+      ]
+    },
+    "parameter": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "asset": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset",
+        "placeholder"
+      ]
+    },
+    "parameters": {}
   },
-  required: [ 'attributes', 'id', 'payload', 'viewType' ],
-  '$schema': 'http://json-schema.org/draft-07/schema#'
+  "required": [
+    "attributes",
+    "id",
+    "parameter",
+    "payload",
+    "viewType"
+  ],
+  "$schema": "http://json-schema.org/draft-07/schema#"
 }
 ```
 
