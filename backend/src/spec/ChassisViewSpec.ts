@@ -3,6 +3,7 @@ export interface ChassisViewSpec {
   viewType: string
   parameters?: any
   payload?: any
+  error?: ChassisError
   attributes: ChassisViewAttribute
 }
 
@@ -18,6 +19,10 @@ interface RatioHeightPolicy {
 
 type HeightPolicy = FixedHeightPolicy | RatioHeightPolicy
 
-interface _ChassisViewAttribute { }
+interface _ChassisViewAttribute {}
 
 type ChassisViewAttribute = _ChassisViewAttribute & HeightPolicy
+
+interface ChassisError {
+  errorType: 'hide' | 'error'
+}
