@@ -1,21 +1,8 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import Ajv from 'ajv'
-import { readFileSync } from 'fs'
 import { diffSchemas } from 'json-schema-diff'
-import { ChassisViewSpec } from '../spec/ChassisViewSpec'
 
-export class Helper {
-  /**
-   * Read Json Input File
-   * @param inputPath
-   * @returns
-   */
-  public static parseJsonToShelf(inputPath: string): ChassisViewSpec[] {
-    // Read json file data need to validate
-    const data = readFileSync(process.cwd() + inputPath)
-    return JSON.parse(data.toString()) as ChassisViewSpec[]
-  }
-
+export default class ChassisHelper {
   /**
    * Validate Json with Json Schema
    * @param schema JsonSchema
