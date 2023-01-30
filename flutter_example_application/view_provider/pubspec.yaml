@@ -15,6 +15,7 @@ dependencies:
   # This is our modular
   chassis:
     path: ../chassis
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
