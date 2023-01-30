@@ -1,23 +1,10 @@
 import Chassis from './handler/Chassis'
-import { resolve } from 'path'
-import json from '../data/source.json'
+import { ChassisViewSpec } from '../src/spec/ChassisViewSpec'
+import { ChassisResolverSpec } from '../src/spec/ChassisResolverSpec'
 
-const validateSpec = (specPaths?: string[]) => {
-  // initial spec path
-  const specPathResolves: string[] = [
-    ...specPaths?.map(path => resolve(path)) ?? [],
-    resolve('./src/ViewSpec.ts'),
-    resolve('./src/ResolverSpec.ts')
-  ]
+export default Chassis
 
-  const chassis = new Chassis(specPathResolves)
-  chassis.validateSpec(json)
-}
-
-// TODO:: This execute only develop mode when deploy will remove this
-validateSpec()
-
-
-export {
-  validateSpec
+export type {
+  ChassisViewSpec,
+  ChassisResolverSpec
 }
