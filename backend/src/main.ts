@@ -12,7 +12,7 @@ async function bootstrap() {
   ])
 
   // Validate
-  chassis.validateSpec(resolve(__dirname, '../data/source.json'))
+  chassis.validateSpec(resolve(__dirname, '../example/source.json'))
 
   // Get all json schema
   console.log(JSON.stringify(await chassis.generateJsonSchemaFile(), null, 2))
