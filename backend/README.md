@@ -47,18 +47,48 @@ end
 
 ## What's Chassis?
 
-Chassis helps verify the accuracy of data based on the type and specifications required by the user.
+Chassis helps validate the accuracy of the source based on the specifications required by the user.
 
 ### Features
 
-- Validate the format of the data and displays the errors found
-- Command line interface that pass input data to validate or execute Chassis other commands
+- Validate the format of the source and displays the errors found
+- Command line interface that passes input source to validate or execute Chassis other commands
 
-Users will be able to ensure that the data used to create the front-end UI is correct when validate with the chassis.
+Users can ensure that the source used to create the front-end UI is correct when validated with Chassis.
 
-## Input(Source,Spec)
+## Input(Spec,Source)
 
-Chassis input is divided into 2 parts: the source file and the spec file.
+Chassis input is divided into two parts: the spec and source files.
+
+### Display on UI
+
+Example Banner :
+![ImageBanner](./asset/banner.png)
+
+When Chassis uses the [Spec](#Spec) and [Source](#Source) to validate and return `TRUE`, the front end uses the source (JSON) to render the `Banner` correctly.
+
+### Spec
+
+The specification file is a TS file for validating the source format (JSON).
+
+Example ViewSpec.ts :
+
+```ts
+interface Banner {
+  id: string
+  viewType: 'Banner'
+  attributes: {
+    heightPolicy: 'ratio'
+    heightValue: string
+  }
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+`Banner` has a type of each field, such as `id must be a string`. If the `id` from the source(JSON) is not a string, Chassis will show an error.
 
 ### Source
 
@@ -98,36 +128,6 @@ Chassis validate for objects under the field `items`. These are matched specific
 
 This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./data/README.md)
 
-### Spec
-
-The specifications file is a rule to validate the format of the source(JSON) in the form of a TS file.
-
-Example ViewSpec.json :
-
-```ts
-interface Banner {
-  id: string
-  viewType: 'Banner'
-  attributes: {
-    heightPolicy: 'ratio'
-    heightValue: string
-  }
-  payload: {
-    asset: string
-    placeholder: string
-  }
-}
-```
-
-From the above specification, `Banner` has a type of each field such as `id must be string`.If the `id` from the source(JSON) is not string, Chassis will show an error.
-
-## Display on UI
-
-If Chassis takes the above [Source](#Source) and [Spec](#Spec) to validate and returns true. When the front-end uses the source(JSON), it displays the banner correctly.
-
-Example Banner :
-![ImageBanner](./asset/banner.png)
-
 # Getting Started
 
 ## Install
@@ -151,7 +151,7 @@ Usage:
 
 ### Programmatic use
 
-import Chassis APIs:
+Import Chassis APIs method:
 
 ```ts
 import { validateSpec } from 'Chassis'
@@ -159,30 +159,96 @@ import { validateSpec } from 'Chassis'
 
 ### Methods
 
-- [validateSpec(specPath[],sourcePath)](<#validateSpec(specPath[],sourcePath)>)
-- [getJsonSchema(json)](<#getJsonSchema(json)>)
+- [validateSpec(specPath[],sourcePath)](#validatespecspecpathsourcepath)
+- [getJsonSchema(jsonPath)](#getJsonSchemajsonPath)
 
 ### `validateSpec(specPath[],sourcePath)`
 
-Call a function to validate data(JSON) with a specifications(TS).
-
-If the function returns a value:
-
-`TRUE` The data is valid.
-`FALSE` The data is invalid and will show an error.
+Call a function to validate the source(JSON) with specifications(TS).
 
 Example using method:
 
 ```ts
-chassis.validateSpec(['path/spec/Spec1.ts', 'path/spec/Spec2.ts'], 'path/source.json')
+validateSpec(['path/spec/Spec1.ts', 'path/spec/Spec2.ts'], 'path/source.json')
 ```
 
-output
+If the function returns a value:
 
-```ts
+`TRUE` output is a valid source
+
+```bash
 Validate Pass!
 ```
 
-### `getJsonSchema(json)`
+`FALSE` output is an invalid source and will show an error.
 
-This Method converts TS file to JsonSchema
+```bash
+Validate Failed :
+Error: [
+  {
+    "instancePath": "/asset",
+    "schemaPath": "#/properties/asset/type",
+    "keyword": "type",
+    "params": {
+      "type": "string"
+    },
+    "message": "must be string"
+  }
+]
+```
+
+The error shows that the asset value type must be string only.
+
+### `getJsonSchema(jsonPath)`
+
+This method converts the TS file to JsonSchema.
+
+Example using method:
+
+Banner.ts
+
+```ts
+interface Banner {
+  id: string
+  viewType: 'Banner'
+  attributes: {
+    heightPolicy: 'ratio'
+    heightValue: string
+  }
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+Call a function using a `Banner.ts` as an example TS file to convert to a schema.
+
+```ts
+getJsonSchema('path/spec/Banner.ts')
+```
+
+Output JsonSchema for `Banner`:
+
+```bash
+{
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    viewType: { type: 'string', enum: [Array] },
+    attributes: { type: 'object', properties: [Object], required: [Array] },
+    payload: { type: 'object', properties: [Object], required: [Array] }
+  },
+  required: [ 'attributes', 'id', 'payload', 'viewType' ],
+  '$schema': 'http://json-schema.org/draft-07/schema#'
+}
+```
+
+# Improve
+
+- Handle error output
+
+# Working
+
+- Test case
+- Doc
