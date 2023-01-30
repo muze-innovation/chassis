@@ -18,6 +18,6 @@ interface RatioHeightPolicy {
 
 type HeightPolicy = FixedHeightPolicy | RatioHeightPolicy
 
-interface _ChassisViewAttribute {}
+interface _ChassisViewAttribute { }
 
 type ChassisViewAttribute = _ChassisViewAttribute & HeightPolicy
