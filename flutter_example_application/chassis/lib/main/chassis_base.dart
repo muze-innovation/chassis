@@ -76,16 +76,19 @@ class Chassis {
 
     for (var item in items) {
       StreamController controller = StreamController.broadcast();
-      widgets.add(viewProvider.getView(controller.stream, item));
+      var widget = viewProvider.getView(controller.stream, item);
+      if (widget != null) {
+        widgets.add(widget);
 
-      var payload = item[ViewSpecConstants.payload];
-      var payloadType = payload[ViewSpecConstants.payloadType];
-      var payloadData = payload[ViewSpecConstants.payloadData];
+        var payload = item[ViewSpecConstants.payload];
+        var payloadType = payload[ViewSpecConstants.payloadType];
+        var payloadData = payload[ViewSpecConstants.payloadData];
 
-      if (payloadType == 'static') {
-        controller.add(payloadData);
-      } else if (payloadType == 'remote') {
-        dataProvider.getData(controller, payload);
+        if (payloadType == 'static') {
+          controller.add(payloadData);
+        } else if (payloadType == 'remote') {
+          dataProvider.getData(controller, payload);
+        }
       }
     }
 

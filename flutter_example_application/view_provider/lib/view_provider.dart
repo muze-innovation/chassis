@@ -1,6 +1,6 @@
 library view_provider;
 
-import 'package:chassis/chassis.dart';
+import 'package:chassis/interface.dart';
 import 'package:flutter/material.dart';
 
 class ExampleViewProvider implements IViewProvider {
