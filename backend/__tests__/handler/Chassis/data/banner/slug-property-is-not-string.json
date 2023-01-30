@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "promo_banner_mid_month",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "GetBanner",
+        "input": {
+          "slug": 12345
+        }
+      }
+    }
+  ]
+}

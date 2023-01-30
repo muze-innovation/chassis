@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "recent_orders_shelf_content",
+      "viewType": "ShelfContent",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 100,
+        "color": "red"
+      },
+      "parameters": {
+        "title": "Recent orders"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "item": [
+            {
+              "asset": "thai-restaurant-001.png"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
