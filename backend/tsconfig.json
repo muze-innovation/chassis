@@ -3,7 +3,9 @@
     "outDir": "./dist",
     "experimentalDecorators": true,
     "target": "esnext",
-    "lib": ["esnext"],
+    "lib": [
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,9 +20,17 @@
     "baseUrl": ".",
     "declaration": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["**/*.ts", "node_modules/@types/**/*.d.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "node_modules/@types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "example"
+  ]
 }

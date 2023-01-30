@@ -8,6 +8,7 @@ import ChassisConfig from './ChassisConfig'
 
 export default class Chassis {
   private _generator: TJS.JsonSchemaGenerator
+  private _program: TJS.Program
 
   /**
    * Initial json schema generator
@@ -22,7 +23,7 @@ export default class Chassis {
       ...files?.map(path => resolve(path)) ?? [],
     ]
 
-    const program = TJS.getProgramFromFiles(
+    this._program = TJS.getProgramFromFiles(
       [
         resolve(__dirname, ChassisConfig.screenSpecPath),
         resolve(__dirname, ChassisConfig.viewSpecPath),
@@ -30,7 +31,7 @@ export default class Chassis {
       ].concat(specPathResolves),
       compilerOptions
     )
-    this._generator = TJS.buildGenerator(program, settings)!
+    this._generator = TJS.buildGenerator(this._program, settings)!
   }
 
   /**
@@ -38,10 +39,23 @@ export default class Chassis {
    * @param symbol Data Type
    * @returns JSONSchema
    */
-  public async generateJsonSchema(symbol: string): Promise<JSONSchema> {
+  public async generateJsonSchemaBySymbol(symbol: string): Promise<JSONSchema> {
     const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
     // Json schema resolve reference
     return await $RefParser.dereference(schema)
+  }
+
+  public async generateJsonSchemaFile(): Promise<JSONSchema[]> {
+    const symbols = this._generator.getMainFileSymbols(this._program)
+    const jsonSchemas: JSONSchema[] = []
+
+    for (const symbol of symbols) {
+      const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
+      const jsonSchema = await $RefParser.dereference(schema)
+      jsonSchemas.push(jsonSchema)
+    }
+
+    return jsonSchemas
   }
 
   /**
@@ -69,7 +83,7 @@ export default class Chassis {
    * @throws Validation Error
    */
   public async validateScreenSpec(json: any): Promise<boolean> {
-    const schema = await this.generateJsonSchema(ChassisConfig.screenSpec)
+    const schema = await this.generateJsonSchemaBySymbol(ChassisConfig.screenSpec)
     return ChassisHelper.validateJsonSchema(schema, json)
   }
 
@@ -84,7 +98,7 @@ export default class Chassis {
     for (const shelf of json.items) {
       const { viewType, payload } = shelf
       // Genarate Json schema by viewType
-      const viewSpec = await this.generateJsonSchema(viewType)
+      const viewSpec = await this.generateJsonSchemaBySymbol(viewType)
 
       // Clone viewSpec
       const viewSpecNoPayload = JSON.parse(JSON.stringify(viewSpec))
@@ -112,21 +126,21 @@ export default class Chassis {
    */
   private async validateResolverSpec(payload: any, viewSpec: JSONSchema): Promise<boolean> {
     if (payload.type === 'static') {
-      const staticPayload = await this.generateJsonSchema(ChassisConfig.viewPayloadStatic)
+      const staticPayload = await this.generateJsonSchemaBySymbol(ChassisConfig.viewPayloadStatic)
       // Validate ChassisViewPayloadStatic Schema
       ChassisHelper.validateJsonSchema(staticPayload, payload)
 
       // Validate type of payload.data by viewSpec
       ChassisHelper.validateJsonSchema(viewSpec, payload?.data)
     } else if (payload.type === 'remote') {
-      const remotePayload = await this.generateJsonSchema(ChassisConfig.viewPayloadRemote)
+      const remotePayload = await this.generateJsonSchemaBySymbol(ChassisConfig.viewPayloadRemote)
       // Validate ChassisViewPayloadRemote Schema
       ChassisHelper.validateJsonSchema(remotePayload, payload)
 
       // Validate ResolverSpec
       // Validate type of payload.output remote by resolver spec
       // Genarate JsonSchema by resolvedWith
-      const resolverSpec = await this.generateJsonSchema(payload?.resolvedWith ?? '')
+      const resolverSpec = await this.generateJsonSchemaBySymbol(payload?.resolvedWith ?? '')
 
       if (!resolverSpec.properties) {
         throw new Error(`Invalid ResolverSpec: ${payload?.resolvedWith}`)

@@ -1,0 +1,304 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "viewType": {
+            "type": "string"
+          },
+          "parameters": {},
+          "payload": {},
+          "error": {
+            "type": "object",
+            "properties": {
+              "errorType": {
+                "enum": [
+                  "error",
+                  "hide"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "errorType"
+            ]
+          },
+          "attributes": {
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "heightPolicy": {
+                        "type": "string",
+                        "enum": [
+                          "fixed"
+                        ]
+                      },
+                      "heightValue": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "heightPolicy",
+                      "heightValue"
+                    ]
+                  }
+                ]
+              },
+              {
+                "allOf": [
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "heightPolicy": {
+                        "type": "string",
+                        "enum": [
+                          "ratio"
+                        ]
+                      },
+                      "heightValue": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "heightPolicy",
+                      "heightValue"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "attributes",
+          "id",
+          "viewType"
+        ]
+      }
+    }
+  },
+  "required": [
+    "items",
+    "name",
+    "version"
+  ],
+  "definitions": {
+    "ChassisViewSpec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "viewType": {
+          "type": "string"
+        },
+        "parameters": {},
+        "payload": {},
+        "error": {
+          "type": "object",
+          "properties": {
+            "errorType": {
+              "enum": [
+                "error",
+                "hide"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "errorType"
+          ]
+        },
+        "attributes": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "heightPolicy": {
+                      "type": "string",
+                      "enum": [
+                        "fixed"
+                      ]
+                    },
+                    "heightValue": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "heightPolicy",
+                    "heightValue"
+                  ]
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "heightPolicy": {
+                      "type": "string",
+                      "enum": [
+                        "ratio"
+                      ]
+                    },
+                    "heightValue": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "heightPolicy",
+                    "heightValue"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "attributes",
+        "id",
+        "viewType"
+      ]
+    },
+    "ChassisError": {
+      "type": "object",
+      "properties": {
+        "errorType": {
+          "enum": [
+            "error",
+            "hide"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "errorType"
+      ]
+    },
+    "ChassisViewAttribute": {
+      "anyOf": [
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "heightPolicy": {
+                  "type": "string",
+                  "enum": [
+                    "fixed"
+                  ]
+                },
+                "heightValue": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "heightPolicy",
+                "heightValue"
+              ]
+            }
+          ]
+        },
+        {
+          "allOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "heightPolicy": {
+                  "type": "string",
+                  "enum": [
+                    "ratio"
+                  ]
+                },
+                "heightValue": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "heightPolicy",
+                "heightValue"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "_ChassisViewAttribute": {
+      "type": "object"
+    },
+    "FixedHeightPolicy": {
+      "type": "object",
+      "properties": {
+        "heightPolicy": {
+          "type": "string",
+          "enum": [
+            "fixed"
+          ]
+        },
+        "heightValue": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "heightPolicy",
+        "heightValue"
+      ]
+    },
+    "RatioHeightPolicy": {
+      "type": "object",
+      "properties": {
+        "heightPolicy": {
+          "type": "string",
+          "enum": [
+            "ratio"
+          ]
+        },
+        "heightValue": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "heightPolicy",
+        "heightValue"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
