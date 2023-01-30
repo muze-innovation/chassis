@@ -3,8 +3,6 @@
 /// More dartdocs go here.
 library chassis;
 
-export 'src/chassis_base.dart';
-export 'src/i_data_provider.dart';
-export 'src/i_view_provider.dart';
+export 'main/chassis_base.dart';
 
 // TODO: Export any libraries intended for clients of this package.
