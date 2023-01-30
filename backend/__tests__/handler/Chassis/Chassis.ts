@@ -1,5 +1,6 @@
 import { resolve } from 'path'
 import Chassis from '../../../src/handler/Chassis'
+import generateJsonSchemaBySymbol from './data/generateJsonSchemaBySymbol.json'
 
 describe('Chassis', () => {
   let chassis: Chassis
@@ -13,7 +14,7 @@ describe('Chassis', () => {
   it('generate JSON Schema', async () => {
     const schema = await chassis.generateJsonSchemaBySymbol('ViewSpec')
 
-    expect(schema).toBeDefined()
+    expect(schema).toEqual(generateJsonSchemaBySymbol)
   })
 
   describe('validateScreenSpec', () => {
