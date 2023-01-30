@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:data_provider/data_provider.dart';
-import 'package:data_provider/src/constant.dart';
 
 void main() {
   final dataProvider = DataProvider();
   final controller = StreamController<Map<String, dynamic>>.broadcast();
-  final payload = {resolvedWith: getBanner};
+  final payload = {
+    "resolvedWith": "GetBanner",
+    "input": {"slug": "best_seller"}
+  };
   controller.stream.listen(
     (value) {
       print('StreamController get value asset: ${value["asset"]}');
