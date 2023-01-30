@@ -1,14 +1,15 @@
 {
   "name": "chassis",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "dist/src/main.js",
+  "types": "dist/src/main.d.ts",
   "version": "0.0.1",
   "scripts": {
     "dev": "ts-node ./src/main.ts",
     "test": "jest __tests__/",
     "format": "prettier . --write",
-    "cp:spec": "cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/spec/",
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp:spec && npm pack",
+    "cp:spec": "mkdir ./dist/spec && cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/spec/",
+    "cp:src:spec": "cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/src/spec/",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp:spec && npm run cp:src:spec && npm pack",
     "cli": "ts-node ./src/cli.ts"
   },
   "jest": {
@@ -37,6 +38,10 @@
     "typescript": "^4.8.3"
   },
   "files": [
-    "dist", "./src/ViewSpec.ts", "./src/ResolverSpec.ts", "./src/spec/ChassisViewSpec.ts", "./src/spec/ChassisResolverSpec.ts"
+    "dist",
+    "./src/ViewSpec.ts",
+    "./src/ResolverSpec.ts",
+    "./src/spec/ChassisViewSpec.ts",
+    "./src/spec/ChassisResolverSpec.ts"
   ]
 }
