@@ -14,7 +14,7 @@
 
 ## Example
 
-[Specification](../spec/)
-[JSON Source/Output](./source.json)
+[Specification](../example/spec/)
+[JSON Source/Output](../example/source.json)
 
 ![ImageUi](../asset/ui.png)
