@@ -6,12 +6,12 @@ void main() {
   final dataProvider = DataProvider();
   final controller = StreamController<Map<String, dynamic>>.broadcast();
   final payload = {
-    "resolvedWith": "GetBanner",
-    "input": {"slug": "best_seller"}
+    "resolvedWith": "GetQuickAccessItem",
+    // "input": {"slug": "best_seller"}
   };
   controller.stream.listen(
     (value) {
-      print('StreamController get value asset: ${value["asset"]}');
+      print('StreamController get value : $value');
     },
     onDone: () {
       print('main onDone');
