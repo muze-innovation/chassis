@@ -22,7 +22,7 @@ class ViewProvider implements IViewProvider {
   @override
   Widget? getView(Stream<dynamic> stream, Map<String, dynamic> config) {
     var viewType = config['viewType'];
-    print('FoodViewProvider: $viewType');
+    print('ViewProvider: $viewType');
     switch (viewType) {
       case 'Banner':
         return custom.Banner(stream: stream, config: config);
