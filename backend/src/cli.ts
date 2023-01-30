@@ -3,7 +3,7 @@
 import Chassis from './handler/Chassis'
 import yargs from 'yargs'
 import { readFileSync } from 'fs'
-import { validateSpec } from './main'
+import { resolve } from 'path'
 
 yargs
   .command({
@@ -23,11 +23,12 @@ yargs
           type: 'array',
           demandOption: true,
         }),
-    handler: argv => {
+    handler: async argv => {
       try {
-        const fileData: any = JSON.parse(readFileSync(argv.source, 'utf8'))
         const spec: string[] = argv.spec[0].split(',')
-        validateSpec(fileData, spec)
+        const chassis = new Chassis(spec.map(s => resolve(__dirname, s)))
+        const isValid = await chassis.validateSpec(argv.source)
+        console.log(isValid)
       } catch (err) {
         console.error(err)
       }
@@ -48,6 +49,7 @@ yargs
       }),
     handler: async argv => {
       // TODO: implement generate spec schema command
+      const chassis = new Chassis([resolve(__dirname, argv.spec)])
     },
   })
   .help()
