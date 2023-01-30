@@ -1,6 +1,7 @@
 import 'package:chassis/interface.dart';
 import 'package:flutter/widgets.dart';
 import 'package:view_provider/example/banner.dart' as custom;
+import 'package:view_provider/example/quickAccess.dart' as quickAccessView;
 
 // class ViewProvider implements IViewProvider {
 //   @override
@@ -26,6 +27,8 @@ class ViewProvider implements IViewProvider {
     switch (viewType) {
       case 'Banner':
         return custom.Banner(stream: stream, config: config);
+      case 'QuickAccess':
+        return quickAccessView.QuickAccess(stream: stream, config: config);
       default:
         return null;
     }

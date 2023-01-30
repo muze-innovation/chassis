@@ -7,7 +7,8 @@ class Banner extends StatefulWidget {
   final Stream stream;
   final Map<String, dynamic> config;
 
-  const Banner ({ Key? key, required this.stream, required this.config }): super(key: key);
+  const Banner({Key? key, required this.stream, required this.config})
+      : super(key: key);
 
   @override
   State<Banner> createState() => _BannerState();
@@ -35,7 +36,7 @@ class _BannerState extends State<Banner> {
   List<BannerItem> _items = [];
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     // TODO: stop listening to stream?
   }
@@ -45,33 +46,35 @@ class _BannerState extends State<Banner> {
     print('Banner - Build ${widget.config}');
     return StreamBuilder<dynamic>(
       stream: widget.stream,
-      builder:(context, snapshot) {
-        if(snapshot.hasError) {
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
           return Text(snapshot.error.toString());
         }
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             print('Banner - loading');
-            return const CircularProgressIndicator(); // TODO: change to skeleton
+            return BannerLoadingView();
           case ConnectionState.done:
           case ConnectionState.active:
-            print("Banner snapshot: ${snapshot.data} ${snapshot.data['asset']}");
-            BannerItem bannerItem = BannerItem(asset: snapshot.data['asset'], placeholder: snapshot.data['placeholder']);
+            print(
+                "Banner snapshot: ${snapshot.data} ${snapshot.data['asset']}");
+            BannerItem bannerItem = BannerItem(
+                asset: snapshot.data['asset'],
+                placeholder: snapshot.data['placeholder']);
             _items.add(bannerItem);
             return CarouselSlider(
               options: CarouselOptions(),
               items: _items
-                .map((item) => Container(
-                  child: Center(
-                    child:
-                      Image.network(
-                        item.asset, 
-                        // placeholder: item.placeholder,
-                        fit: BoxFit.cover, 
-                        width: 1000, 
-                        errorBuilder:(context, error, stackTrace) => Text('Cannot display an image'))),
-                ))
-                .toList(),
+                  .map((item) => Container(
+                        child: Center(
+                            child: Image.network(item.asset,
+                                // placeholder: item.placeholder,
+                                fit: BoxFit.cover,
+                                width: 1000,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Text('Cannot display an image'))),
+                      ))
+                  .toList(),
             );
           default:
             return Container();
@@ -79,4 +82,16 @@ class _BannerState extends State<Banner> {
       },
     );
   }
+}
+
+Widget BannerLoadingView() {
+  return Container(
+      padding: EdgeInsets.all(8),
+      height: 120,
+      width: double.infinity,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16)),
+      ));
 }
