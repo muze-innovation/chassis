@@ -46,7 +46,10 @@ export default class Chassis {
   }
 
   public async generateJsonSchemaFile(): Promise<JSONSchema[]> {
+    // Get all symbols 
     const symbols = this._generator.getMainFileSymbols(this._program)
+
+    // Initial json schemas
     const jsonSchemas: JSONSchema[] = []
 
     for (const symbol of symbols) {
@@ -63,10 +66,17 @@ export default class Chassis {
    * @param sourceJson
    * @returns Validation Result
    */
-  public async validateSpec(sourcePath: string): Promise<boolean> {
-    const json = readFileSync(sourcePath, 'utf8')
+  public async validateSpec(json: object): Promise<boolean>;
+  public async validateSpec(sourcePath: string): Promise<boolean>;
+  public async validateSpec(jsonOrSourcePath: object | string): Promise<boolean> {
+    let data: object
 
-    const data = JSON.parse(json)
+    if (typeof jsonOrSourcePath === 'string') {
+      const json = readFileSync(jsonOrSourcePath, 'utf8')
+      data = JSON.parse(json)
+    } else {
+      data = jsonOrSourcePath
+    }
 
     // Validate Screen Spec
     await this.validateScreenSpec(data)

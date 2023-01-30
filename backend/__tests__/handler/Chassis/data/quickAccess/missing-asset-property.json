@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "quick_access_menu",
+      "viewType": "QuickAccess",
+      "attributes": {
+        "heightPolicy": "fixed",
+        "heightValue": 200
+      },
+      "parameters": {
+        "title": "Recommended categories"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "item": [
+            {
+              "title": "ส้มตำ / ไก่ย่าง"
+            },
+            {
+              "title": "เครป / โตเกียว",
+              "asset": "food-icon-002.png"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
