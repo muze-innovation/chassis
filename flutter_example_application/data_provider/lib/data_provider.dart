@@ -15,10 +15,9 @@ class DataProvider implements IDataProvider {
   final _bannerDataProvider = BannerDataProvider();
   @override
   void getData(StreamController controller, Map<String, dynamic> payload) {
-    payload[resolvedWith];
     switch (payload[resolvedWith]) {
       case getBanner:
-        _bannerDataProvider.getData(controller);
+        _bannerDataProvider.getData(controller, payload[input][slug]);
         break;
       default:
     }

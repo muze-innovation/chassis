@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 abstract class IBannerRepository {
-  Future<Map<String, dynamic>> getData();
+  Future<Map<String, dynamic>> getData(String slug);
 }
 
 class BannerRepository implements IBannerRepository {
@@ -13,8 +13,10 @@ class BannerRepository implements IBannerRepository {
       'https://00b802ba-b85b-4531-ad60-1ad30116d1cd.mock.pstmn.io';
 
   @override
-  Future<Map<String, dynamic>> getData() async {
-    final url = Uri.parse('$_baseUrl/banner');
+  Future<Map<String, dynamic>> getData(String slug) async {
+    final url = Uri.parse('$_baseUrl/banner').replace(queryParameters: {
+      'slug': slug,
+    });
     final response = await client.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
