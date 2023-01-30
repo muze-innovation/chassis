@@ -16,7 +16,6 @@ class ChassisRepository implements IChassisRepository {
   Future<Map<String, dynamic>> getData() async {
     final url = Uri.parse('$_baseUrl/chassis');
     final response = await client.get(url);
-
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
