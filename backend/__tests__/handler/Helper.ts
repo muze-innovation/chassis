@@ -36,7 +36,7 @@ describe('Helper', () => {
       } as JSONSchema
       const json = { id: 'recent_orders_shelf_content', viewType: 'QuickAccess' }
 
-      expect(Helper.validateJsonSchema(schema, json)).toBe(false)
+      expect(Helper.validateJsonSchema(schema, json, false)).toBe(false)
     })
 
     it('throws error on invalid JSON', () => {
@@ -82,7 +82,7 @@ describe('Helper', () => {
         properties: { asset: { type: 'string' } },
       } as JSONSchema
 
-      expect(await Helper.validateSchemaDiff(sourceSchema, destinationSchema)).toBe(false)
+      expect(await Helper.validateSchemaDiff(sourceSchema, destinationSchema, false)).toBe(false)
     })
 
     it('throws error on invalid schema diff', async () => {
