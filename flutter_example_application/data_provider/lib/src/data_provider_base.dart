@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:chassis/constants/constants.dart';
 import 'package:chassis/interfaces/i_data_provider.dart';
-import 'package:data_provider/src/product_recomend_data_provider.dart';
+import 'package:data_provider/src/quick_access_item_data_provider.dart';
 import '../constans/constants.dart';
 import 'banner_data_provider.dart';
 

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 /// To use, import `package:chassis/chassis.dart`.
 ///
 class Chassis {
-  static Chassis _chassis = Chassis._();
+  static final Chassis _chassis = Chassis._();
 
   /// The `version` is a version of the Chassis library.
   static get version => '1.0.0';
@@ -39,41 +39,35 @@ class Chassis {
   /// not required in some cases)
   ///
   /// ```import 'package:chassis/chassis.dart'
-  /// Chassis.setDataProvider(dataProvider);
-  //  Chassis.setViewProvider(viewProvider);
+  /// Chassis.setup(viewProvider, dataProvider);
   /// ```
-  static setDataProvider(IDataProvider dataProvider) {
+  ///
+  static setup(
+      {required IDataProvider dataProvider,
+      required IViewProvider viewProvider}) {
     _chassis._dataProvider = dataProvider;
-  }
-
-  static setViewProvider(IViewProvider viewProvider) {
     _chassis._viewProvider = viewProvider;
   }
 
   /// ## Chassis Static Methods
   static List<Widget> getView(Map<String, dynamic> data) {
-    // Remove this default value in widget if the ViewProvider & DataProvider is done.
-    List<Widget> widgets = [
-      Text('example widget 01'),
-      Text('example widget 02'),
-      Text('example widget 03')
-    ];
-
-    final viewProvider = _chassis._viewProvider;
+    /// validate DataProvider & ViewProvider
     final dataProvider = _chassis._dataProvider;
-    if (viewProvider == null || dataProvider == null) {
-      return widgets;
+    final viewProvider = _chassis._viewProvider;
+    if (dataProvider == null || viewProvider == null) {
+      throw Exception(
+          'Chassis need to setup the ViewProvider & DataProvider before use it.');
     }
 
-    if (data[Constants.version] != version) {
-      return widgets;
-    }
-
-    List<Map<String, dynamic>>? items = data[Constants.items];
+    /// validate item
+    List<dynamic>? items = data[Constants.items];
     if (items == null) {
-      return widgets;
+      throw Exception(
+          'The JSON response does not have the `items` key, please check it.');
     }
 
+    /// Create widget with payload type is static or remote
+    List<Widget> widgets = [];
     for (var item in items) {
       StreamController controller = StreamController.broadcast();
       var widget = viewProvider.getView(controller.stream, item);
@@ -92,6 +86,7 @@ class Chassis {
       }
     }
 
+    /// Return all widget after created.
     return widgets;
   }
 

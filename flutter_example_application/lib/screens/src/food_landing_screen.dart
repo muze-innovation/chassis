@@ -34,12 +34,6 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   void setData(Map<String, dynamic> data) {
     setState(() {
       _isLoading = false;
-
-      // ## Call chassis here
-      //
-      // Chassis.setDataProvider(dataProvider);
-      // Chassis.setViewProvider(viewProvider);
-      //
       _items = Chassis.getView(data);
     });
   }
