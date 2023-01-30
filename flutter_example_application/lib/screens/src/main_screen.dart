@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_example_application/theme/theme.dart';
+import 'package:flutter_example_application/constants/constants.dart';
 import 'package:flutter_example_application/screens/screens.dart';
 
 class MainScreen extends StatefulWidget {
@@ -35,17 +35,17 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: _selectedIndex,
         iconSize: 25,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: selectedBottomNavigationBarItemColor,
-        unselectedItemColor: unselectedBottomNavigationBarItemColor,
-        selectedIconTheme:
-            const IconThemeData(color: selectedBottomNavigationBarItemColor),
-        unselectedIconTheme:
-            const IconThemeData(color: unselectedBottomNavigationBarItemColor),
+        selectedItemColor: AppColors.selectedBottomNavigationBarItemColor,
+        unselectedItemColor: AppColors.unselectedBottomNavigationBarItemColor,
+        selectedIconTheme: const IconThemeData(
+            color: AppColors.selectedBottomNavigationBarItemColor),
+        unselectedIconTheme: const IconThemeData(
+            color: AppColors.unselectedBottomNavigationBarItemColor),
         showUnselectedLabels: true,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            backgroundColor: defaultBackgroundColor,
+            backgroundColor: AppColors.defaultBackgroundColor,
             label: HomeLandingScreen.sreenName,
           ),
           BottomNavigationBarItem(
