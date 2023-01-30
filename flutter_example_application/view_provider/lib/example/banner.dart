@@ -12,10 +12,17 @@ class Banner extends StatefulWidget {
   State<Banner> createState() => _BannerState();
 }
 
+// class BannerItem {
+//   final String asset;
+//   final String alt;
+
+//   BannerItem({required String asset, required String alt});
+// }
+
 class _BannerState extends State<Banner> {
   // _BannerState();
 
-  final List<String> imgList = [
+  final List<String> _items = [
   'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
   'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
   'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
@@ -24,6 +31,8 @@ class _BannerState extends State<Banner> {
   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 ];
 
+  // List<BannerItem> _items = [];
+
   @override
   void dispose(){
     super.dispose();
@@ -31,28 +40,30 @@ class _BannerState extends State<Banner> {
 
   @override
   Widget build(BuildContext context) {
-    print('Banner - Build');
+    print('Banner - Build ${widget.config}');
     return StreamBuilder<dynamic>(
       stream: widget.stream,
       builder:(context, snapshot) {
-        print('render - Banner');
         if(snapshot.hasError) {
           return Text(snapshot.error.toString());
         }
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
+            print('Banner - loading');
             return CircularProgressIndicator(); // TODO: change to skeleton
           case ConnectionState.done:
           case ConnectionState.active:
+            print('Banner snapshot: ${snapshot.data}');
+            // _items.add(BannerItem(asset: snapshot.data['asset'], alt: snapshot.data['alt']));
             return CarouselSlider(
               options: CarouselOptions(),
-              items: imgList
+              items: _items
                 .map((item) => Container(
                   child: Center(
                     child:
                       Image.network(item, fit: BoxFit.cover, width: 1000)),
                 ))
-            .toList(),
+                .toList(),
             );
           default:
             return Container();
