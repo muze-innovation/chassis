@@ -6,6 +6,10 @@
   "bin": {
     "chassis": "dist/src/cli.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muze-innovation/chassis/"
+  },
   "scripts": {
     "dev": "ts-node ./src/main.ts",
     "test": "jest __tests__/",
