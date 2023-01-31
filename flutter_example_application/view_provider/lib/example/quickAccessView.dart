@@ -1,19 +1,18 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
-class QuickAccess extends StatefulWidget {
+class QuickAccessView extends StatefulWidget {
   final Stream stream;
   final Map<String, dynamic> config;
 
-  const QuickAccess({Key? key, required this.stream, required this.config})
+  const QuickAccessView({Key? key, required this.stream, required this.config})
       : super(key: key);
 
   @override
-  State<QuickAccess> createState() => _QuickAccessState();
+  State<QuickAccessView> createState() => _QuickAccessState();
 }
 
-class _QuickAccessState extends State<QuickAccess> {
+class _QuickAccessState extends State<QuickAccessView> {
   @override
   void dispose() {
     super.dispose();
@@ -91,33 +90,6 @@ class _QuickAccessState extends State<QuickAccess> {
         itemBuilder: (context, index) {
           return _listItem(payload[index]);
         },
-        // children: payload.map((item) {
-        //   return Column(
-        //     children: [
-        //       Container(
-        //         width: 80,
-        //         height: 80,
-        //         padding: const EdgeInsets.all(8),
-        //         child: ClipRRect(
-        //           borderRadius: BorderRadius.circular(16),
-        //           child: Image.network(
-        //             item.asset,
-        //             fit: BoxFit.cover,
-        //             width: 80,
-        //           ),
-        //         ),
-        //       ),
-        //       Container(
-        //         width: 80,
-        //         padding: const EdgeInsets.symmetric(horizontal: 8),
-        //         child: Text(
-        //           item.title,
-        //           maxLines: 2,
-        //         ),
-        //       )
-        //     ],
-        //   );
-        // }).toList(),
       ),
     );
   }

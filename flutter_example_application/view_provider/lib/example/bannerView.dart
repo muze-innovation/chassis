@@ -1,17 +1,15 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:flutter/widgets.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
-class Banner extends StatefulWidget {
+class BannerView extends StatefulWidget {
   final Stream stream;
   final Map<String, dynamic> config;
 
-  const Banner({Key? key, required this.stream, required this.config})
+  const BannerView({Key? key, required this.stream, required this.config})
       : super(key: key);
 
   @override
-  State<Banner> createState() => _BannerState();
+  State<BannerView> createState() => _BannerState();
 }
 
 class BannerItem {
@@ -21,7 +19,7 @@ class BannerItem {
   BannerItem({required this.asset, this.placeholder});
 }
 
-class _BannerState extends State<Banner> {
+class _BannerState extends State<BannerView> {
   _BannerState();
 
 //   final List<String> _items = [
@@ -33,7 +31,7 @@ class _BannerState extends State<Banner> {
 //   'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
 // ];
 
-  List<BannerItem> _items = [];
+  final List<BannerItem> _items = [];
 
   @override
   void dispose() {
@@ -44,7 +42,8 @@ class _BannerState extends State<Banner> {
   @override
   Widget build(BuildContext context) {
     print('Banner - Build ${widget.config}');
-    print('Banner - Attributes ${widget.config['attributes']['heightPolicy']} ${widget.config['attributes']['heightValue']}');
+    print(
+        'Banner - Attributes ${widget.config['attributes']['heightPolicy']} ${widget.config['attributes']['heightValue']}');
     return StreamBuilder<dynamic>(
       stream: widget.stream,
       builder: (context, snapshot) {
@@ -62,38 +61,37 @@ class _BannerState extends State<Banner> {
                 placeholder: snapshot.data['placeholder']);
             _items.add(bannerItem);
             return Container(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Center(
-                    child: 
-                      ClipRRect(borderRadius: BorderRadius.circular(8.0),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Center(
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
                         child: Image.network(_items[0].asset,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                          Text('Cannot display an image')))
-                        ),
-                      ),
-                    );
-                  
-            // return CarouselSlider(
-            //   options: CarouselOptions(
-            //     enableInfiniteScroll: false,
-            //     aspectRatio: 4/1,
-            //     // viewportFraction: 1
-            //   ),
-            //   items: _items
-            //     .map((item) => Container(
-            //       child: Center(
-            //         child: 
-            //           ClipRRect(borderRadius: BorderRadius.circular(8.0),
-            //             child: Image.network(item.asset,
-            //               fit: BoxFit.cover,
-            //               errorBuilder: (context, error, stackTrace) =>
-            //               Text('Cannot display an image')))
-            //             ),
-            //           )
-            //     ).toList(),
-            // );
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Text('Cannot display an image')))),
+              ),
+            );
+
+          // return CarouselSlider(
+          //   options: CarouselOptions(
+          //     enableInfiniteScroll: false,
+          //     aspectRatio: 4/1,
+          //     // viewportFraction: 1
+          //   ),
+          //   items: _items
+          //     .map((item) => Container(
+          //       child: Center(
+          //         child:
+          //           ClipRRect(borderRadius: BorderRadius.circular(8.0),
+          //             child: Image.network(item.asset,
+          //               fit: BoxFit.cover,
+          //               errorBuilder: (context, error, stackTrace) =>
+          //               Text('Cannot display an image')))
+          //             ),
+          //           )
+          //     ).toList(),
+          // );
           default:
             return Container();
         }
