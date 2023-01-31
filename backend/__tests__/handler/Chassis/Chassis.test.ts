@@ -1,20 +1,25 @@
+import Chassis from '@/src/handler/Chassis'
 import { resolve } from 'path'
-import Chassis from '../../../src/handler/Chassis'
-import generateJsonSchemaBySymbol from './data/generateJsonSchemaBySymbol.json'
+
+import generateJsonSchemaBySymbol from '@/__testdata__/generateJsonSchemaBySymbol.json'
 
 describe('Chassis', () => {
   let chassis: Chassis
 
   beforeAll(() => {
     // initial spec path
-    const specPathResolves: string[] = [resolve('./src/ViewSpec.ts'), resolve('./src/ResolverSpec.ts')]
+    const specPathResolves: string[] = [
+      resolve('__testdata__/spec/ViewSpec.ts'),
+      resolve('__testdata__/spec/ResolverSpec.ts'),
+    ]
     chassis = new Chassis(specPathResolves)
   })
 
-  it('generate JSON Schema', async () => {
-    const schema = await chassis.generateJsonSchemaBySymbol('ViewSpec')
-
-    expect(schema).toEqual(generateJsonSchemaBySymbol)
+  describe('generate JSON Schema', () => {
+    it('valid', async () => {
+      const schema = await chassis.generateJsonSchemaBySymbol('ViewSpec')
+      expect(schema).toEqual(generateJsonSchemaBySymbol)
+    })
   })
 
   describe('validateScreenSpec', () => {
@@ -177,61 +182,19 @@ describe('Chassis', () => {
   })
 
   describe('validateSpec', () => {
-    it('return true for valid JSON input', async () => {
-      const sourceJson = {
-        version: '1.0.0',
-        name: 'default-landing-page',
-        items: [
-          {
-            id: 'recent_orders_shelf_content',
-            viewType: 'ShelfContent',
-            attributes: {
-              heightPolicy: 'fixed',
-              heightValue: 100,
-              color: 'red',
-            },
-            parameters: {
-              title: 'Recent orders',
-            },
-            payload: {
-              type: 'static',
-              data: {
-                item: [
-                  {
-                    title: 'ตามใจสั่ง ลาดพร้าว48',
-                    asset: 'thai-restaurant-001.png',
-                  },
-                  {
-                    title: 'Texas Chicken',
-                    asset: 'texas-chicken.png',
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      }
-
-      const result = await chassis.validateSpec(sourceJson)
-
-      expect(result).toBe(true)
-    })
-
-    it('return true for valid file input', async () => {
-      const result = await chassis.validateSpec(resolve(__dirname, './data/spec/valid-input.json'))
+    it('return true for valid input', async () => {
+      const result = await chassis.validateSpec(resolve('__testdata__/spec/valid-input.json'))
 
       expect(result).toBe(true)
     })
 
     it('throws error for invalid input', async () => {
-      expect(
-        async () => await chassis.validateSpec(resolve(__dirname, './data/spec/invalid-input.json'))
-      ).rejects.toThrow()
+      expect(async () => await chassis.validateSpec(resolve('__testdata__/spec/invalid-input.json'))).rejects.toThrow()
     })
 
     it('throws error for unknown view type', async () => {
       expect(
-        async () => await chassis.validateSpec(resolve(__dirname, './data/spec/unknown-view-type.json'))
+        async () => await chassis.validateSpec(resolve('__testdata__/spec/unknown-view-type.json'))
       ).rejects.toThrow()
     })
   })
@@ -239,7 +202,7 @@ describe('Chassis', () => {
   describe('validateResolverSpec', () => {
     it('throws error for unknown payload type', async () => {
       expect(
-        async () => await chassis.validateSpec(resolve(__dirname, './data/resolverSpec/unknown-payload-type.json'))
+        async () => await chassis.validateSpec(resolve('__testdata__/resolverSpec/unknown-payload-type.json'))
       ).rejects.toThrow()
     })
 
@@ -247,7 +210,7 @@ describe('Chassis', () => {
       describe('static payload', () => {
         it('missing asset property in items of schema path', async () => {
           expect(
-            async () => await chassis.validateSpec(resolve(__dirname, './data/banner/static-payload.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/banner/static-payload.json'))
           ).rejects.toThrow()
         })
       })
@@ -255,19 +218,19 @@ describe('Chassis', () => {
       describe('remote payload', () => {
         it('throws error invalid ResolverSpec', async () => {
           expect(
-            async () => await chassis.validateSpec(resolve(__dirname, './data/banner/invalid-resolver-spec.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/banner/invalid-resolver-spec.json'))
           ).rejects.toThrow()
         })
 
         it('missing slug property in input node', async () => {
           expect(
-            async () => await chassis.validateSpec(resolve(__dirname, './data/banner/missing-slug-property.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/banner/missing-slug-property.json'))
           ).rejects.toThrow()
         })
 
         it('slug property is not string in input node', async () => {
           expect(
-            async () => await chassis.validateSpec(resolve(__dirname, './data/banner/slug-property-is-not-string.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/banner/slug-property-is-not-string.json'))
           ).rejects.toThrow()
         })
       })
@@ -277,7 +240,7 @@ describe('Chassis', () => {
       describe('static payload', () => {
         it('missing asset property in items of schema path', async () => {
           expect(
-            async () => await chassis.validateSpec(resolve(__dirname, './data/quickAccess/missing-asset-property.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/quickAccess/missing-asset-property.json'))
           ).rejects.toThrow()
         })
       })
@@ -285,7 +248,7 @@ describe('Chassis', () => {
       describe('remote payload', () => {
         it('throws error invalid ResolverSpec', async () => {
           expect(
-            async () => await chassis.validateSpec(resolve(__dirname, './data/quickAccess/invalid-resolver-spec.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/quickAccess/invalid-resolver-spec.json'))
           ).rejects.toThrow()
         })
       })
@@ -295,8 +258,7 @@ describe('Chassis', () => {
       describe('static payload', () => {
         it('missing title property in items of schema path', async () => {
           expect(
-            async () =>
-              await chassis.validateSpec(resolve(__dirname, './data/shelfContent/missing-title-property.json'))
+            async () => await chassis.validateSpec(resolve('__testdata__/shelfContent/missing-title-property.json'))
           ).rejects.toThrow()
         })
       })
