@@ -8,10 +8,7 @@ describe('Chassis', () => {
 
   beforeAll(() => {
     // initial spec path
-    const specPathResolves: string[] = [
-      resolve('__testdata__/spec/ViewSpec.ts'),
-      resolve('__testdata__/spec/ResolverSpec.ts'),
-    ]
+    const specPathResolves: string[] = [resolve('__testdata__/ViewSpec.ts'), resolve('__testdata__/ResolverSpec.ts')]
     chassis = new Chassis(specPathResolves)
   })
 

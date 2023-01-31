@@ -1,4 +1,4 @@
-import { ChassisViewSpec } from '../../src/spec/ChassisViewSpec'
+import { ChassisViewSpec } from '../src/spec/ChassisViewSpec'
 
 type ViewSpec = Banner | QuickAccess | ShelfContent
 
