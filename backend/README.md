@@ -90,7 +90,7 @@ interface Banner {
 }
 ```
 
-`Banner` fields, like `id`, must be specific data types. Chassis displays error if source `id` (in JSON) is not a `string`."
+`Banner` fields, like `id`, must be specific data types. Chassis displays error if source `id` (in JSON) is not a `string`.
 
 ### Source
 
@@ -227,9 +227,9 @@ chassis validate -- --source 'path/source.json' --spec 'path/source/spec.ts'
 ### CLI Features
 
 - validateSpec
-- getJsonSchemaBySymbol
-- generateJsonSchemaBySymbol
-- generateJsonSchema
+- getJsonSchemaBySymbol[Inprogress]
+- generateJsonSchemaBySymbol[Inprogress]
+- generateJsonSchema[Inprogress]
 
 Details about operation and parameters of other CLI features can be read in [CLI](./docs/cli.md).
 
