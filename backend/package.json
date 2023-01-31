@@ -3,6 +3,9 @@
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "version": "0.0.1",
+  "bin": {
+    "chassis": "dist/src/cli.js"
+  },
   "scripts": {
     "dev": "ts-node ./src/main.ts",
     "test": "jest __tests__/",
