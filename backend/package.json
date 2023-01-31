@@ -8,6 +8,7 @@
     "chassis",
     "flutter"
   ],
+  "author": "Muze Innovation",
   "bin": {
     "chassis": "dist/src/cli.js"
   },
