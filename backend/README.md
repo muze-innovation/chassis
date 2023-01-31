@@ -214,9 +214,7 @@ npm install chassis
 
 ## Usage
 
-### Methods
-
-- ### `validateSpec`
+### `validateSpec`
 
 Call a function to validate the source(JSON) with specifications(TS).
 
@@ -263,7 +261,7 @@ Error: [
 
 The error shows that the asset value type must be string only.
 
-- ### [Inprogress] `getJsonSchemaBySymbol`
+### [Inprogress] `getJsonSchemaBySymbol`
 
 This method converts the TS file to JsonSchema.
 
@@ -371,8 +369,9 @@ Output JsonSchema for `Banner`:
 }
 ```
 
-- ### [Inprogress]`generateJsonSchemaBySymbol`
-- ### [Inprogress]`generateJsonSchema`
+### [Inprogress]`generateJsonSchemaBySymbol`
+
+### [Inprogress]`generateJsonSchema`
 
 # Working
 
