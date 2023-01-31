@@ -44,6 +44,7 @@ class _BannerState extends State<Banner> {
   @override
   Widget build(BuildContext context) {
     print('Banner - Build ${widget.config}');
+    print('Banner - Attributes ${widget.config['attributes']['heightPolicy']} ${widget.config['attributes']['heightValue']}');
     return StreamBuilder<dynamic>(
       stream: widget.stream,
       builder: (context, snapshot) {
@@ -56,26 +57,43 @@ class _BannerState extends State<Banner> {
             return BannerLoadingView();
           case ConnectionState.done:
           case ConnectionState.active:
-            print(
-                "Banner snapshot: ${snapshot.data} ${snapshot.data['asset']}");
             BannerItem bannerItem = BannerItem(
                 asset: snapshot.data['asset'],
                 placeholder: snapshot.data['placeholder']);
             _items.add(bannerItem);
-            return CarouselSlider(
-              options: CarouselOptions(),
-              items: _items
-                  .map((item) => Container(
-                        child: Center(
-                            child: Image.network(item.asset,
-                                // placeholder: item.placeholder,
-                                fit: BoxFit.cover,
-                                width: 1000,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Text('Cannot display an image'))),
-                      ))
-                  .toList(),
-            );
+            return Container(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Center(
+                    child: 
+                      ClipRRect(borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(_items[0].asset,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                          Text('Cannot display an image')))
+                        ),
+                      ),
+                    );
+                  
+            // return CarouselSlider(
+            //   options: CarouselOptions(
+            //     enableInfiniteScroll: false,
+            //     aspectRatio: 4/1,
+            //     // viewportFraction: 1
+            //   ),
+            //   items: _items
+            //     .map((item) => Container(
+            //       child: Center(
+            //         child: 
+            //           ClipRRect(borderRadius: BorderRadius.circular(8.0),
+            //             child: Image.network(item.asset,
+            //               fit: BoxFit.cover,
+            //               errorBuilder: (context, error, stackTrace) =>
+            //               Text('Cannot display an image')))
+            //             ),
+            //           )
+            //     ).toList(),
+            // );
           default:
             return Container();
         }
