@@ -79,7 +79,8 @@ class Chassis {
         var payloadData = payload[ViewSpecConstants.payloadData];
 
         if (payloadType == 'static') {
-          controller.add(payloadData);
+          Future.delayed(Duration(seconds: 1))
+              .then((value) => controller.add(payloadData));
         } else if (payloadType == 'remote') {
           dataProvider.getData(controller, payload);
         }
