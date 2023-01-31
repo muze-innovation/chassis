@@ -3,13 +3,27 @@
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "version": "0.0.1",
+  "description": "Chassis helps validate the accuracy of the source, based on the specifications required by the user.",
+  "keywords": [
+    "chassis",
+    "flutter"
+  ],
+  "author": "Muze Innovation",
+  "bin": {
+    "chassis": "dist/src/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muze-innovation/chassis.git"
+  },
   "scripts": {
     "dev": "ts-node ./src/main.ts",
     "test": "jest __tests__/",
     "format": "prettier . --write",
     "cp:spec": "mkdir ./dist/spec && cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/spec/",
     "cp:src:spec": "cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/src/spec/",
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp:spec && npm run cp:src:spec && npm pack",
+    "cp:src": "cp ./src/ResolverSpec.ts ./src/ViewSpec.ts ./dist/src/",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp:src && npm run cp:spec && npm run cp:src:spec && npm pack",
     "cli": "ts-node ./src/cli.ts"
   },
   "jest": {
