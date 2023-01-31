@@ -177,7 +177,47 @@ describe('Chassis', () => {
   })
 
   describe('validateSpec', () => {
-    it('return true for valid input', async () => {
+    it('return true for valid JSON input', async () => {
+      const sourceJson = {
+        version: '1.0.0',
+        name: 'default-landing-page',
+        items: [
+          {
+            id: 'recent_orders_shelf_content',
+            viewType: 'ShelfContent',
+            attributes: {
+              heightPolicy: 'fixed',
+              heightValue: 100,
+              color: 'red',
+            },
+            parameters: {
+              title: 'Recent orders',
+            },
+            payload: {
+              type: 'static',
+              data: {
+                item: [
+                  {
+                    title: 'ตามใจสั่ง ลาดพร้าว48',
+                    asset: 'thai-restaurant-001.png',
+                  },
+                  {
+                    title: 'Texas Chicken',
+                    asset: 'texas-chicken.png',
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      }
+
+      const result = await chassis.validateSpec(sourceJson)
+
+      expect(result).toBe(true)
+    })
+
+    it('return true for valid file input', async () => {
       const result = await chassis.validateSpec(resolve(__dirname, './data/spec/valid-input.json'))
 
       expect(result).toBe(true)
