@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/muze-innovation/chassis/"
+    "url": "https://github.com/muze-innovation/chassis.git"
   },
   "scripts": {
     "dev": "ts-node ./src/main.ts",
