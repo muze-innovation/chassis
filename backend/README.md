@@ -221,7 +221,7 @@ Chassis provides access to method through the command line interface (CLI).
 Example CLI for validation source by specification.
 
 ```sh
-chassis validate -- --source 'path/source.json' --spec 'path/source/spec.ts'
+npm run cli validate -- --source 'path/source.json' --spec 'path/ViewSpec.ts','path/ResolverSpec.ts'
 ```
 
 ### CLI Features
