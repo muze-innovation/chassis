@@ -3,8 +3,18 @@
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "version": "0.0.1",
+  "description": "Chassis helps validate the accuracy of the source, based on the specifications required by the user.",
+  "keywords": [
+    "chassis",
+    "flutter"
+  ],
+  "author": "Muze Innovation",
   "bin": {
     "chassis": "dist/src/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muze-innovation/chassis.git"
   },
   "scripts": {
     "dev": "ts-node ./src/main.ts",
