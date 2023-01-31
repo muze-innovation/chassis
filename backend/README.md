@@ -4,7 +4,7 @@
 
 - [Overview](#overview)
 - [CLI](./docs/cli.md)
-- [Programmatic](./docs/Programmatic.md)
+- [Programmatic](./docs/programmatic.md)
 
 ## Overview
 
@@ -214,47 +214,24 @@ npm install chassis
 
 ## Usage
 
-### Command line
+### Methods
 
-Chassis provides access to method through the command line interface (CLI).
+- ### `validateSpec`
 
-Example CLI for validation source by specification.
+Call a function to validate the source(JSON) with specifications(TS).
+
+Example CLI:
 
 ```sh
 npm run cli validate -- --source 'path/source.json' --spec 'path/ViewSpec.ts','path/ResolverSpec.ts'
 ```
 
-### CLI Features
-
-- validateSpec
-- getJsonSchemaBySymbol[Inprogress]
-- generateJsonSchemaBySymbol[Inprogress]
-- generateJsonSchema[Inprogress]
-
-Details about operation and parameters of other CLI features can be read in [CLI](./docs/cli.md).
-
-### Programmatic use
-
-Import Chassis APIs:
+Example method:
 
 ```ts
 import Chassis from 'chassis'
 
 const chassis = new Chassis([resolve(__dirname, 'path/spec/Spec1.ts'), resolve(__dirname, 'path/spec/Spec2.ts')])
-```
-
-### Methods
-
-- [validateSpec(sourcePath)](#validateSpecsourcePath)
-- [getJsonSchemaBySymbol(symbol)](#getJsonSchemaBySymbolsymbol)
-
-### `validateSpec(sourcePath)`
-
-Call a function to validate the source(JSON) with specifications(TS).
-
-Example using method:
-
-```ts
 // Valdiate Spec
 await chassis.validateSpec(resolve(__dirname, 'path/source.json'))
 ```
@@ -286,11 +263,11 @@ Error: [
 
 The error shows that the asset value type must be string only.
 
-### `getJsonSchemaBySymbol(symbol)`
+- ### [Inprogress] `getJsonSchemaBySymbol`
 
 This method converts the TS file to JsonSchema.
 
-Example using method:
+Example method:
 
 ```ts
 // Banner.ts
@@ -314,6 +291,10 @@ interface Banner {
 Call a function using a `Banner.ts` as an example TS file to convert to a schema.
 
 ```ts
+import Chassis from 'chassis'
+
+const chassis = new Chassis([resolve(__dirname, 'path/spec/Spec1.ts'), resolve(__dirname, 'path/spec/Spec2.ts')])
+
 // Get json schema by symbol
 await chassis.getJsonSchemaBySymbol('Banner')
 ```
@@ -390,11 +371,11 @@ Output JsonSchema for `Banner`:
 }
 ```
 
-# Improve
-
-- Handle error output
+- ### [Inprogress]`generateJsonSchemaBySymbol`
+- ### [Inprogress]`generateJsonSchema`
 
 # Working
 
+- Handle error output
 - Test case
 - Doc
