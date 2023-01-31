@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chassis/interface.dart';
 import 'package:flutter/widgets.dart';
 import 'package:view_provider/example/banner.dart' as custom;
@@ -23,7 +25,7 @@ class ViewProvider implements IViewProvider {
   @override
   Widget? getView(Stream<dynamic> stream, Map<String, dynamic> config) {
     var viewType = config['viewType'];
-    print('ViewProvider: $viewType');
+    log(viewType, name: 'viewType');
     switch (viewType) {
       case 'Banner':
         return custom.Banner(stream: stream, config: config);

@@ -53,6 +53,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
                   return loadData();
                 },
                 child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   itemCount: _items.length,
                   itemBuilder: (context, index) {
                     return _items[index];

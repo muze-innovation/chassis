@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class QuickAccess extends StatefulWidget {
@@ -19,8 +21,9 @@ class _QuickAccessState extends State<QuickAccess> {
 
   @override
   Widget build(BuildContext context) {
-    print('QuickAccess - Build ${widget.config}');
+    log(widget.config.toString(), name: 'QuickAccess - Build');
     List<QuickAccessItem> payload = [];
+    var params = widget.config['parameters'];
 
     return StreamBuilder<dynamic>(
       stream: widget.stream,
@@ -31,113 +34,225 @@ class _QuickAccessState extends State<QuickAccess> {
 
         if (snapshot.data != null) {
           List<dynamic> value = snapshot.data['item'];
-          payload = List<QuickAccessItem>.from(value.map((model) =>
-              QuickAccessItem(title: model['title'], asset: model['asset'])));
+          payload = List<QuickAccessItem>.from(value.map((model) {
+            return QuickAccessItem(
+              title: model['title'],
+              asset: model['asset'],
+            );
+          }));
         }
 
         switch (snapshot.connectionState) {
+          case ConnectionState.none:
           case ConnectionState.waiting:
-            return QuickAccessLoadingView();
+            return _quickAccessLoadingView();
           case ConnectionState.done:
           case ConnectionState.active:
-            print('QuickAccess snapshot: ${payload}');
-            return QuickAccessMainView(payload);
-          default:
-            return Container();
+            log(payload.toString(), name: 'QuickAccess snapshot');
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          params['title'],
+                          style: Theme.of(context).textTheme.headlineSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: _showAlertDialog,
+                        icon: const Icon(Icons.arrow_circle_right_outlined),
+                      ),
+                    ],
+                  ),
+                ),
+                _quickAccessMainView(payload),
+              ],
+            );
         }
       },
     );
   }
-}
 
-class QuickAccessItem {
-  String title;
-  String asset;
-  QuickAccessItem({required this.title, required this.asset});
-}
-
-Widget QuickAccessLoadingView() {
-  return Container(
+  Widget _quickAccessMainView(List<QuickAccessItem> payload) {
+    return SizedBox(
       height: 140,
-      width: double.infinity,
-      child: Row(
-        children: [
-          LoadingItem(),
-          LoadingItem(),
-          LoadingItem(),
-          LoadingItem(),
-          LoadingItem()
-        ],
-      ));
-}
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        separatorBuilder: (context, index) {
+          return const Padding(padding: EdgeInsets.all(8));
+        },
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: payload.length,
+        itemBuilder: (context, index) {
+          return _listItem(payload[index]);
+        },
+        // children: payload.map((item) {
+        //   return Column(
+        //     children: [
+        //       Container(
+        //         width: 80,
+        //         height: 80,
+        //         padding: const EdgeInsets.all(8),
+        //         child: ClipRRect(
+        //           borderRadius: BorderRadius.circular(16),
+        //           child: Image.network(
+        //             item.asset,
+        //             fit: BoxFit.cover,
+        //             width: 80,
+        //           ),
+        //         ),
+        //       ),
+        //       Container(
+        //         width: 80,
+        //         padding: const EdgeInsets.symmetric(horizontal: 8),
+        //         child: Text(
+        //           item.title,
+        //           maxLines: 2,
+        //         ),
+        //       )
+        //     ],
+        //   );
+        // }).toList(),
+      ),
+    );
+  }
 
-Widget LoadingItem() {
-  return Container(
-    padding: EdgeInsets.all(8),
-    child: Column(
+  Widget _listItem(QuickAccessItem item) {
+    return SizedBox(
+      width: 80,
+      child: InkWell(
+        onTap: _showAlertDialog,
+        child: Column(
+          children: [
+            SizedBox(
+              width: 80,
+              height: 80,
+              child: Material(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+                elevation: 4,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(item.asset),
+                ),
+              ),
+            ),
+            const Padding(padding: EdgeInsets.all(4)),
+            Center(
+              child: Text(
+                item.title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _quickAccessLoadingView() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 62,
-          height: 62,
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.all(16),
+          child: Container(
+            width: 300,
+            height: 30,
+            decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16)),
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 140,
+          width: double.infinity,
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              return _loadingItem();
+            },
+            itemCount: 5,
+            separatorBuilder: (BuildContext context, int index) {
+              return const Padding(padding: EdgeInsets.all(8));
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _loadingItem() {
+    return Column(
+      children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
         const SizedBox(
-          width: 62,
+          width: 80,
           height: 8,
         ),
         Container(
-          width: 62,
+          width: 80,
           height: 10,
           decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16)),
+            color: Colors.black.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
         const SizedBox(
-          width: 62,
+          width: 80,
           height: 2,
         ),
         Container(
-          width: 62,
+          width: 80,
           height: 10,
           decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16)),
+            color: Colors.black.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
       ],
-    ),
-  );
+    );
+  }
+
+  void _showAlertDialog() {
+    Widget closeBtn = TextButton(
+      child: const Text("Close"),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Sorry"),
+      content: const Text("This feature is not available."),
+      actions: [
+        closeBtn,
+      ],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+      ),
+    );
+    showDialog(context: context, builder: (context) => alert);
+  }
 }
 
-Widget QuickAccessMainView(List<QuickAccessItem> payload) {
-  return Container(
-    height: 140,
-    child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: payload.map((item) {
-        return Column(
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              padding: EdgeInsets.all(8),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child:
-                      Image.network(item.asset, fit: BoxFit.cover, width: 80)),
-            ),
-            Container(
-              width: 80,
-              padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: Text(
-                item.title,
-                maxLines: 2,
-              ),
-            )
-          ],
-        );
-      }).toList(),
-    ),
-  );
+class QuickAccessItem {
+  final String title;
+  final String asset;
+  const QuickAccessItem({required this.title, required this.asset});
 }
