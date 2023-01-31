@@ -375,6 +375,8 @@ Output JsonSchema for `Banner`:
 
 # Working
 
+- Programatic
+- CLI
 - Handle error output
 - Test case
 - Doc
