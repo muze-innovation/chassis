@@ -1,0 +1,27 @@
+{
+  "id": "recent_orders_shelf_content",
+  "viewType": "ShelfContent",
+  "attributes": {
+    "heightPolicy": "fixed",
+    "heightValue": 100,
+    "color": "red"
+  },
+  "parameters": {
+    "title": "Recent orders"
+  },
+  "payload": {
+    "type": "static",
+    "data": {
+      "item": [
+        {
+          "title": "ตามใจสั่ง ลาดพร้าว48",
+          "asset": "thai-restaurant-001.png"
+        },
+        {
+          "title": "Texas Chicken",
+          "asset": "texas-chicken.png"
+        }
+      ]
+    }
+  }
+}

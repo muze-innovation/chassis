@@ -2,6 +2,10 @@ import Chassis from '@/src/handler/Chassis'
 import { resolve } from 'path'
 
 import generateJsonSchemaBySymbol from '@/__testdata__/generateJsonSchemaBySymbol.json'
+import validScreenSpec from '@/__testdata__/spec/valid-screen-spec.json'
+import inValidScreenSpec from '@/__testdata__/spec/invalid-screen-spec.json'
+import validViewSpec from '@/__testdata__/spec/valid-view-spec.json'
+import unknownHeightPolicyInAttributes from '@/__testdata__/spec/unknown-height-policy-in-attributes.json'
 
 describe('Chassis', () => {
   let chassis: Chassis
@@ -21,160 +25,29 @@ describe('Chassis', () => {
 
   describe('validateScreenSpec', () => {
     it('valid screen spec', async () => {
-      const sourceJson = {
-        version: '1.0.0',
-        name: 'default-landing-page',
-        items: [
-          {
-            id: 'recent_orders_shelf_content',
-            viewType: 'ShelfContent',
-            attributes: {
-              heightPolicy: 'fixed',
-              heightValue: 100,
-              color: 'red',
-            },
-            parameters: {
-              title: 'Recent orders',
-            },
-            payload: {
-              type: 'static',
-              data: {
-                item: [
-                  {
-                    title: 'ตามใจสั่ง ลาดพร้าว48',
-                    asset: 'thai-restaurant-001.png',
-                  },
-                  {
-                    title: 'Texas Chicken',
-                    asset: 'texas-chicken.png',
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      }
-
-      const result = await chassis.validateScreenSpec(sourceJson)
+      const result = await chassis.validateScreenSpec(validScreenSpec)
 
       expect(result).toBe(true)
     })
 
     it('throws error on invalid screen spec', async () => {
-      const sourceJson = {
-        id: 'recent_orders_shelf_content',
-        viewType: 'ShelfContent',
-        attributes: {
-          heightPolicy: 'fixed',
-          heightValue: 100,
-          color: 'red',
-        },
-        parameters: {
-          title: 'Recent orders',
-        },
-        payload: {
-          type: 'static',
-          data: {
-            item: [
-              {
-                title: 'ตามใจสั่ง ลาดพร้าว48',
-                asset: 'thai-restaurant-001.png',
-              },
-              {
-                title: 'Texas Chicken',
-                asset: 'texas-chicken.png',
-              },
-            ],
-          },
-        },
-      }
-
-      expect(async () => await chassis.validateScreenSpec(sourceJson)).rejects.toThrow()
+      expect(async () => await chassis.validateScreenSpec(inValidScreenSpec)).rejects.toThrow()
     })
   })
 
   describe('validateViewSpec', () => {
     it('valid view spec', async () => {
-      const sourceJson = {
-        version: '1.0.0',
-        name: 'default-landing-page',
-        items: [
-          {
-            id: 'recent_orders_shelf_content',
-            viewType: 'ShelfContent',
-            attributes: {
-              heightPolicy: 'fixed',
-              heightValue: 100,
-              color: 'red',
-            },
-            parameters: {
-              title: 'Recent orders',
-            },
-            payload: {
-              type: 'static',
-              data: {
-                item: [
-                  {
-                    title: 'ตามใจสั่ง ลาดพร้าว48',
-                    asset: 'thai-restaurant-001.png',
-                  },
-                  {
-                    title: 'Texas Chicken',
-                    asset: 'texas-chicken.png',
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      }
-      const result = await chassis.validateViewSpec(sourceJson)
+      const result = await chassis.validateViewSpec(validViewSpec)
 
       expect(result).toBe(true)
     })
 
     it('throws error when json.items is not found', async () => {
-      const sourceJson = {}
-
-      expect(async () => await chassis.validateViewSpec(sourceJson)).rejects.toThrow()
+      expect(async () => await chassis.validateViewSpec({})).rejects.toThrow()
     })
 
     it('throws error when the unknown value heightPolicy in attributes is not in view spec', async () => {
-      const sourceJson = {
-        version: '1.0.0',
-        name: 'default-landing-page',
-        items: [
-          {
-            id: 'recent_orders_shelf_content',
-            viewType: 'ShelfContent',
-            attributes: {
-              heightPolicy: 'dumpHeightPolicy',
-              heightValue: 100,
-              color: 'red',
-            },
-            parameters: {
-              title: 'Recent orders',
-            },
-            payload: {
-              type: 'static',
-              data: {
-                item: [
-                  {
-                    title: 'ตามใจสั่ง ลาดพร้าว48',
-                    asset: 'thai-restaurant-001.png',
-                  },
-                  {
-                    title: 'Texas Chicken',
-                    asset: 'texas-chicken.png',
-                  },
-                ],
-              },
-            },
-          },
-        ],
-      }
-
-      expect(async () => await chassis.validateViewSpec(sourceJson)).rejects.toThrow()
+      expect(async () => await chassis.validateViewSpec(unknownHeightPolicyInAttributes)).rejects.toThrow()
     })
   })
 
@@ -199,7 +72,7 @@ describe('Chassis', () => {
   describe('validateResolverSpec', () => {
     it('throws error for unknown payload type', async () => {
       expect(
-        async () => await chassis.validateSpec(resolve('__testdata__/resolverSpec/unknown-payload-type.json'))
+        async () => await chassis.validateSpec(resolve('__testdata__/spec/unknown-payload-type.json'))
       ).rejects.toThrow()
     })
 
