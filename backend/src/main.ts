@@ -6,7 +6,7 @@ import { ChassisResolverSpec } from '../src/spec/ChassisResolverSpec'
 export default Chassis
 
 // function bootstrap() {
-//   const chassis = new Chassis([resolve('../example/src/ViewSpec.ts'), resolve('../example/src/ResolverSpec.ts')])
+//   const chassis = new Chassis([resolve('./example/src/ViewSpec.ts'), resolve('./example/src/ResolverSpec.ts')])
 
 //   // execute function what you want
 // }
