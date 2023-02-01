@@ -73,16 +73,9 @@ The specification file validates the source format (JSON) as a TypeScript file.
 
 ```ts
 // ViewSpec.ts
-interface Banner {
+interface Banner extends ChassisViewSpec {
   id: string
   viewType: 'Banner'
-  attributes: {
-    heightPolicy: 'ratio'
-    heightValue: string
-  }
-  parameter: {
-    title: string
-  }
   payload: {
     asset: string
     placeholder: string

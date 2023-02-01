@@ -2,8 +2,8 @@
 
 import Chassis from './handler/Chassis'
 import yargs from 'yargs'
-import { resolve, dirname } from 'path'
-import fs from 'fs'
+import { resolve } from 'path'
+import * as fs from 'fs'
 
 yargs.command({
   command: 'validate',
@@ -20,20 +20,36 @@ yargs.command({
         alias: 's',
         describe: 'Array of specification files',
         type: 'array',
-        demandOption: true,
+      })
+      .option('dir', {
+        alias: 'd',
+        describe: 'Path of specification directory',
+        type: 'string',
+      })
+      .check(argv => {
+        if (!argv.spec && !argv.dir) {
+          throw new Error('Either --spec or --dir must be specified.')
+        }
+        return true
       }),
   handler: async argv => {
-    try {
+    let spec: string[] = []
+
+    // If dir is not undefined
+    if (argv.dir) {
+      spec = fs.readdirSync(argv.dir).map(fileName => {
+        return `${argv.dir}/${fileName}`
+      })
+    } else {
       // Split path file
-      const spec: string[] = argv.spec[0].split(',')
-      // Create new instance
-      const chassis = new Chassis(spec.map(s => resolve(__dirname, s)))
-      // Validate spec
-      const isValid = await chassis.validateSpec(argv.source)
-      console.log(isValid)
-    } catch (err) {
-      console.error(err)
+      spec = argv.spec[0].split(',')
     }
+
+    // Create new instance
+    const chassis = new Chassis(spec.map(s => resolve(s)))
+    // Validate spec
+    const isValid = await chassis.validateSpec(argv.source)
+    console.log(isValid)
   },
 })
 
@@ -56,7 +72,7 @@ yargs.command({
       }),
   handler: async argv => {
     // Create new instance
-    const chassis = new Chassis([resolve(__dirname, argv.file)])
+    const chassis = new Chassis([resolve(argv.file)])
     // Generate schema
     const schema = await chassis.generateJsonSchemaBySymbol(argv.symbol)
     // Log schema
@@ -88,7 +104,7 @@ yargs.command({
       }),
   handler: async argv => {
     // Create new instance
-    const chassis = new Chassis([resolve(__dirname, argv.file)])
+    const chassis = new Chassis([resolve(argv.file)])
     // Generate schema
     const schema = await chassis.generateJsonSchemaBySymbol(argv.symbol)
 
@@ -124,7 +140,7 @@ yargs.command({
       }),
   handler: async argv => {
     // Create new instance
-    const chassis = new Chassis([resolve(__dirname, argv.file)])
+    const chassis = new Chassis([resolve(argv.file)])
     // Generate all schema
     const schema = await chassis.generateJsonSchemaFile()
 

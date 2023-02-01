@@ -1,4 +1,4 @@
-import { ChassisResolverSpec } from './spec/ChassisResolverSpec'
+import { ChassisResolverSpec } from '../src/spec/ChassisResolverSpec'
 
 type ResolverSpec = GetBanner | GetQuickAccessItem
 interface GetBanner extends ChassisResolverSpec {

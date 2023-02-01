@@ -1,5 +1,5 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
-import ChassisHelper from '../../src/handler/ChassisHelper'
+import ChassisHelper from '@/src/handler/ChassisHelper'
 
 describe('Helper', () => {
   describe('validateJsonSchema', () => {

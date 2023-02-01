@@ -19,9 +19,7 @@ export default class Chassis {
     const settings: TJS.PartialArgs = { required: true }
     const compilerOptions: TJS.CompilerOptions = { strictNullChecks: true }
 
-    const specPathResolves: string[] = [
-      ...files?.map(path => resolve(path)) ?? [],
-    ]
+    const specPathResolves: string[] = [...(files?.map(path => resolve(path)) ?? [])]
 
     this._program = TJS.getProgramFromFiles(
       [
@@ -46,7 +44,7 @@ export default class Chassis {
   }
 
   public async generateJsonSchemaFile(): Promise<JSONSchema[]> {
-    // Get all symbols 
+    // Get all symbols
     const symbols = this._generator.getMainFileSymbols(this._program)
 
     // Initial json schemas
@@ -66,8 +64,8 @@ export default class Chassis {
    * @param sourceJson
    * @returns Validation Result
    */
-  public async validateSpec(json: object): Promise<boolean>;
-  public async validateSpec(sourcePath: string): Promise<boolean>;
+  public async validateSpec(json: object): Promise<boolean>
+  public async validateSpec(sourcePath: string): Promise<boolean>
   public async validateSpec(jsonOrSourcePath: object | string): Promise<boolean> {
     let data: object
 

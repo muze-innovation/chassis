@@ -18,19 +18,12 @@
   },
   "scripts": {
     "dev": "ts-node ./src/main.ts",
-    "test": "jest __tests__/",
+    "test": "rm -rf dist & jest __tests__/",
     "format": "prettier . --write",
     "cp:spec": "mkdir ./dist/spec && cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/spec/",
     "cp:src:spec": "cp ./src/spec/ChassisResolverSpec.ts ./src/spec/ChassisScreenSpec.ts ./src/spec/ChassisViewSpec.ts ./dist/src/spec/",
-    "cp:src": "cp ./src/ResolverSpec.ts ./src/ViewSpec.ts ./dist/src/",
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp:src && npm run cp:spec && npm run cp:src:spec && npm pack",
+    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc && npm run cp:spec && npm run cp:src:spec && npm pack",
     "cli": "ts-node ./src/cli.ts"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^10.0.0",
