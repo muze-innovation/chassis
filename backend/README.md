@@ -119,7 +119,7 @@ source.json
 }
 ```
 
-This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./data/README.md)
+This object uses `Banner` specifications to validate. You can read more about each field in [Data Doc](./docs/source.md)
 
 ## Problem
 
