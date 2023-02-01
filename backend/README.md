@@ -160,9 +160,7 @@ The `remote` payload type does not have the `assets` and `placeholder` fields to
 
 ### Resolver
 
-Chassis doesn't just manage static values. Dynamic values can be manipulated with `Resolver`.
-
-Chassis enables the user to add a file input `resolver` specification for validating input and output by mapping spec with `resolverWith` field.
+Chassis handles dynamic values through the use of `Resolver`. It allows the user to specify a resolver specification file for input/output validation by mapping the spec to the `resolvedWith` field.
 
 ```json
 "resolvedWith": "GetBanner"
@@ -200,7 +198,7 @@ interface Banner {
 }
 ```
 
-Resolver specification will define the type of output, either asset or placeholder, to validate with the payload in the Banner specification.
+Resolver spec defines output type (asset or placeholder) to validate with payload in Banner spec.
 
 # Getting Started
 
@@ -216,7 +214,7 @@ npm install chassis
 
 ### `validateSpec`
 
-Call a function to validate the source(JSON) with specifications(TS).
+Invoke a function to validate the source represented in JSON format against the specifications defined in TypeScript.
 
 Example CLI:
 
@@ -259,11 +257,11 @@ Error: [
 ]
 ```
 
-The error shows that the asset value type must be string only.
+Error indicates asset value must be of type string only.
 
 ### [Inprogress] `getJsonSchemaBySymbol`
 
-This method converts the TS file to JsonSchema.
+This method transforms a TypeScript file into a JSON Schema.
 
 Example method:
 
@@ -286,7 +284,7 @@ interface Banner {
 }
 ```
 
-Call a function using a `Banner.ts` as an example TS file to convert to a schema.
+Invoke a function using Banner.ts as a sample TypeScript file to be transformed into a JSON schema.
 
 ```ts
 import Chassis from 'chassis'
