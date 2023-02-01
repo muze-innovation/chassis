@@ -17,4 +17,4 @@
 [Specification](../example/spec/)
 [JSON Source/Output](../example/source.json)
 
-![ImageUi](../asset/ui.png)
+![ImageUi](../asset/ui.jpg)

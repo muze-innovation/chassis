@@ -63,6 +63,7 @@ Chassis input is comprised of two components: specification and source files.
 ### Display on UI
 
 Example Banner :
+
 ![ImageBanner](./asset/banner.png)
 
 Chassis validation of the front-end UI is based on the [Spec](#Spec) and [Source](#Source) files. If the validation returns `TRUE`, the front end will correctly render the `Banner` using the source in JSON format.
