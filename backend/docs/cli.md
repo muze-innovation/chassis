@@ -12,21 +12,32 @@ To use the tool, run the following command in the terminal:
 chassis validate --source [source file] --spec [array of spec files]
 ```
 
+or
+
+```sh
+chassis validate --source [source file] --dir [spec directory]
+```
+
 where:
 
-- `source` (`-i`) is the path to the JSON file you want to validate (example: `./data/source.json`)
-- `spec` (`-s`) is an array of the specification file paths (example: `./src/ViewSpec.ts,./src/ResolverSpec.ts`)
+- `--source` (`-i`) is the path to the JSON file you want to validate (example: `./source.json`)
+- `--spec` (`-s`) is an array of the specification file paths (example: `'./ViewSpec.ts','./ResolverSpec.ts'`)
+- `--dir` (`-d`) is the path of the specification directory path (example: `'./spec'`)
 
-Please make sure that the files exists in the given path before running the command.
-
-**Note**: Both `--source` and `--spec` options are required to run the validation.
+**Note**: The `--source` option is required to run the validation. And Either `--spec` or `--dir` must be provided, not both.
 
 ## Example
 
+To validate a JSON file `./source.json` with specification files `./ViewSpec.ts` and .`/ResolverSpec.ts`, run:
+
 ```sh
-chassis validate --source './data/source.json' --spec './src/ViewSpec.ts','./src/ResolverSpec.ts'
+chassis validate --source './source.json' --spec './ViewSpec.ts','./ResolverSpec.ts'
 ```
 
-This command will validate the file `./data/source.json` against the specification files `./src/ViewSpec.ts` and `./src/ResolverSpec.ts`.
+To validate a JSON file `./source.json` with specification files in directory `./spec`, run:
+
+```sh
+chassis validate --source './source.json' --dir './spec'
+```
 
 Please make sure that the files exists in the given path before running the command.
