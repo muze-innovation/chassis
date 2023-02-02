@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'bannerModel.dart';
 
 class BannerView extends StatefulWidget {
-  final Stream stream;
+  final Stream<BannerItem> stream;
   final BannerModel model;
 
   const BannerView({Key? key, required this.stream, required this.model})
@@ -25,28 +25,27 @@ class _BannerState extends State<BannerView> {
   @override
   Widget build(BuildContext context) {
     BannerModel model = widget.model;
-    if (model.payload.data != null) {
-      return BannerMainView(model.payload.data!, model.attributes);
-    } else {
-      return StreamBuilder<dynamic>(
-        stream: widget.stream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return BannerLoadingView(model.attributes);
-            case ConnectionState.done:
-            case ConnectionState.active:
-              BannerItem bannerItem = BannerItem.fromJson(snapshot.data);
-              return BannerMainView(bannerItem, model.attributes);
-            default:
-              return Container();
-          }
-        },
-      );
-    }
+    return StreamBuilder<BannerItem>(
+      initialData: model.payload.data,
+      stream: widget.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        if (snapshot.hasData) {
+          return BannerMainView(snapshot.data!, model.attributes);
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return BannerLoadingView(model.attributes);
+          case ConnectionState.done:
+          case ConnectionState.active:
+            return BannerMainView(snapshot.data!, model.attributes);
+          default:
+            return Container();
+        }
+      },
+    );
   }
 }
 

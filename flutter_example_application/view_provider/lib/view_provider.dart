@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'dart:async';
 import 'package:chassis/interface.dart';
 import 'package:flutter/widgets.dart';
 import 'package:view_provider/example/Banner/bannerModel.dart';
@@ -29,12 +28,16 @@ class ViewProvider implements IViewProvider {
 
   Widget? getBannerView(Stream<dynamic> stream, Map<String, dynamic> config) {
     BannerModel model = BannerModel.fromJson(config);
-    return BannerView(stream: stream, model: model);
+    var broadcastStream =
+        stream.map<BannerItem>((data) => BannerItem.fromJson(data));
+    return BannerView(stream: broadcastStream, model: model);
   }
 
   Widget? getQuickAccessView(
       Stream<dynamic> stream, Map<String, dynamic> config) {
     QuickAccessModel model = QuickAccessModel.fromJson(config);
-    return QuickAccessView(stream: stream, model: model);
+    var broadcastStream = stream.map<QuickAccessPayloadData>(
+        (data) => QuickAccessPayloadData.fromJson(data));
+    return QuickAccessView(stream: broadcastStream, model: model);
   }
 }

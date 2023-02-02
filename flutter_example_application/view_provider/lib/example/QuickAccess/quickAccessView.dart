@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
 
 class QuickAccessView extends StatefulWidget {
-  final Stream stream;
+  final Stream<QuickAccessPayloadData> stream;
   final QuickAccessModel model;
 
   const QuickAccessView({Key? key, required this.stream, required this.model})
@@ -23,30 +23,26 @@ class _QuickAccessState extends State<QuickAccessView> {
   Widget build(BuildContext context) {
     log(widget.model.toString(), name: 'QuickAccess - Build');
     var model = widget.model;
-
-    if (model.payload.data != null) {
-      return _quickAccessSection(model.payload.data!, model.parameters);
-    } else {
-      return StreamBuilder<dynamic>(
-          stream: widget.stream,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return _quickAccessLoadingView();
-              case ConnectionState.done:
-              case ConnectionState.active:
-                log(snapshot.data.toString(), name: 'QuickAccess snapshot');
-                QuickAccessPayloadData payload =
-                    QuickAccessPayloadData.fromJson(snapshot.data);
-                return _quickAccessSection(payload, model.parameters);
-            }
-          });
-    }
+    return StreamBuilder<QuickAccessPayloadData>(
+        stream: widget.stream,
+        initialData: model.payload.data,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          if (snapshot.hasData) {
+            return _quickAccessSection(snapshot.data!, model.parameters);
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return _quickAccessLoadingView();
+            case ConnectionState.done:
+            case ConnectionState.active:
+              log(snapshot.data.toString(), name: 'QuickAccess snapshot');
+              return _quickAccessSection(snapshot.data!, model.parameters);
+          }
+        });
   }
 
   Widget _quickAccessSection(
