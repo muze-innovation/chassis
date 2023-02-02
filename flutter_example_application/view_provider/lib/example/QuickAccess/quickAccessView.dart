@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
 
 class QuickAccessView extends StatefulWidget {
   final Stream stream;
-  final Map<String, dynamic> config;
+  final QuickAccessModel model;
 
-  const QuickAccessView({Key? key, required this.stream, required this.config})
+  const QuickAccessView({Key? key, required this.stream, required this.model})
       : super(key: key);
 
   @override
@@ -20,59 +21,62 @@ class _QuickAccessState extends State<QuickAccessView> {
 
   @override
   Widget build(BuildContext context) {
-    log(widget.config.toString(), name: 'QuickAccess - Build');
-    List<QuickAccessItem> payload = [];
-    var params = widget.config['parameters'];
+    log(widget.model.toString(), name: 'QuickAccess - Build');
+    var model = widget.model;
 
-    return StreamBuilder<dynamic>(
-      stream: widget.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
+    if (model.payload.data != null) {
+      return _quickAccessSection(model.payload.data!, model.parameters);
+    } else {
+      return StreamBuilder<dynamic>(
+          stream: widget.stream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
 
-        if (snapshot.data != null) {
-          List<dynamic> value = snapshot.data['item'];
-          payload = List<QuickAccessItem>.from(value.map((model) {
-            return QuickAccessItem(
-              title: model['title'],
-              asset: model['asset'],
-            );
-          }));
-        }
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                return _quickAccessLoadingView();
+              case ConnectionState.done:
+              case ConnectionState.active:
+                log(snapshot.data.toString(), name: 'QuickAccess snapshot');
+                QuickAccessPayloadData payload =
+                    QuickAccessPayloadData.fromJson(snapshot.data);
+                return _quickAccessSection(payload, model.parameters);
+            }
+          });
+    }
+  }
 
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            return _quickAccessLoadingView();
-          case ConnectionState.done:
-          case ConnectionState.active:
-            log(payload.toString(), name: 'QuickAccess snapshot');
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          params['title'],
-                          style: Theme.of(context).textTheme.headlineSmall,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: _showAlertDialog,
-                        icon: const Icon(Icons.arrow_circle_right_outlined),
-                      ),
-                    ],
-                  ),
-                ),
-                _quickAccessMainView(payload),
-              ],
-            );
-        }
-      },
+  Widget _quickAccessSection(
+      QuickAccessPayloadData payload, QuickAccessParameters params) {
+    return Column(
+      children: [
+        _titleView(params),
+        _quickAccessMainView(payload.item ?? <QuickAccessItem>[]),
+      ],
+    );
+  }
+
+  Widget _titleView(QuickAccessParameters params) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              params.title,
+              style: Theme.of(context).textTheme.headlineSmall,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            onPressed: _showAlertDialog,
+            icon: const Icon(Icons.arrow_circle_right_outlined),
+          ),
+        ],
+      ),
     );
   }
 
@@ -221,10 +225,4 @@ class _QuickAccessState extends State<QuickAccessView> {
     );
     showDialog(context: context, builder: (context) => alert);
   }
-}
-
-class QuickAccessItem {
-  final String title;
-  final String asset;
-  const QuickAccessItem({required this.title, required this.asset});
 }
