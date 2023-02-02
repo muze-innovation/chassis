@@ -83,10 +83,7 @@ export default class Chassis {
       // Validate ViewSpec
       await this.validateViewSpec(data)
     } catch (error) {
-      const err = error as Error
-      const json = JSON.parse(err.message)
       // console.log(err.message)
-      console.table(json)
     }
 
     return true

@@ -1,6 +1,7 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import Ajv from 'ajv'
 import { diffSchemas } from 'json-schema-diff'
+import Table from 'cli-table'
 
 export default class ChassisHelper {
   /**
@@ -57,12 +58,18 @@ export default class ChassisHelper {
     const isValid = !validation.additionsFound && !validation.removalsFound
 
     if (!isValid && throwable) {
-      const error: Record<string, any> = {}
-      error[viewType] = {
-        addedJsonSchema: validation.addedJsonSchema,
-        removedJsonSchema: validation.removedJsonSchema,
-      }
-      throw new Error(JSON.stringify(error, null, 2))
+
+      const table = new Table({
+        head: ['ViewType', 'AddedJsonSchema', 'RemovedJsonSchema'],
+      });
+
+      table.push(
+        [viewType, JSON.stringify(validation.addedJsonSchema, null, 2), JSON.stringify(validation.removedJsonSchema, null, 2)],
+      );
+
+      console.log(table.toString());
+      throw new Error()
+
     }
     return isValid
   }
