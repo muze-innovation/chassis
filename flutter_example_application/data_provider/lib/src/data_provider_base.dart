@@ -1,24 +1,39 @@
 import 'dart:async';
-import 'package:chassis/constants/constants.dart';
 import 'package:chassis/interfaces/i_data_provider.dart';
 import 'package:data_provider/src/quick_access_item_data_provider.dart';
 import '../constans/constants.dart';
+import '../model/banner_input.dart';
 import 'banner_data_provider.dart';
 
-class DataProvider implements IDataProvider {
+abstract class ADataProvider implements IDataProvider {
+  void getBanner(StreamController controller, BannerInput banner);
+  void getQuickAccessItem(StreamController controller);
+}
+
+class DataProvider extends ADataProvider {
   final _bannerDataProvider = BannerDataProvider();
   final _quickAccessItemDataProvider = QuickAccessItemDataProvider();
   @override
   void getData(StreamController controller, Map<String, dynamic> payload) {
     switch (payload[DataProviderConstans.resolvedWith]) {
       case DataProviderConstans.getBanner:
-        _bannerDataProvider.getData(controller,
-            payload[ResovlerSpecConstants.input][DataProviderConstans.slug]);
+        getBanner(controller, BannerInput.fromJson(payload));
         break;
       case DataProviderConstans.getQuickAccessItem:
-        _quickAccessItemDataProvider.getData(controller);
+        getQuickAccessItem(controller);
         break;
       default:
     }
+  }
+
+  @override
+  void getBanner(StreamController controller, BannerInput banner) {
+    print("DataProvider banner is $banner");
+    _bannerDataProvider.getData(controller, banner.input.slug);
+  }
+
+  @override
+  void getQuickAccessItem(StreamController controller) {
+    _quickAccessItemDataProvider.getData(controller);
   }
 }
