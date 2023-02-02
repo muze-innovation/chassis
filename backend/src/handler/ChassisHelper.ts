@@ -10,12 +10,27 @@ export default class ChassisHelper {
    * @param throwable Throw exception when json is invalid
    * @returns validation result
    */
-  public static validateJsonSchema(schema: JSONSchema, json: Object, throwable: boolean = true): boolean {
+  public static validateJsonSchema(
+    schema: JSONSchema,
+    json: Object,
+    viewType: string,
+    throwable: boolean = true
+  ): boolean {
     const ajv = new Ajv()
     const validation = ajv.compile(schema)
     const isValid = validation(json)
     if (!isValid && throwable) {
-      const err = JSON.stringify(validation.errors, null, 2)
+      const errors = validation.errors?.map(e => {
+        return {
+          viewType: viewType,
+          instancePath: e.instancePath,
+          keyword: e.keyword,
+          params: JSON.stringify(e.params, null, 2).replace(/[\s\n]/g, ''),
+          message: e.message,
+        }
+      })
+
+      const err = JSON.stringify(errors, null, 2)
       throw new Error(err)
     }
     return isValid
@@ -31,6 +46,7 @@ export default class ChassisHelper {
   public static async validateSchemaDiff(
     sourceSchema: JSONSchema,
     destinationSchema: JSONSchema,
+    viewType: string,
     throwable: boolean = true
   ): Promise<boolean> {
     const validation = await diffSchemas({
@@ -39,8 +55,14 @@ export default class ChassisHelper {
     })
 
     const isValid = !validation.additionsFound && !validation.removalsFound
+
     if (!isValid && throwable) {
-      throw new Error(JSON.stringify(validation, null, 2))
+      const error: Record<string, any> = {}
+      error[viewType] = {
+        addedJsonSchema: validation.addedJsonSchema,
+        removedJsonSchema: validation.removedJsonSchema,
+      }
+      throw new Error(JSON.stringify(error, null, 2))
     }
     return isValid
   }
