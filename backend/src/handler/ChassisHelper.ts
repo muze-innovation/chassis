@@ -3,6 +3,8 @@ import Ajv from 'ajv'
 import { diffSchemas } from 'json-schema-diff'
 import Table from 'cli-table'
 
+//const table = new Table([''])
+
 export default class ChassisHelper {
   /**
    * Validate Json with Json Schema
@@ -11,46 +13,41 @@ export default class ChassisHelper {
    * @param throwable Throw exception when json is invalid
    * @returns validation result
    */
-  public static validateJsonSchema(
-    schema: JSONSchema,
-    json: Object,
-    viewType: string,
-    throwable: boolean = true
-  ): boolean {
+  public static validateJsonSchema(schema: JSONSchema, json: Object, throwable: boolean = true): boolean {
     const ajv = new Ajv()
     const validation = ajv.compile(schema)
     const isValid = validation(json)
     if (!isValid && throwable) {
-      const subTable = new Table({
-        head: ['InstancePath', 'Keyword', 'Params', 'Message'],
-      })
-
       let message = 'must match a schema'
       let parentPath = ''
+      let errors = validation.errors ?? []
 
       const errorAnyOf = validation.errors?.find(e => e.keyword === 'anyOf')
 
       if (errorAnyOf) {
         parentPath = errorAnyOf.instancePath
-        const errorTable = new Table({
-          head: ['InstancePath', 'Keyword', 'Params'],
+        const path = new Table({
+          head: ['ParentPath'],
         })
-        errorTable.push([errorAnyOf.instancePath, errorAnyOf.keyword, this.jsonStringify(errorAnyOf.params)])
-        message = `${errorAnyOf.message ?? ''}\n${errorTable.toString()}`
+        path.push([errorAnyOf.instancePath])
+        message = `${errorAnyOf.message ?? ''}\n${path.toString()}`
+        errors = validation.errors?.filter(e => e.keyword != 'anyOf') ?? []
       }
 
-      validation.errors?.forEach(e => {
-        if (e.keyword != 'anyOf') {
-          subTable.push([
-            e.instancePath.replace(parentPath, ''),
-            e.keyword,
-            this.jsonStringify(e.params),
-            e.message ?? '',
-          ])
-        }
+      const errorTable = new Table({
+        head: ['InstancePath', 'Keyword', 'Params', 'Message'],
       })
 
-      throw new Error(this.generateErrorTable(viewType, message, subTable.toString()))
+      errors.forEach(e => {
+        errorTable.push([
+          e.instancePath.replace(parentPath, ''),
+          e.keyword,
+          this.jsonStringify(e.params),
+          e.message ?? '',
+        ])
+      })
+
+      throw new Error(`${message}\n${errorTable.toString()}`)
     }
     return isValid
   }
@@ -65,7 +62,6 @@ export default class ChassisHelper {
   public static async validateSchemaDiff(
     sourceSchema: JSONSchema,
     destinationSchema: JSONSchema,
-    viewType: string,
     throwable: boolean = true
   ): Promise<boolean> {
     const validation = await diffSchemas({
@@ -76,12 +72,16 @@ export default class ChassisHelper {
     const isValid = !validation.additionsFound && !validation.removalsFound
 
     if (!isValid && throwable) {
-      const subTable = new Table({
+      const errorTable = new Table({
         head: ['AddedJsonSchema', 'RemovedJsonSchema'],
       })
 
-      subTable.push([this.jsonStringify(validation.addedJsonSchema), this.jsonStringify(validation.removedJsonSchema)])
-      throw new Error(this.generateErrorTable(viewType, 'found json schema diff', subTable.toString()))
+      errorTable.push([
+        this.jsonStringify(validation.addedJsonSchema),
+        this.jsonStringify(validation.removedJsonSchema),
+      ])
+
+      throw new Error(`found json schema diff\n${errorTable.toString()}`)
     }
     return isValid
   }
@@ -90,11 +90,14 @@ export default class ChassisHelper {
     return JSON.stringify(json, null, 2)
   }
 
-  public static generateErrorTable(viewType: string, error: string, description: string): string {
-    const mainTable = new Table({
-      head: ['ViewType', 'Error', 'Description'],
-    })
-    mainTable.push([viewType, error, description])
-    return mainTable.toString()
+  public static displayErrorTable(errors: [string, string][]): void {
+    if (errors.length) {
+      const table = new Table({
+        head: ['ViewType', 'Error'],
+      })
+
+      table.push(...errors)
+      console.log(table.toString())
+    }
   }
 }
