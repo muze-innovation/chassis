@@ -21,18 +21,36 @@ export default class ChassisHelper {
     const validation = ajv.compile(schema)
     const isValid = validation(json)
     if (!isValid && throwable) {
-      const errors = validation.errors?.map(e => {
-        return {
-          viewType: viewType,
-          instancePath: e.instancePath,
-          keyword: e.keyword,
-          params: JSON.stringify(e.params, null, 2).replace(/[\s\n]/g, ''),
-          message: e.message,
+      const subTable = new Table({
+        head: ['InstancePath', 'Keyword', 'Params', 'Message'],
+      })
+
+      let message = 'must match a schema'
+      let parentPath = ''
+
+      const errorAnyOf = validation.errors?.find(e => e.keyword === 'anyOf')
+
+      if (errorAnyOf) {
+        parentPath = errorAnyOf.instancePath
+        const errorTable = new Table({
+          head: ['InstancePath', 'Keyword', 'Params'],
+        })
+        errorTable.push([errorAnyOf.instancePath, errorAnyOf.keyword, this.jsonStringify(errorAnyOf.params)])
+        message = `${errorAnyOf.message ?? ''}\n${errorTable.toString()}`
+      }
+
+      validation.errors?.forEach(e => {
+        if (e.keyword != 'anyOf') {
+          subTable.push([
+            e.instancePath.replace(parentPath, ''),
+            e.keyword,
+            this.jsonStringify(e.params),
+            e.message ?? '',
+          ])
         }
       })
 
-      const err = JSON.stringify(errors, null, 2)
-      throw new Error(err)
+      throw new Error(this.generateErrorTable(viewType, message, subTable.toString()))
     }
     return isValid
   }
@@ -58,19 +76,25 @@ export default class ChassisHelper {
     const isValid = !validation.additionsFound && !validation.removalsFound
 
     if (!isValid && throwable) {
+      const subTable = new Table({
+        head: ['AddedJsonSchema', 'RemovedJsonSchema'],
+      })
 
-      const table = new Table({
-        head: ['ViewType', 'AddedJsonSchema', 'RemovedJsonSchema'],
-      });
-
-      table.push(
-        [viewType, JSON.stringify(validation.addedJsonSchema, null, 2), JSON.stringify(validation.removedJsonSchema, null, 2)],
-      );
-
-      console.log(table.toString());
-      throw new Error()
-
+      subTable.push([this.jsonStringify(validation.addedJsonSchema), this.jsonStringify(validation.removedJsonSchema)])
+      throw new Error(this.generateErrorTable(viewType, 'found json schema diff', subTable.toString()))
     }
     return isValid
+  }
+
+  public static jsonStringify(json: Object): string {
+    return JSON.stringify(json, null, 2)
+  }
+
+  public static generateErrorTable(viewType: string, error: string, description: string): string {
+    const mainTable = new Table({
+      head: ['ViewType', 'Error', 'Description'],
+    })
+    mainTable.push([viewType, error, description])
+    return mainTable.toString()
   }
 }

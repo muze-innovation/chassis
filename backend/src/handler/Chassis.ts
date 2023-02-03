@@ -38,9 +38,14 @@ export default class Chassis {
    * @returns JSONSchema
    */
   public async generateJsonSchemaBySymbol(symbol: string): Promise<JSONSchema> {
-    const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
-    // Json schema resolve reference
-    return await $RefParser.dereference(schema)
+    try {
+      const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
+      // Json schema resolve reference
+      return await $RefParser.dereference(schema)
+    } catch (error) {
+      const err = error as Error
+      throw new Error(ChassisHelper.generateErrorTable(symbol, err.message, ''))
+    }
   }
 
   public async generateJsonSchemaFile(): Promise<JSONSchema[]> {
@@ -51,8 +56,7 @@ export default class Chassis {
     const jsonSchemas: JSONSchema[] = []
 
     for (const symbol of symbols) {
-      const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
-      const jsonSchema = await $RefParser.dereference(schema)
+      const jsonSchema = await this.generateJsonSchemaBySymbol(symbol)
       jsonSchemas.push(jsonSchema)
     }
 
@@ -83,7 +87,8 @@ export default class Chassis {
       // Validate ViewSpec
       await this.validateViewSpec(data)
     } catch (error) {
-      // console.log(err.message)
+      const err = error as Error
+      console.log(err.message)
     }
 
     return true
@@ -114,7 +119,7 @@ export default class Chassis {
       const viewSpec = await this.generateJsonSchemaBySymbol(viewType)
 
       // Clone viewSpec
-      const viewSpecNoPayload = JSON.parse(JSON.stringify(viewSpec))
+      const viewSpecNoPayload = JSON.parse(ChassisHelper.jsonStringify(viewSpec))
       // Delete payload field from JsonSchema spec
       delete viewSpecNoPayload.properties?.payload
       // Validate without payload
@@ -156,7 +161,9 @@ export default class Chassis {
       const resolverSpec = await this.generateJsonSchemaBySymbol(payload?.resolvedWith ?? '')
 
       if (!resolverSpec.properties) {
-        throw new Error(`Invalid ResolverSpec: ${payload?.resolvedWith}`)
+        throw new Error(
+          ChassisHelper.generateErrorTable(viewType, `Invalid ResolverSpec: ${payload?.resolvedWith}`, '')
+        )
       }
 
       const { input, output } = resolverSpec.properties
@@ -167,7 +174,7 @@ export default class Chassis {
       // Validate Output
       await ChassisHelper.validateSchemaDiff(viewSpec, output as JSONSchema, viewType)
     } else {
-      throw new Error(`Unknown payload type: ${payload.type}`)
+      throw new Error(ChassisHelper.generateErrorTable(viewType, `Unknown payload type: ${payload.type}`, ''))
     }
 
     return true
