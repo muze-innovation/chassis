@@ -8,13 +8,13 @@ import 'package:view_provider/example/QuickAccess/quickAccessView.dart';
 
 enum ViewType { Banner, QuickAccess }
 
-class ViewProvider implements IViewProvider {
+abstract class ViewProvider implements IViewProvider {
   @override
   Widget? getView(Stream<dynamic> stream, Map<String, dynamic> config) {
     ViewType viewType = getViewType(config['viewType']);
     switch (viewType) {
       case ViewType.Banner:
-        return getBannerView(stream, config);
+        return getBannerView(stream, BannerModel.fromJson(config));
       case ViewType.QuickAccess:
         return getQuickAccessView(stream, config);
       default:
@@ -26,12 +26,18 @@ class ViewProvider implements IViewProvider {
     return ViewType.values.byName(value);
   }
 
-  Widget? getBannerView(Stream<dynamic> stream, Map<String, dynamic> config) {
-    BannerModel model = BannerModel.fromJson(config);
+  Widget? getBannerView(Stream<dynamic> stream, BannerModel model) {
+    // BannerModel model = BannerModel.fromJson(config);
     var broadcastStream =
         stream.map<BannerItem>((data) => BannerItem.fromJson(data));
     return BannerView(stream: broadcastStream, model: model);
   }
+  // Widget? getBannerView(Stream<dynamic> stream, Map<String, dynamic> config) {
+  //   BannerModel model = BannerModel.fromJson(config);
+  //   var broadcastStream =
+  //       stream.map<BannerItem>((data) => BannerItem.fromJson(data));
+  //   return BannerView(stream: broadcastStream, model: model);
+  // }
 
   Widget? getQuickAccessView(
       Stream<dynamic> stream, Map<String, dynamic> config) {

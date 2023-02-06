@@ -15,7 +15,7 @@ class HomeLandingScreen extends StatelessWidget {
         ),
         body: Center(
           child: ElevatedButton(
-            child: const Text(FoodLandingScreen.sreenName),
+            child: const Text(FoodLandingScreen.screenName),
             onPressed: () {
               Navigator.pushNamed(context, FoodLandingScreen.routeName);
             },
