@@ -47,16 +47,16 @@ export default class Chassis {
     return await $RefParser.dereference(schema)
   }
 
-  public async generateJsonSchemaFile(): Promise<JSONSchema[]> {
+  public async generateJsonSchemaFile(): Promise<Record<string, JSONSchema>> {
     // Get all symbols
     const symbols = this._generator.getMainFileSymbols(this._program)
 
     // Initial json schemas
-    const jsonSchemas: JSONSchema[] = []
+    const jsonSchemas: Record<string, JSONSchema> = {}
 
     for (const symbol of symbols) {
       const jsonSchema = await this.generateJsonSchemaBySymbol(symbol)
-      jsonSchemas.push(jsonSchema)
+      jsonSchemas[symbol] = jsonSchema
     }
 
     return jsonSchemas
