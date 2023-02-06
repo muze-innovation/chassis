@@ -11,6 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   json_schema: ^4.0.3
+  rxdart: ^0.27.7
+  flutter_rx_stream_builder: ^2.0.1
+
+
 
 dev_dependencies:
   lints: ^2.0.0

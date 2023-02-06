@@ -1,17 +1,8 @@
 import 'dart:async';
-
-import 'package:chassis/chassis.dart';
-import 'package:data_provider/data_provider.dart';
-import 'package:view_provider/view_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_example_application/screens/screens.dart';
 
 void main() {
-  // setup chassis
-  final dataProvider = DataProvider();
-  final viewProvider = ViewProvider();
-  Chassis.setup(dataProvider: dataProvider, viewProvider: viewProvider);
-
   // run app
   runApp(const MyApp());
 }

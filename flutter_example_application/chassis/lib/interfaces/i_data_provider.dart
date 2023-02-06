@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:chassis/models/chassis_request.dart';
 
-abstract class IDataProvider {
-  void getData(
-      StreamController<dynamic> controller, Map<String, dynamic> payload);
+mixin IDataProvider {
+  void getData(StreamController<dynamic> controller, ChassisRequest resolver);
 }

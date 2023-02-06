@@ -1,6 +1,14 @@
+/// Foundation
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:chassis/chassis.dart';
+
+/// Internal
+import 'package:data_provider/core.dart';
+import 'package:view_provider/core.dart';
 import 'package:flutter_example_application/repository/repository.dart';
+
+/// Chassis
+import 'package:chassis/core.dart';
 
 class FoodLandingScreen extends StatefulWidget {
   static const routeName = '/food_landing_screen';
@@ -18,23 +26,31 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final IChassisRepository _chassisRepository = ChassisRepository();
-  List<Widget> _items = [];
+  Iterable<Widget> _items = [];
   bool _isLoading = true;
+  late Chassis _chassis;
 
   @override
   void initState() {
     super.initState();
+
+    // setup chassis
+    final dataProvider = AppDataProvider();
+    final viewProvider = ViewProvider();
+    _chassis = Chassis(dataProvider: dataProvider, viewProvider: viewProvider);
+
+    // call API to load data
     loadData();
   }
 
   Future loadData() async {
-    return _chassisRepository.getData().then((data) => setData(data));
+    return _chassisRepository.getData().then((items) => setData(items));
   }
 
-  void setData(Map<String, dynamic> data) {
+  void setData(Iterable<ChassisItem> items) {
     setState(() {
       _isLoading = false;
-      _items = Chassis.getView(data);
+      _items = _chassis.getViews(items);
     });
   }
 
@@ -55,7 +71,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
                 child: ListView.separated(
                   itemCount: _items.length,
                   itemBuilder: (context, index) {
-                    return _items[index];
+                    return _items.elementAt(index);
                   },
                   separatorBuilder: (context, index) {
                     return const Divider(
@@ -65,5 +81,11 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
                   },
                 ),
               ));
+  }
+
+  @override
+  void dispose() {
+    _chassis.dispose();
+    super.dispose();
   }
 }

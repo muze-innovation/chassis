@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:data_provider/data_provider.dart';
+import 'package:data_provider/core.dart';
 
 void main() {
   final dataProvider = DataProvider();
@@ -21,5 +21,5 @@ void main() {
     },
     cancelOnError: false,
   );
-  dataProvider.getData(controller, payload);
+  // dataProvider.getData(controller, payload);
 }

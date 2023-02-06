@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:chassis/models/chassis_item.dart';
 
-abstract class IViewProvider {
-  Widget getView(Stream<dynamic> stream, Map<String, dynamic> config);
+mixin IViewProvider {
+  Widget getView(Stream<dynamic> stream, ChassisItem item);
 }
