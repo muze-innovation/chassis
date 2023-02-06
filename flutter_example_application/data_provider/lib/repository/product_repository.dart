@@ -7,7 +7,6 @@ abstract class IProductRepository {
 }
 
 class ProductRepository implements IProductRepository {
-  // late FirebaseApp _quickAccessItemApp;
   @override
   Stream streamProductReccomend() {
     return FirebaseFirestore.instance
