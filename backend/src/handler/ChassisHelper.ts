@@ -1,7 +1,8 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
-import Ajv from 'ajv'
+import Ajv, { ErrorObject } from 'ajv'
 import { diffSchemas } from 'json-schema-diff'
 import Table from 'cli-table'
+import ChassisConfig from './ChassisConfig'
 
 //const table = new Table([''])
 
@@ -18,38 +19,45 @@ export default class ChassisHelper {
     const validation = ajv.compile(schema)
     const isValid = validation(json)
     if (!isValid && throwable) {
-      let message = 'must match a schema'
-      let parentPath = ''
-      let errors = validation.errors ?? []
-
-      const errorAnyOf = validation.errors?.find(e => e.keyword === 'anyOf')
-
-      if (errorAnyOf) {
-        parentPath = errorAnyOf.instancePath
-        const path = new Table({
-          head: ['ParentPath'],
-        })
-        path.push([errorAnyOf.instancePath])
-        message = `${errorAnyOf.message ?? ''}\n${path.toString()}`
-        errors = validation.errors?.filter(e => e.keyword != 'anyOf') ?? []
-      }
-
-      const errorTable = new Table({
-        head: ['InstancePath', 'Keyword', 'Params', 'Message'],
-      })
-
-      errors.forEach(e => {
-        errorTable.push([
-          e.instancePath.replace(parentPath, ''),
-          e.keyword,
-          this.jsonStringify(e.params),
-          e.message ?? '',
-        ])
-      })
-
-      throw new Error(`${message}\n${errorTable.toString()}`)
+      const errorMessage = this.getErrorValidateJson(validation.errors ?? [])
+      throw new Error(errorMessage)
     }
     return isValid
+  }
+
+  /**
+   * Create an error table to display the errors that validation of a JSON schema
+   * @param errors list of error objects produced by the AJV validation process
+   * @returns error messsage
+   */
+  private static getErrorValidateJson(errors: ErrorObject[]): string {
+    let errorMessage = 'must match a schema'
+    const { instancePathCol, keywordCol, paramsCol, messageCol, parentPathCol } = ChassisConfig.columnJsonSchemaError
+
+    // Find errors of type 'anyOf' to group potential validation errors
+    const errorGroup = errors.find(e => e.keyword === 'anyOf')
+    if (errorGroup) {
+      const path = new Table({
+        head: [parentPathCol],
+      })
+      path.push([errorGroup.instancePath])
+      errorMessage = `${errorGroup.message ?? ''}\n${path.toString()}`
+      errors = errors.filter(e => e.keyword != 'anyOf')
+    }
+
+    // Map error list to error table rows.
+    const errorTable = new Table({
+      head: [instancePathCol, keywordCol, paramsCol, messageCol],
+    })
+    errors.forEach(e => {
+      const instancePath = e.instancePath.replace(errorGroup?.instancePath ?? '', '')
+      const keyword = e.keyword
+      const params = this.jsonStringify(e.params)
+      const message = e.message ?? ''
+      errorTable.push([instancePath, keyword, params, message])
+    })
+
+    return `${errorMessage}\n${errorTable.toString()}`
   }
 
   /**
@@ -72,8 +80,10 @@ export default class ChassisHelper {
     const isValid = !validation.additionsFound && !validation.removalsFound
 
     if (!isValid && throwable) {
+      // Create a table to display errors
+      const { addedCol, removedCol } = ChassisConfig.columnSchemaDiffError
       const errorTable = new Table({
-        head: ['AddedJsonSchema', 'RemovedJsonSchema'],
+        head: [addedCol, removedCol],
       })
 
       errorTable.push([
@@ -87,17 +97,18 @@ export default class ChassisHelper {
   }
 
   public static jsonStringify(json: Object): string {
+    // Convert a JSON object to a string
     return JSON.stringify(json, null, 2)
   }
 
   public static displayErrorTable(errors: [string, string][]): void {
-    if (errors.length) {
-      const table = new Table({
-        head: ['ViewType', 'Error'],
-      })
+    // Create a table to display errors
+    const { viewTypeCol, errorCol } = ChassisConfig.columnMainError
+    const table = new Table({
+      head: [viewTypeCol, errorCol],
+    })
 
-      table.push(...errors)
-      console.log(table.toString())
-    }
+    table.push(...errors)
+    console.log(table.toString())
   }
 }

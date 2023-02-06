@@ -31,6 +31,8 @@ export default class Chassis {
       compilerOptions
     )
     this._generator = TJS.buildGenerator(this._program, settings)!
+
+    // Initialize an empty error
     this._errors = []
   }
 
@@ -83,7 +85,10 @@ export default class Chassis {
     // Validate ViewSpec
     await this.validateViewSpec(data)
 
-    ChassisHelper.displayErrorTable(this._errors)
+    if (this._errors.length) {
+      // Display an error table if there are any errors present
+      ChassisHelper.displayErrorTable(this._errors)
+    }
 
     return true
   }
@@ -102,6 +107,7 @@ export default class Chassis {
       return ChassisHelper.validateJsonSchema(schema, json)
     } catch (error) {
       const err = error as Error
+      // Record an error for the screen specification
       this._errors.push([ChassisConfig.screenSpec, err.message])
     }
     return true
@@ -136,6 +142,7 @@ export default class Chassis {
         }
       } catch (error) {
         const err = error as Error
+        // Record an error for each shelf
         this._errors.push([`${viewType}(${id})`, err.message])
       }
     }
