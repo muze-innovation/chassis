@@ -11,10 +11,20 @@ class ViewSpecConstants {
   static const payload = "payload";
   static const payloadType = "type";
   static const payloadData = "data";
+  static const properties = "properties";
+  static const resolvedWith = "resolvedWith";
+  static const input = "input";
 }
 
 class ResovlerSpecConstants {
   static const payload = "payload";
+  static const required = "required";
   static const input = "input";
   static const output = "output";
+  static const properties = "properties";
+}
+
+class AssetsPathConstants {
+  static const viewSpecPath = 'assets/view_spec.json';
+  static const resolverSpecPath = 'assets/resolver_spec.json';
 }
