@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 
-import Chassis from './handler/Chassis'
 import ChassisHelper from './handler/ChassisHelper'
 import yargs from 'yargs'
-import { resolve } from 'path'
-import * as fs from 'fs'
 
 yargs.command({
   command: 'validate',
@@ -56,9 +53,7 @@ yargs.command({
         describe: 'Symbol',
       }),
   handler: async argv => {
-    const schema = await ChassisHelper.generateJsonSchemaBySymbol(argv.file, argv.symbol)
-    // Log schema
-    console.log(JSON.stringify(schema, null, 2))
+    await ChassisHelper.generateJsonSchemaBySymbol(argv.file, argv.symbol)
   },
 })
 

@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 import * as TJS from 'typescript-json-schema'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
@@ -41,13 +41,24 @@ export default class Chassis {
    * @param symbol Data Type
    * @returns JSONSchema
    */
-  public async generateJsonSchemaBySymbol(symbol: string): Promise<JSONSchema> {
+  public async generateJsonSchemaBySymbol(
+    symbol: string,
+    destinationPath?: string,
+    generateFile = false
+  ): Promise<JSONSchema> {
     const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
     // Json schema resolve reference
-    return await $RefParser.dereference(schema)
+    const jsonSchema = await $RefParser.dereference(schema)
+
+    if (generateFile) {
+      // Generate file json
+      this.generateFile(jsonSchema, symbol, destinationPath)
+    }
+
+    return jsonSchema
   }
 
-  public async generateJsonSchemaFile(): Promise<Record<string, JSONSchema>> {
+  public async generateJsonSchemaFile(destinationPath?: string): Promise<Record<string, JSONSchema>> {
     // Get all symbols
     const symbols = this._generator.getMainFileSymbols(this._program)
 
@@ -55,11 +66,29 @@ export default class Chassis {
     const jsonSchemas: Record<string, JSONSchema> = {}
 
     for (const symbol of symbols) {
-      const jsonSchema = await this.generateJsonSchemaBySymbol(symbol)
+      const jsonSchema = await this.generateJsonSchemaBySymbol(symbol, undefined, false)
       jsonSchemas[symbol] = jsonSchema
     }
 
+    if(destinationPath) {
+      // Generate file json
+      this.generateFile(jsonSchemas, undefined, destinationPath)
+    }
+
     return jsonSchemas
+  }
+
+  private generateFile(jsonSchema: JSONSchema, symbol?: string, destinationPath?: string) {
+    // If destination path is invalid
+    if (!destinationPath) {
+      writeFileSync(`./src/${symbol ? symbol : 'Schema'}.json`, JSON.stringify(jsonSchema, null, 2))
+    } else {
+      // If directory not exist
+      if (!existsSync(destinationPath)) {
+        mkdirSync(destinationPath, { recursive: true })
+      }
+      writeFileSync(`${destinationPath}/${symbol ? symbol : 'Schema'}.json`, JSON.stringify(jsonSchema, null, 2))
+    }
   }
 
   /**
