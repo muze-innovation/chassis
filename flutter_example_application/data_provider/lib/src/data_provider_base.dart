@@ -11,6 +11,7 @@ import 'banner_data_provider.dart';
 abstract class DataProvider implements IDataProvider {
   Stream<BannerOutput> getBanner(BannerInput banner);
   Stream<QuickAccessItemOutput> getQuickAccessItem(StreamController controller);
+
   @override
   void getData(StreamController<dynamic> controller, ChassisRequest request) {
     switch (request.resolvedWith) {

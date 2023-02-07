@@ -20,17 +20,17 @@ abstract class ViewProvider implements IViewProvider {
   Widget getView(Stream stream, ChassisItem item) {
     switch (item.viewType) {
       case ViewType.Banner:
-        print(item.toJson());
         var bannerModel = BannerModel.fromJson(item.toJson());
-        print(bannerModel.toString());
         var broadcastStream =
             stream.map<BannerItem>((data) => BannerItem.fromJson(data));
         return getBannerView(broadcastStream, bannerModel);
+
       case ViewType.QuickAccess:
         var quickAccessModel = QuickAccessModel.fromJson(item.toJson());
         var broadcastStream = stream.map<QuickAccessPayloadData>(
             (data) => QuickAccessPayloadData.fromJson(data));
         return getQuickAccessView(broadcastStream, quickAccessModel);
+
       default:
         return Container();
     }
