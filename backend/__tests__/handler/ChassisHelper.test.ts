@@ -98,4 +98,27 @@ describe('Helper', () => {
       expect(async () => await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema)).rejects.toThrow()
     })
   })
+
+  describe('jsonStringify', () => {
+    it('Convert a JSON object to string', () => {
+      const json = { test: 'Chassis' }
+      const expected = JSON.stringify(json, null, 2)
+
+      expect(ChassisHelper.jsonStringify(json)).toBe(expected)
+    })
+  })
+
+  describe('displayErrorTable', () => {
+    it('display the error table', () => {
+      const spy = jest.spyOn(console, 'log').mockImplementation()
+      const errors: [string, string][] = [
+        ['view type 1', 'error 1'],
+        ['view type 2', 'error 2'],
+      ]
+      ChassisHelper.displayErrorTable(errors)
+
+      expect(spy).toHaveBeenCalled()
+      spy.mockRestore()
+    })
+  })
 })

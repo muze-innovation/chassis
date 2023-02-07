@@ -9,10 +9,10 @@ async function bootstrap() {
   const chassis = new Chassis([resolve('./example/src/ViewSpec.ts'), resolve('./example/src/ResolverSpec.ts')])
 
   // execute function what you want
-
   await chassis.validateSpec(resolve(__dirname, '../example/source.json'))
 }
 
-bootstrap()
+// For develop
+// bootstrap()
 
 export type { ChassisViewSpec, ChassisResolverSpec }

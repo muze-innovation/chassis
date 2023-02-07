@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 import * as TJS from 'typescript-json-schema'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
@@ -41,13 +41,24 @@ export default class Chassis {
    * @param symbol Data Type
    * @returns JSONSchema
    */
-  public async generateJsonSchemaBySymbol(symbol: string): Promise<JSONSchema> {
+  public async generateJsonSchemaBySymbol(
+    symbol: string,
+    destinationPath?: string,
+    generateFile = false
+  ): Promise<JSONSchema> {
     const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
     // Json schema resolve reference
-    return await $RefParser.dereference(schema)
+    const jsonSchema = await $RefParser.dereference(schema)
+
+    if (generateFile) {
+      // Generate file json
+      this.generateFile(jsonSchema, symbol, destinationPath)
+    }
+
+    return jsonSchema
   }
 
-  public async generateJsonSchemaFile(): Promise<Record<string, JSONSchema>> {
+  public async generateJsonSchemaFile(destinationPath?: string): Promise<Record<string, JSONSchema>> {
     // Get all symbols
     const symbols = this._generator.getMainFileSymbols(this._program)
 
@@ -55,11 +66,29 @@ export default class Chassis {
     const jsonSchemas: Record<string, JSONSchema> = {}
 
     for (const symbol of symbols) {
-      const jsonSchema = await this.generateJsonSchemaBySymbol(symbol)
+      const jsonSchema = await this.generateJsonSchemaBySymbol(symbol, undefined, false)
       jsonSchemas[symbol] = jsonSchema
     }
 
+    if(destinationPath) {
+      // Generate file json
+      this.generateFile(jsonSchemas, undefined, destinationPath)
+    }
+
     return jsonSchemas
+  }
+
+  private generateFile(jsonSchema: JSONSchema, symbol?: string, destinationPath?: string) {
+    // If destination path is invalid
+    if (!destinationPath) {
+      writeFileSync(`./src/${symbol ? symbol : 'Schema'}.json`, JSON.stringify(jsonSchema, null, 2))
+    } else {
+      // If directory not exist
+      if (!existsSync(destinationPath)) {
+        mkdirSync(destinationPath, { recursive: true })
+      }
+      writeFileSync(`${destinationPath}/${symbol ? symbol : 'Schema'}.json`, JSON.stringify(jsonSchema, null, 2))
+    }
   }
 
   /**
@@ -70,6 +99,7 @@ export default class Chassis {
   public async validateSpec(json: object): Promise<boolean>
   public async validateSpec(sourcePath: string): Promise<boolean>
   public async validateSpec(jsonOrSourcePath: object | string): Promise<boolean> {
+    let isValid = true
     let data: object
 
     if (typeof jsonOrSourcePath === 'string') {
@@ -88,9 +118,10 @@ export default class Chassis {
     if (this._errors.length) {
       // Display an error table if there are any errors present
       ChassisHelper.displayErrorTable(this._errors)
+      isValid = false
     }
 
-    return true
+    return isValid
   }
 
   /**
@@ -100,6 +131,7 @@ export default class Chassis {
    * @throws Validation Error
    */
   public async validateScreenSpec(json: any): Promise<boolean> {
+    let isValid = true
     try {
       const schema = await this.generateJsonSchemaBySymbol(ChassisConfig.screenSpec)
       // Delete payload field from JsonSchema spec
@@ -109,8 +141,9 @@ export default class Chassis {
       const err = error as Error
       // Record an error for the screen specification
       this._errors.push([ChassisConfig.screenSpec, err.message])
+      isValid = false
     }
-    return true
+    return isValid
   }
 
   /**
@@ -121,6 +154,7 @@ export default class Chassis {
    * @returns Validation Result
    */
   public async validateViewSpec(json: any): Promise<boolean> {
+    let isValid = true
     for (const shelf of json.items) {
       const { viewType, id, payload } = shelf
       try {
@@ -144,10 +178,11 @@ export default class Chassis {
         const err = error as Error
         // Record an error for each shelf
         this._errors.push([`${viewType}(${id})`, err.message])
+        isValid = false
       }
     }
 
-    return true
+    return isValid
   }
 
   /**
@@ -157,6 +192,8 @@ export default class Chassis {
    * @param Spec
    */
   private async validateResolverSpec(payload: any, viewSpec: JSONSchema): Promise<boolean> {
+    let isValid = true
+
     if (payload.type === 'static') {
       const staticPayload = await this.generateJsonSchemaBySymbol(ChassisConfig.viewPayloadStatic)
       // Validate ChassisViewPayloadStatic Schema
