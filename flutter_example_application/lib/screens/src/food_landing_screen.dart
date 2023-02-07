@@ -1,5 +1,4 @@
 /// Foundation
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 /// Internal
@@ -12,7 +11,7 @@ import 'package:chassis/core.dart';
 
 class FoodLandingScreen extends StatefulWidget {
   static const routeName = '/food_landing_screen';
-  static const sreenName = "Food";
+  static const screenName = "Food";
 
   const FoodLandingScreen({Key? key}) : super(key: key);
 
@@ -36,7 +35,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
 
     // setup chassis
     final dataProvider = AppDataProvider();
-    final viewProvider = ViewProvider();
+    final viewProvider = AppViewProvider();
     _chassis = Chassis(dataProvider: dataProvider, viewProvider: viewProvider);
 
     // call API to load data
@@ -58,7 +57,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(FoodLandingScreen.sreenName),
+          title: const Text(FoodLandingScreen.screenName),
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())

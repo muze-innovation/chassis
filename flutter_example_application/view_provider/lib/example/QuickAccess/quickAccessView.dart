@@ -1,19 +1,19 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
 
-class QuickAccess extends StatefulWidget {
-  final Stream stream;
-  final Map<String, dynamic> config;
+class QuickAccessView extends StatefulWidget {
+  final Stream<QuickAccessPayloadData> stream;
+  final QuickAccessModel model;
 
-  const QuickAccess({Key? key, required this.stream, required this.config})
+  const QuickAccessView({Key? key, required this.stream, required this.model})
       : super(key: key);
 
   @override
-  State<QuickAccess> createState() => _QuickAccessState();
+  State<QuickAccessView> createState() => _QuickAccessState();
 }
 
-class _QuickAccessState extends State<QuickAccess> {
+class _QuickAccessState extends State<QuickAccessView> {
   @override
   void dispose() {
     super.dispose();
@@ -21,59 +21,54 @@ class _QuickAccessState extends State<QuickAccess> {
 
   @override
   Widget build(BuildContext context) {
-    log(widget.config.toString(), name: 'QuickAccess - Build');
-    List<QuickAccessItem> payload = [];
-    var params = widget.config['parameters'];
+    log(widget.model.toString(), name: 'QuickAccess - Build');
+    var model = widget.model;
+    return StreamBuilder<QuickAccessPayloadData>(
+        stream: widget.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return _quickAccessLoadingView();
+            case ConnectionState.done:
+            case ConnectionState.active:
+              log(snapshot.data.toString(), name: 'QuickAccess snapshot');
+              return _quickAccessSection(snapshot.data!, model.parameters);
+          }
+        });
+  }
 
-    return StreamBuilder<dynamic>(
-      stream: widget.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        }
+  Widget _quickAccessSection(
+      QuickAccessPayloadData payload, QuickAccessParameters params) {
+    return Column(
+      children: [
+        _titleView(params),
+        _quickAccessMainView(payload.item ?? <QuickAccessItem>[]),
+      ],
+    );
+  }
 
-        if (snapshot.data != null) {
-          List<dynamic> value = snapshot.data['item'];
-          payload = List<QuickAccessItem>.from(value.map((model) {
-            return QuickAccessItem(
-              title: model['title'],
-              asset: model['asset'],
-            );
-          }));
-        }
-
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.waiting:
-            return _quickAccessLoadingView();
-          case ConnectionState.done:
-          case ConnectionState.active:
-            log(payload.toString(), name: 'QuickAccess snapshot');
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          params['title'],
-                          style: Theme.of(context).textTheme.headlineSmall,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: _showAlertDialog,
-                        icon: const Icon(Icons.arrow_circle_right_outlined),
-                      ),
-                    ],
-                  ),
-                ),
-                _quickAccessMainView(payload),
-              ],
-            );
-        }
-      },
+  Widget _titleView(QuickAccessParameters params) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              params.title,
+              style: Theme.of(context).textTheme.headlineSmall,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            onPressed: _showAlertDialog,
+            icon: const Icon(Icons.arrow_circle_right_outlined),
+          ),
+        ],
+      ),
     );
   }
 
@@ -91,33 +86,6 @@ class _QuickAccessState extends State<QuickAccess> {
         itemBuilder: (context, index) {
           return _listItem(payload[index]);
         },
-        // children: payload.map((item) {
-        //   return Column(
-        //     children: [
-        //       Container(
-        //         width: 80,
-        //         height: 80,
-        //         padding: const EdgeInsets.all(8),
-        //         child: ClipRRect(
-        //           borderRadius: BorderRadius.circular(16),
-        //           child: Image.network(
-        //             item.asset,
-        //             fit: BoxFit.cover,
-        //             width: 80,
-        //           ),
-        //         ),
-        //       ),
-        //       Container(
-        //         width: 80,
-        //         padding: const EdgeInsets.symmetric(horizontal: 8),
-        //         child: Text(
-        //           item.title,
-        //           maxLines: 2,
-        //         ),
-        //       )
-        //     ],
-        //   );
-        // }).toList(),
       ),
     );
   }
@@ -249,10 +217,4 @@ class _QuickAccessState extends State<QuickAccess> {
     );
     showDialog(context: context, builder: (context) => alert);
   }
-}
-
-class QuickAccessItem {
-  final String title;
-  final String asset;
-  const QuickAccessItem({required this.title, required this.asset});
 }

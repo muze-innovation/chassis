@@ -27,7 +27,7 @@ class ChassisItem {
       'viewType': viewType,
       'attributes': attributes,
       'parameters': parameters,
-      'payload': payload,
+      'payload': payload.toJson(),
     };
   }
 }

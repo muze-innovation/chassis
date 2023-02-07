@@ -24,7 +24,7 @@ class ChassisPayload {
 
   Map<String, dynamic> toJson() {
     return {
-      'type': type,
+      'type': type.name,
       'data': data,
       'resolvedWith': resolvedWith,
       'input': input
