@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:chassis/view_provider.dart';
 import 'package:flutter/widgets.dart';
-import 'package:view_provider/example/Banner/bannerModel.dart';
-import 'package:view_provider/example/Banner/bannerView.dart';
-import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
-import 'package:view_provider/example/QuickAccess/quickAccessView.dart';
+import 'package:view_provider/example/banner/banner_model.dart';
+import 'package:view_provider/example/banner/banner_widget.dart';
+import 'package:view_provider/example/quick_access/quick_access_model.dart';
+import 'package:view_provider/example/quick_access/quick_access_widget.dart';
 import 'package:view_provider/src/view_type_constant.dart';
 
 abstract class ViewProvider implements IViewProvider {
@@ -35,12 +35,12 @@ abstract class ViewProvider implements IViewProvider {
 class AppViewProvider extends ViewProvider {
   @override
   Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
-    return BannerView(stream: stream, model: model);
+    return BannerWidget(stream: stream, model: model);
   }
 
   @override
   Widget getQuickAccessView(
       Stream<QuickAccessPayloadData> stream, QuickAccessModel model) {
-    return QuickAccessView(stream: stream, model: model);
+    return QuickAccessWidget(stream: stream, model: model);
   }
 }

@@ -1,20 +1,20 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
+import 'package:view_provider/example/quick_access/quick_access_model.dart';
 
-class QuickAccessView extends StatefulWidget {
+class QuickAccessWidget extends StatefulWidget {
   final Stream<QuickAccessPayloadData> stream;
   final QuickAccessModel model;
 
-  const QuickAccessView({Key? key, required this.stream, required this.model})
+  const QuickAccessWidget({Key? key, required this.stream, required this.model})
       : super(key: key);
 
   @override
-  State<QuickAccessView> createState() => _QuickAccessState();
+  State<QuickAccessWidget> createState() => _QuickAccessState();
 }
 
-class _QuickAccessState extends State<QuickAccessView> {
+class _QuickAccessState extends State<QuickAccessWidget> {
   @override
   void dispose() {
     super.dispose();

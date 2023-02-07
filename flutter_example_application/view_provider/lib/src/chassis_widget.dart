@@ -20,10 +20,6 @@ abstract class ChassisWidget extends Widget {
   // Error state
   @protected
   Widget error(BuildContext context);
-
-  // Empty state
-  @protected
-  Widget empty(BuildContext context);
 }
 
 class ChassisElement extends ComponentElement {
@@ -37,11 +33,9 @@ class ChassisElement extends ComponentElement {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return chassisWidget.error(this);
-        }
-        if (snapshot.hasData) {
+        } else {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
-              return chassisWidget.empty(this);
             case ConnectionState.waiting:
               return chassisWidget.loading(this);
             case ConnectionState.active:
@@ -49,7 +43,6 @@ class ChassisElement extends ComponentElement {
               return chassisWidget.success(this, snapshot.data);
           }
         }
-        return chassisWidget.loading(this);
       },
     );
   }
