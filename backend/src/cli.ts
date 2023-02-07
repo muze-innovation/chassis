@@ -85,7 +85,11 @@ yargs.command({
         describe: 'Output directory',
       }),
   handler: async argv => {
-    await ChassisHelper.generateJsonSchemaFile(argv.file, argv.symbol, argv.output)
+    const dir = argv.output
+    // Create new instance
+    const chassis = new Chassis([resolve(argv.file)])
+    // Generate schema
+    await chassis.generateJsonSchemaBySymbol(argv.symbol, dir)
   },
 })
 
@@ -106,7 +110,11 @@ yargs.command({
         describe: 'Output directory',
       }),
   handler: async argv => {
-    await ChassisHelper.generateJsonSchemaFile(argv.file, '', argv.output, true)
+    const dir = argv.output
+    // Create new instance
+    const chassis = new Chassis([resolve(argv.file)])
+    // Generate all schema
+    await chassis.generateJsonSchemaFile(dir)
   },
 })
 
