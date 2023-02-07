@@ -1,4 +1,4 @@
-import 'package:data_provider/data_provider.dart';
+import 'package:data_provider/core.dart';
 
 class DataProviderConstans {
   static const resolvedWith = "resolvedWith";

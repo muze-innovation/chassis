@@ -1,22 +1,17 @@
+import 'package:chassis/core.dart';
+import 'package:view_provider/src/view_provider_base.dart';
+
 class BannerModel {
   String id;
   String viewType;
   BannerAttributes attributes;
-  BannerPayload payload;
-  String? placeholder;
   BannerModel(
-      {required this.id,
-      required this.viewType,
-      required this.attributes,
-      required this.payload,
-      this.placeholder});
+      {required this.id, required this.viewType, required this.attributes});
 
   BannerModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         viewType = json['viewType'],
-        attributes = BannerAttributes.fromJson(json['attributes']),
-        payload = BannerPayload.fromJson(json['payload']),
-        placeholder = json['placeholder'];
+        attributes = BannerAttributes.fromJson(json['attributes']);
 }
 
 class BannerAttributes {
@@ -33,9 +28,9 @@ class BannerAttributes {
 }
 
 class BannerPayload {
-  String type;
+  String? type;
   BannerItem? data;
-  BannerPayload({required this.type, this.data});
+  BannerPayload({this.type, this.data});
 
   BannerPayload.fromJson(Map<String, dynamic> json)
       : type = json['type'],
@@ -44,8 +39,8 @@ class BannerPayload {
 
 class BannerItem {
   String asset;
-  String placeholder;
-  BannerItem({required this.asset, required this.placeholder});
+  String? placeholder;
+  BannerItem({required this.asset, this.placeholder});
 
   BannerItem.fromJson(Map<String, dynamic> json)
       : asset = json['asset'],

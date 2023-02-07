@@ -5,14 +5,12 @@ class QuickAccessModel {
   String viewType;
   QuickAccessAttributes attributes;
   QuickAccessParameters parameters;
-  QuickAccessPayload payload;
   String? placeholder;
   QuickAccessModel(
       {required this.id,
       required this.viewType,
       required this.attributes,
       required this.parameters,
-      required this.payload,
       this.placeholder});
 
   QuickAccessModel.fromJson(Map<String, dynamic> json)
@@ -20,7 +18,6 @@ class QuickAccessModel {
         viewType = json['viewType'],
         attributes = QuickAccessAttributes.fromJson(json['attributes']),
         parameters = QuickAccessParameters.fromJson(json['parameters']),
-        payload = QuickAccessPayload.fromJson(json['payload']),
         placeholder = json['placeholder'];
 }
 

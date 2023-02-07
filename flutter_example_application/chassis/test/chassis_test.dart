@@ -1,4 +1,4 @@
-import 'package:chassis/chassis.dart';
+import 'package:chassis/core.dart';
 // import 'package:test/test.dart';
 
 void main() {

@@ -25,13 +25,9 @@ class _QuickAccessState extends State<QuickAccessView> {
     var model = widget.model;
     return StreamBuilder<QuickAccessPayloadData>(
         stream: widget.stream,
-        initialData: model.payload.data,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text(snapshot.error.toString());
-          }
-          if (snapshot.hasData) {
-            return _quickAccessSection(snapshot.data!, model.parameters);
           }
           switch (snapshot.connectionState) {
             case ConnectionState.none:

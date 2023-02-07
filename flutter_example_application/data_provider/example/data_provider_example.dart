@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:data_provider/data_provider.dart';
+import 'package:data_provider/core.dart';
 
 void main() {
-  final dataProvider = DataProvider();
+  // final dataProvider = DataProvider();
   final controller = StreamController<Map<String, dynamic>>.broadcast();
   final payload = {
     "resolvedWith": "GetQuickAccessItem",
@@ -21,5 +21,5 @@ void main() {
     },
     cancelOnError: false,
   );
-  dataProvider.getData(controller, payload);
+  // dataProvider.getData(controller, payload);
 }

@@ -1,3 +1,3 @@
-import 'package:chassis/chassis.dart';
+import 'package:chassis/core.dart';
 
 void main() {}
