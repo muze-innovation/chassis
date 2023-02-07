@@ -101,11 +101,11 @@ await chassis.generateJsonSchemaBySymbol('Banner', "./destinationPath")
   type: "object",
   properties: {
     id: { type: "string" },
-    viewType: { type: "string", enum: [Array] },
-    payload: { type: "object", properties: [Object], required: [Array] },
+    viewType: { type: "string", enum: ["Array"] },
+    payload: { type: "object", properties: ["Object"], required: ["Array"] },
     parameters: {},
-    error: { type: "object", properties: [Object], required: [Array] },
-    attributes: { anyOf: [Array] }
+    error: { type: "object", properties: ["Object"], required: ["Array"] },
+    attributes: { anyOf: ["Array"] }
   },
   required: [ "attributes", "id", "payload", "viewType" ],
   "$schema": "http://json-schema.org/draft-07/schema#"
@@ -133,11 +133,11 @@ await chassis.generateJsonSchemaFile('./destinationPath')
   type: "object",
   properties: {
     id: { type: "string" },
-    viewType: { type: "string", enum: [Array] },
-    payload: { type: "object", properties: [Object], required: [Array] },
+    viewType: { type: "string", enum: ["Array"] },
+    payload: { type: "object", properties: ["Object"], required: ["Array"] },
     parameters: {},
-    error: { type: "object", properties: [Object], required: [Array] },
-    attributes: { anyOf: [Array] }
+    error: { type: "object", properties: ["Object"], required: ["Array"] },
+    attributes: { anyOf: ["Array"] }
   },
   required: [ "attributes", "id", "payload", "viewType" ],
   "$schema": "http://json-schema.org/draft-07/schema#"
