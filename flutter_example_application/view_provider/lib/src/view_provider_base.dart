@@ -5,11 +5,7 @@ import 'package:view_provider/example/Banner/bannerModel.dart';
 import 'package:view_provider/example/Banner/bannerView.dart';
 import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
 import 'package:view_provider/example/QuickAccess/quickAccessView.dart';
-
-class ViewType {
-  static const Banner = "Banner";
-  static const QuickAccess = "QuickAccess";
-}
+import 'package:view_provider/src/view_type_constant.dart';
 
 abstract class ViewProvider implements IViewProvider {
   Widget getBannerView(Stream<BannerItem> stream, BannerModel model);
@@ -19,14 +15,12 @@ abstract class ViewProvider implements IViewProvider {
   @override
   Widget getView(Stream stream, ChassisItem item) {
     switch (item.viewType) {
-      case ViewType.Banner:
-        print(item.toJson());
+      case ViewTypeConstant.Banner:
         var bannerModel = BannerModel.fromJson(item.toJson());
-        print(bannerModel.toString());
         var broadcastStream =
             stream.map<BannerItem>((data) => BannerItem.fromJson(data));
         return getBannerView(broadcastStream, bannerModel);
-      case ViewType.QuickAccess:
+      case ViewTypeConstant.QuickAccess:
         var quickAccessModel = QuickAccessModel.fromJson(item.toJson());
         var broadcastStream = stream.map<QuickAccessPayloadData>(
             (data) => QuickAccessPayloadData.fromJson(data));
@@ -37,6 +31,7 @@ abstract class ViewProvider implements IViewProvider {
   }
 }
 
+//User's Implemented ViewProvider
 class AppViewProvider extends ViewProvider {
   @override
   Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
