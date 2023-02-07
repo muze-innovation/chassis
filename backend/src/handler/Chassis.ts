@@ -70,6 +70,7 @@ export default class Chassis {
   public async validateSpec(json: object): Promise<boolean>
   public async validateSpec(sourcePath: string): Promise<boolean>
   public async validateSpec(jsonOrSourcePath: object | string): Promise<boolean> {
+    let isValid = true
     let data: object
 
     if (typeof jsonOrSourcePath === 'string') {
@@ -88,9 +89,10 @@ export default class Chassis {
     if (this._errors.length) {
       // Display an error table if there are any errors present
       ChassisHelper.displayErrorTable(this._errors)
+      isValid = false
     }
 
-    return true
+    return isValid
   }
 
   /**
@@ -100,6 +102,7 @@ export default class Chassis {
    * @throws Validation Error
    */
   public async validateScreenSpec(json: any): Promise<boolean> {
+    let isValid = true
     try {
       const schema = await this.generateJsonSchemaBySymbol(ChassisConfig.screenSpec)
       // Delete payload field from JsonSchema spec
@@ -109,8 +112,9 @@ export default class Chassis {
       const err = error as Error
       // Record an error for the screen specification
       this._errors.push([ChassisConfig.screenSpec, err.message])
+      isValid = false
     }
-    return true
+    return isValid
   }
 
   /**
@@ -121,6 +125,7 @@ export default class Chassis {
    * @returns Validation Result
    */
   public async validateViewSpec(json: any): Promise<boolean> {
+    let isValid = true
     for (const shelf of json.items) {
       const { viewType, id, payload } = shelf
       try {
@@ -144,10 +149,11 @@ export default class Chassis {
         const err = error as Error
         // Record an error for each shelf
         this._errors.push([`${viewType}(${id})`, err.message])
+        isValid = false
       }
     }
 
-    return true
+    return isValid
   }
 
   /**
@@ -157,6 +163,8 @@ export default class Chassis {
    * @param Spec
    */
   private async validateResolverSpec(payload: any, viewSpec: JSONSchema): Promise<boolean> {
+    let isValid = true
+
     if (payload.type === 'static') {
       const staticPayload = await this.generateJsonSchemaBySymbol(ChassisConfig.viewPayloadStatic)
       // Validate ChassisViewPayloadStatic Schema
