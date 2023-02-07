@@ -113,4 +113,70 @@ You can read more about other programmatic features in the [API](./docs/programm
 
 ## Tutorials
 
-## Common Questions
+You can follow the example of using the basic library in the [Example](./example/src/index.ts).
+
+### Step-by-Step Guide to Creating a UI in Chassis:
+
+Example Banner :
+
+![ImageBanner](./asset/banner.png)
+
+1. Create a `specification file` for the UI that validates the source format (JSON) as a TypeScript file. For example, the following is a `Banner` specification in [ViewSpec](./example/src/ViewSpec.ts) file:
+
+```ts
+interface Banner extends ChassisViewSpec {
+  id: string
+  viewType: 'Banner'
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+2. Create a `source file` that is the JSON data used to create the front-end UI. The source file uses the Banner specification to validate the data. For example [Source](./example/source.json) file:
+
+```json
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "promo_banner_mid_year",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "asset": "asset.png",
+          "placeholder": "lalala.png"
+        }
+      }
+    },
+    {
+      "id": "promo_banner_mid_month",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "GetBanner",
+        "input": {
+          "slug": "best-seller"
+        }
+      }
+    }
+  ]
+}
+```
+
+3. Run [Chassis validation](#usage-examples) on the front-end UI using the `Spec` and `Source` files. If the validation returns `TRUE`, the front-end will correctly render the UI using the source in JSON format.
+
+Note: The above is just an example and the actual process may vary based on the specific requirements and implementation of Chassis.
