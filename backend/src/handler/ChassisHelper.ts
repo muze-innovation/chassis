@@ -7,8 +7,6 @@ import Table from 'cli-table'
 import ChassisConfig from './ChassisConfig'
 import Chassis from './Chassis'
 
-//const table = new Table([''])
-
 export default class ChassisHelper {
   /**
    * Validate Json with Json Schema
