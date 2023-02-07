@@ -15,7 +15,7 @@ class ChassisRepository implements IChassisRepository {
   Client client = Client();
 
   static const String _baseUrl =
-      'https://3f65e6d1-ab4c-44ae-a469-d4ca7553ccd3.mock.pstmn.io';
+      'https://152e3105-2193-472e-968c-55eb9b131f37.mock.pstmn.io';
 
   Future<Iterable<ChassisItem>> getData() async {
     final url = Uri.parse('$_baseUrl/chassis');

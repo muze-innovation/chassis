@@ -1,15 +1,11 @@
 class BannerInput {
-  final Input input;
-
-  BannerInput(this.input);
-  Map<String, dynamic> toJson() => {'input': input};
-  BannerInput.fromJson(Map<String, dynamic> json)
-      : input = Input.fromJson(json['input']);
-}
-
-class Input {
   final String slug;
-  Input(this.slug);
-  Map<String, dynamic> toJson() => {'slug': slug};
-  Input.fromJson(Map<String, dynamic> json) : slug = json['slug'];
+  BannerInput({required this.slug});
+  factory BannerInput.fromJson(Map<String, dynamic> data) {
+    final slug = data['slug'] as String?;
+    if (slug == null) {
+      throw UnsupportedError('Invalid data: $data -> "title" is missing');
+    }
+    return BannerInput(slug: slug);
+  }
 }

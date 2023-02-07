@@ -10,7 +10,7 @@ class BannerRepository implements IBannerRepository {
   Client client = Client();
 
   static const String _baseUrl =
-      'https://00b802ba-b85b-4531-ad60-1ad30116d1cd.mock.pstmn.io';
+      'https://152e3105-2193-472e-968c-55eb9b131f37.mock.pstmn.io';
 
   @override
   Future<Map<String, dynamic>> getData(String slug) async {
