@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import Chassis from './handler/Chassis'
+import ChassisHelper from './handler/ChassisHelper'
 import yargs from 'yargs'
 import { resolve } from 'path'
 import * as fs from 'fs'
@@ -33,23 +34,7 @@ yargs.command({
         return true
       }),
   handler: async argv => {
-    let spec: string[] = []
-
-    // If dir is not undefined
-    if (argv.dir) {
-      spec = fs.readdirSync(argv.dir).map(fileName => {
-        return `${argv.dir}/${fileName}`
-      })
-    } else {
-      // Split path file
-      spec = argv.spec[0].split(',')
-    }
-
-    // Create new instance
-    const chassis = new Chassis(spec.map(s => resolve(s)))
-    // Validate spec
-    const isValid = await chassis.validateSpec(argv.source)
-    console.log(isValid)
+    await ChassisHelper.validateSpec(argv.source, argv.spec, argv.dir)
   },
 })
 
@@ -71,10 +56,7 @@ yargs.command({
         describe: 'Symbol',
       }),
   handler: async argv => {
-    // Create new instance
-    const chassis = new Chassis([resolve(argv.file)])
-    // Generate schema
-    const schema = await chassis.generateJsonSchemaBySymbol(argv.symbol)
+    const schema = await ChassisHelper.generateJsonSchemaBySymbol(argv.file, argv.symbol)
     // Log schema
     console.log(JSON.stringify(schema, null, 2))
   },
@@ -103,22 +85,7 @@ yargs.command({
         describe: 'Output directory',
       }),
   handler: async argv => {
-    // Create new instance
-    const chassis = new Chassis([resolve(argv.file)])
-    // Generate schema
-    const schema = await chassis.generateJsonSchemaBySymbol(argv.symbol)
-
-    const dir = argv.output
-    // If output option is undefined
-    if (!dir) {
-      fs.writeFileSync(`./src/${argv.symbol}.json`, JSON.stringify(schema, null, 2))
-    } else {
-      // If directory not exist
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true })
-      }
-      fs.writeFileSync(`${dir}/${argv.symbol}.json`, JSON.stringify(schema, null, 2))
-    }
+    await ChassisHelper.generateJsonSchemaFile(argv.file, argv.symbol, argv.output)
   },
 })
 
@@ -139,22 +106,7 @@ yargs.command({
         describe: 'Output directory',
       }),
   handler: async argv => {
-    // Create new instance
-    const chassis = new Chassis([resolve(argv.file)])
-    // Generate all schema
-    const schema = await chassis.generateJsonSchemaFile()
-
-    const dir = argv.output
-    // If output option is undefined
-    if (!dir) {
-      fs.writeFileSync(`./src/Schema.json`, JSON.stringify(schema, null, 2))
-    } else {
-      // If directory not exist
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true })
-      }
-      fs.writeFileSync(`${dir}/Schema.json`, JSON.stringify(schema, null, 2))
-    }
+    await ChassisHelper.generateJsonSchemaFile(argv.file, '', argv.output, true)
   },
 })
 

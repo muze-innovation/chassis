@@ -1,8 +1,11 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+import * as fs from 'fs'
+import { resolve } from 'path'
 import Ajv, { ErrorObject } from 'ajv'
 import { diffSchemas } from 'json-schema-diff'
 import Table from 'cli-table'
 import ChassisConfig from './ChassisConfig'
+import Chassis from './Chassis'
 
 //const table = new Table([''])
 
@@ -110,5 +113,70 @@ export default class ChassisHelper {
 
     table.push(...errors)
     console.log(table.toString())
+  }
+
+  public static async validateSpec(source: string, spec: string[], dir: string): Promise<void> {
+    let specFiles: string[] = []
+
+    // If dir is not empty
+    if (dir) {
+      specFiles = fs.readdirSync(dir).map(fileName => {
+        return `${dir}/${fileName}`
+      })
+    } else {
+      // Split path file
+      if (spec) {
+        specFiles = spec[0].split(',')
+      } else {
+        specFiles = []
+      }
+    }
+
+    // Create new instance
+    const chassis = new Chassis(specFiles.map(s => resolve(s)))
+    // Validate spec
+    const isValid = await chassis.validateSpec(source)
+    console.log(isValid)
+  }
+
+  public static async generateJsonSchemaBySymbol(file: string, symbol: string): Promise<JSONSchema> {
+    // Create new instance
+    const chassis = new Chassis([resolve(file)])
+    // Generate schema
+    const schema = await chassis.generateJsonSchemaBySymbol(symbol)
+
+    return schema
+  }
+
+  public static async generateJsonSchemaFile(
+    file: string,
+    symbol: string,
+    output: string,
+    isAllSpec: boolean = false
+  ): Promise<void> {
+    // Generate schema
+    let schema: JSONSchema
+
+    // If generate schema file for all spec
+    if (isAllSpec) {
+      // Create new instance
+      const chassis = new Chassis([resolve(file)])
+      // Generate all schema
+      schema = await chassis.generateJsonSchemaFile()
+    } else {
+      schema = await ChassisHelper.generateJsonSchemaBySymbol(file, symbol)
+    }
+
+    const dir = output
+    // If output option is undefined
+    if (!dir) {
+      fs.writeFileSync(`./src/SchemaByGenerator.json`, JSON.stringify(schema, null, 2))
+    } else {
+      // If directory not exist
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true })
+      }
+      fs.writeFileSync(`${dir}/SchemaByGenerator.json`, JSON.stringify(schema, null, 2))
+    }
   }
 }
