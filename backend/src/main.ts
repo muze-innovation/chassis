@@ -13,6 +13,7 @@ async function bootstrap() {
   await chassis.validateSpec(resolve(__dirname, '../example/source.json'))
 }
 
-bootstrap()
+// For develop
+// bootstrap()
 
 export type { ChassisViewSpec, ChassisResolverSpec }

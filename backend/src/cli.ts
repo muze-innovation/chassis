@@ -1,10 +1,7 @@
 #!/usr/bin/env node
 
-import Chassis from './handler/Chassis'
 import ChassisHelper from './handler/ChassisHelper'
 import yargs from 'yargs'
-import { resolve } from 'path'
-import * as fs from 'fs'
 
 yargs.command({
   command: 'validate',

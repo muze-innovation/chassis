@@ -44,7 +44,7 @@ export default class Chassis {
   public async generateJsonSchemaBySymbol(
     symbol: string,
     destinationPath?: string,
-    generateFile = true
+    generateFile = false
   ): Promise<JSONSchema> {
     const schema = this._generator.getSchemaForSymbol(symbol) as JSONSchema
     // Json schema resolve reference
@@ -70,8 +70,10 @@ export default class Chassis {
       jsonSchemas[symbol] = jsonSchema
     }
 
-    // Generate file json
-    this.generateFile(jsonSchemas, undefined, destinationPath)
+    if(destinationPath) {
+      // Generate file json
+      this.generateFile(jsonSchemas, undefined, destinationPath)
+    }
 
     return jsonSchemas
   }
