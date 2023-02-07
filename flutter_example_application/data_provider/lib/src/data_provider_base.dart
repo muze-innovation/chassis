@@ -15,10 +15,12 @@ abstract class DataProvider implements IDataProvider {
   void getData(StreamController<dynamic> controller, ChassisRequest request) {
     switch (request.resolvedWith) {
       case DataProviderConstans.getBanner:
-        controller.addStream(getBanner(BannerInput.fromJson(request.input)));
+        controller.addStream(getBanner(BannerInput.fromJson(request.input))
+            .map((event) => event.toJson()));
         break;
       case DataProviderConstans.getQuickAccessItem:
-        // controller.addStream(getQuickAccessItem(controller));
+        controller.addStream(
+            getQuickAccessItem(controller).map((event) => event.toJson()));
         break;
       default:
     }
@@ -30,7 +32,6 @@ class AppDataProvider extends DataProvider {
   final _quickAccessItemDataProvider = QuickAccessItemDataProvider();
   @override
   Stream<BannerOutput> getBanner(BannerInput banner) {
-    print("  banner is $banner");
     return _bannerDataProvider.getData(banner.slug);
   }
 

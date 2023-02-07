@@ -10,6 +10,11 @@ class QuickAccessItemOutput {
     }
     return QuickAccessItemOutput(item: item);
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'item': item.map((e) => e.toJson()),
+    };
+  }
 }
 
 class Item {
@@ -26,5 +31,11 @@ class Item {
       throw UnsupportedError('Invalid data: $data -> "asset" is missing');
     }
     return Item(title: title, asset: asset);
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'asset': asset,
+    };
   }
 }

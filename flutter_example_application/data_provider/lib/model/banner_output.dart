@@ -13,4 +13,10 @@ class BannerOutput {
     }
     return BannerOutput(asset: asset, placeholder: placeholder);
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'asset': asset,
+      'placeholder': placeholder,
+    };
+  }
 }
