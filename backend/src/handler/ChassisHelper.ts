@@ -139,13 +139,14 @@ export default class ChassisHelper {
     console.log(isValid)
   }
 
-  public static async generateJsonSchemaBySymbol(file: string, symbol: string): Promise<JSONSchema> {
+  public static async generateJsonSchemaBySymbol(file: string, symbol: string): Promise<void> {
     // Create new instance
     const chassis = new Chassis([resolve(file)])
     // Generate schema
-    const schema = await chassis.generateJsonSchemaBySymbol(symbol)
+    const schema = await chassis.generateJsonSchemaBySymbol(symbol, undefined, false)
 
-    return schema
+    // Log schema
+    console.log(JSON.stringify(schema, null, 2))
   }
 
   public static async generateJsonSchemaFile(
@@ -157,26 +158,15 @@ export default class ChassisHelper {
     // Generate schema
     let schema: JSONSchema
 
+    // Create new instance
+    const chassis = new Chassis([resolve(file)])
+
     // If generate schema file for all spec
     if (isAllSpec) {
-      // Create new instance
-      const chassis = new Chassis([resolve(file)])
       // Generate all schema
-      schema = await chassis.generateJsonSchemaFile()
+      schema = await chassis.generateJsonSchemaFile(output)
     } else {
-      schema = await ChassisHelper.generateJsonSchemaBySymbol(file, symbol)
-    }
-
-    const dir = output
-    // If output option is undefined
-    if (!dir) {
-      fs.writeFileSync(`./src/SchemaByGenerator.json`, JSON.stringify(schema, null, 2))
-    } else {
-      // If directory not exist
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true })
-      }
-      fs.writeFileSync(`${dir}/SchemaByGenerator.json`, JSON.stringify(schema, null, 2))
+      schema = await chassis.generateJsonSchemaBySymbol(symbol, output)
     }
   }
 }
