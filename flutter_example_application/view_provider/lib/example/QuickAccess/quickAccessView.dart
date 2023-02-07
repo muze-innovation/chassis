@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:view_provider/example/QuickAccess/quickAccessModel.dart';
 
 class QuickAccessView extends StatefulWidget {
@@ -24,25 +25,28 @@ class _QuickAccessState extends State<QuickAccessView> {
     log(widget.model.toString(), name: 'QuickAccess - Build');
     var model = widget.model;
     return StreamBuilder<QuickAccessPayloadData>(
-        stream: widget.stream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-              return _quickAccessLoadingView();
-            case ConnectionState.done:
-            case ConnectionState.active:
-              log(snapshot.data.toString(), name: 'QuickAccess snapshot');
-              return _quickAccessSection(snapshot.data!, model.parameters);
-          }
-        });
+      stream: widget.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return _quickAccessLoadingView();
+          case ConnectionState.done:
+          case ConnectionState.active:
+            log(snapshot.data.toString(), name: 'QuickAccess snapshot');
+            return _quickAccessSection(snapshot.data!, model.parameters);
+        }
+      },
+    );
   }
 
   Widget _quickAccessSection(
-      QuickAccessPayloadData payload, QuickAccessParameters params) {
+    QuickAccessPayloadData payload,
+    QuickAccessParameters params,
+  ) {
     return Column(
       children: [
         _titleView(params),
@@ -126,37 +130,45 @@ class _QuickAccessState extends State<QuickAccessView> {
   }
 
   Widget _quickAccessLoadingView() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(16),
-          child: Container(
-            width: 300,
-            height: 30,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16),
-            ),
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade900,
+      highlightColor: Colors.grey.shade100,
+      child: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Container(
+                  width: 300,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 140,
+                width: double.infinity,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _loadingItem();
+                  },
+                  itemCount: 5,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Padding(padding: EdgeInsets.all(8));
+                  },
+                ),
+              ),
+            ],
           ),
-        ),
-        SizedBox(
-          height: 140,
-          width: double.infinity,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            physics: const NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) {
-              return _loadingItem();
-            },
-            itemCount: 5,
-            separatorBuilder: (BuildContext context, int index) {
-              return const Padding(padding: EdgeInsets.all(8));
-            },
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

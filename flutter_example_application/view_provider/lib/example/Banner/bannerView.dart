@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'bannerModel.dart';
 
 class BannerView extends StatefulWidget {
@@ -49,16 +50,22 @@ class _BannerState extends State<BannerView> {
 }
 
 Widget BannerLoadingView(BannerAttributes attrs) {
-  return AspectRatio(
+  return Shimmer.fromColors(
+    baseColor: Colors.grey.shade900,
+    highlightColor: Colors.grey.shade100,
+    child: AspectRatio(
       aspectRatio: getRatio(attrs.heightValue),
       child: Container(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-          width: double.infinity,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8.0)),
-          )));
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+        width: double.infinity,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8.0)),
+        ),
+      ),
+    ),
+  );
 }
 
 double getRatio(String raio) {
@@ -68,16 +75,21 @@ double getRatio(String raio) {
 
 Widget BannerMainView(BannerItem item, BannerAttributes attrs) {
   return AspectRatio(
-      aspectRatio: getRatio(attrs.heightValue),
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        width: double.infinity,
-        child: Center(
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.network(item.asset,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Text('Cannot display an image')))),
-      ));
+    aspectRatio: getRatio(attrs.heightValue),
+    child: Container(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      width: double.infinity,
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.network(
+            item.asset,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) =>
+                const Text('Cannot display an image'),
+          ),
+        ),
+      ),
+    ),
+  );
 }
