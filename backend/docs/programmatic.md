@@ -92,7 +92,7 @@ This function allows you to generating the specification schema file by specific
 
 
 ```ts
-await chassis.generateJsonSchemaBySymbol('Banner', "./destinationPath")
+await chassis.generateJsonSchemaBySymbol('Banner', './destinationPath')
 ```
 
 ## Output
