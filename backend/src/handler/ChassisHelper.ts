@@ -141,7 +141,7 @@ export default class ChassisHelper {
     // Create new instance
     const chassis = new Chassis([resolve(file)])
     // Generate schema
-    const schema = await chassis.generateJsonSchemaBySymbol(symbol, undefined, false)
+    const schema = await chassis.generateJsonSchemaBySymbol(symbol, undefined)
 
     // Log schema
     console.log(JSON.stringify(schema, null, 2))
@@ -162,7 +162,7 @@ export default class ChassisHelper {
       await chassis.generateJsonSchemaFile(output)
     } else {
       // Generate schema file by symbol
-      await chassis.generateJsonSchemaBySymbol(symbol, output)
+      await chassis.generateJsonSchemaBySymbol(symbol, output, true)
     }
   }
 }

@@ -70,7 +70,7 @@ export default class Chassis {
       jsonSchemas[symbol] = jsonSchema
     }
 
-    if(destinationPath) {
+    if (destinationPath) {
       // Generate file json
       this.generateFile(jsonSchemas, undefined, destinationPath)
     }
