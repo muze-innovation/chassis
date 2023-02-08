@@ -77,8 +77,7 @@ class Chassis {
       _subjects.add(subject);
 
       /// Transfrom stream
-      final validatedTransfrom = subject.stream
-          .transform(validateOutput(item.payload.resolvedWith ?? ''));
+      final validatedTransfrom = subject.stream.transform(validateOutput(item));
 
       /// validate schema
       if (!_schemaValidator.validate(item)) {
@@ -113,13 +112,17 @@ class Chassis {
     _subjects.clear();
   }
 
-  StreamTransformer<dynamic, dynamic> validateOutput(String resolveWith) {
+  StreamTransformer<dynamic, dynamic> validateOutput(ChassisItem item) {
     return StreamTransformer<dynamic, dynamic>.fromHandlers(
         handleData: (data, sink) {
-      final response = ChassisResponse(resolvedWith: resolveWith, output: data);
-      _schemaValidator.validate(response)
-          ? sink.add(data)
-          : sink.addError('response is invalid');
+      final response = ChassisResponse(
+          resolvedWith: item.payload.resolvedWith ?? '', output: data);
+      if (item.payload.type == PayloadType.static ||
+          _schemaValidator.validate(response)) {
+        sink.add(data);
+      } else {
+        sink.addError('response is invalid');
+      }
     });
   }
 }
