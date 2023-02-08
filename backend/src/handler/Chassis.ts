@@ -192,8 +192,6 @@ export default class Chassis {
    * @param Spec
    */
   private async validateResolverSpec(payload: any, viewSpec: JSONSchema): Promise<boolean> {
-    let isValid = true
-
     if (payload.type === 'static') {
       const staticPayload = await this.generateJsonSchemaBySymbol(ChassisConfig.viewPayloadStatic)
       // Validate ChassisViewPayloadStatic Schema

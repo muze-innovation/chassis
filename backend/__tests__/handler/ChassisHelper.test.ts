@@ -1,6 +1,10 @@
+import { promises } from 'fs'
+import fs from 'fs'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import { resolve } from 'path'
 import ChassisHelper from '@/src/handler/ChassisHelper'
+
+jest.setTimeout(10000) // 10 seconds
 
 describe('Helper', () => {
   describe('validateJsonSchema', () => {
@@ -170,6 +174,39 @@ describe('Helper', () => {
       expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('{'))
 
       consoleSpy.mockRestore()
+    })
+  })
+
+  describe('generateJsonSchemaFile', () => {
+    const file = resolve('__testdata__/ViewSpec.ts')
+    const output = resolve('__testdata__/file/')
+
+    afterEach(() => {
+      fs.readdirSync(output).forEach(fileName => fs.unlinkSync(resolve(`${output}/${fileName}`)))
+    })
+
+    it('generate JSON schema file for all spec', async () => {
+      await ChassisHelper.generateJsonSchemaFile(file, '', output, true)
+
+      const schemaFile = await promises.readFile(resolve(`${output}/Schema.json`), 'utf-8')
+      const schema = JSON.parse(schemaFile)
+
+      expect(schema).toBeDefined()
+      expect(schema).not.toBeNull()
+    })
+
+    it('generate JSON schema file for a specific symbol', async () => {
+      const symbol = 'Banner'
+
+      await ChassisHelper.generateJsonSchemaFile(file, symbol, output)
+
+      const schemaFile = await promises.readFile(resolve(`${output}/${symbol}.json`), 'utf-8')
+      const schema = JSON.parse(schemaFile) as JSONSchema
+
+      expect(schema).toBeDefined()
+      expect(schema.type).toEqual('object')
+      expect(schema.definitions).toBeDefined()
+      expect(schema.properties).toBeDefined()
     })
   })
 })
