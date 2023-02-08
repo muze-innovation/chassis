@@ -1,6 +1,7 @@
 /// Foundation library
 import 'dart:async';
 
+import 'package:chassis/models/chassis_response.dart';
 import 'package:flutter/material.dart';
 
 /// External library
@@ -9,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 /// Internal library
 import 'package:chassis/data_provider.dart';
 import 'package:chassis/view_provider.dart';
+import 'package:chassis/validator/schema_validator.dart';
 
 /// Chassis is a library for widget management.
 ///
@@ -34,6 +36,16 @@ class Chassis {
   late IDataProvider _dataProvider;
   late IViewProvider _viewProvider;
 
+  // The `SchemaValidator` will validate between payload and json schema.
+  //
+  // required: `view_spec`, `resolver_spec` into assets folder in application
+  // and set assets path in `pubspec.yaml`
+  //
+  // e.g. [pubspec.yaml]
+  // - assets/view_spec.json
+  // - assets/resolver_spec.json
+  late ISchemaValidator _schemaValidator;
+
   /// Declarations of private property in Chassis
   final List<BehaviorSubject> _subjects = [];
 
@@ -48,9 +60,11 @@ class Chassis {
   ///
   Chassis(
       {required IDataProvider dataProvider,
-      required IViewProvider viewProvider}) {
+      required IViewProvider viewProvider,
+      required ISchemaValidator schemaValidator}) {
     _dataProvider = dataProvider;
     _viewProvider = viewProvider;
+    _schemaValidator = schemaValidator;
   }
 
   /// ## Chassis Public Methods
@@ -62,8 +76,17 @@ class Chassis {
       final subject = BehaviorSubject();
       _subjects.add(subject);
 
+      /// Transfrom stream
+      final validatedTransfrom = subject.stream.transform(validateOutput(item));
+
+      /// validate schema
+      if (!_schemaValidator.validate(item)) {
+        subject.addError('item is invalid');
+        continue;
+      }
+
       /// Add widget to the list of widgets
-      widgets.add(_viewProvider.getView(subject.stream, item));
+      widgets.add(_viewProvider.getView(validatedTransfrom, item));
 
       /// Manage data by payload type
       switch (item.payload.type) {
@@ -90,8 +113,17 @@ class Chassis {
     _subjects.clear();
   }
 
-  /// ## Chassis Private Methods
-  bool _validate(Map<String, dynamic> item) {
-    return false;
+  StreamTransformer<dynamic, dynamic> validateOutput(ChassisItem item) {
+    return StreamTransformer<dynamic, dynamic>.fromHandlers(
+        handleData: (data, sink) {
+      final response = ChassisResponse(
+          resolvedWith: item.payload.resolvedWith ?? '', output: data);
+      if (item.payload.type == PayloadType.static ||
+          _schemaValidator.validate(response)) {
+        sink.add(data);
+      } else {
+        sink.addError('response is invalid');
+      }
+    });
   }
 }
