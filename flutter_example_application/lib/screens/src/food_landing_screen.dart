@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:data_provider/core.dart';
 import 'package:view_provider/core.dart';
 import 'package:flutter_example_application/repository/repository.dart';
+import 'package:chassis/validator/schema_validator.dart';
 
 /// Chassis
 import 'package:chassis/core.dart';
@@ -34,9 +35,15 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
     super.initState();
 
     // setup chassis
-    final dataProvider = AppDataProvider();
-    final viewProvider = AppViewProvider();
-    _chassis = Chassis(dataProvider: dataProvider, viewProvider: viewProvider);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final dataProvider = AppDataProvider();
+      final viewProvider = AppViewProvider();
+      final schemaValidator = await SchemaValidator.create();
+      _chassis = Chassis(
+          dataProvider: dataProvider,
+          viewProvider: viewProvider,
+          schemaValidator: schemaValidator);
+    });
 
     // call API to load data
     loadData();

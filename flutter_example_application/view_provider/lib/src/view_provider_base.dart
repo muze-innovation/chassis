@@ -25,6 +25,7 @@ abstract class ViewProvider implements IViewProvider {
         var broadcastStream = stream.map<QuickAccessPayloadData>(
             (data) => QuickAccessPayloadData.fromJson(data));
         return getQuickAccessView(broadcastStream, quickAccessModel);
+
       default:
         return Container();
     }
