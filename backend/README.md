@@ -177,6 +177,27 @@ interface Banner extends ChassisViewSpec {
 }
 ```
 
-3. Run [Chassis validation](#usage-examples) on the front-end UI using the `Spec` and `Source` files. If the validation returns `TRUE`, the front-end will correctly render the UI using the source in JSON format.
+3. If the payload value requires resolving, such as with a `remote` type, create a resolver specification file to handle the dynamic values. For example, let's call this file [ResolverSpec](./example/src/ResolverSpec.ts).
+
+```ts
+// ResolverSpec.ts
+interface GetBanner {
+  input: {
+    slug: string
+  }
+  output: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+In the resolver specification file, define the input and output fields for the resolver, mapping it to the `resolvedWith` field in the `source` file.
+
+```json
+"resolvedWith": "GetBanner"
+```
+
+4. Run [Chassis validation](#usage-examples) on the front-end UI using the `Spec` and `Source` files. If the validation returns `TRUE`, the front-end will correctly render the UI using the source in JSON format.
 
 Note: The above is just an example and the actual process may vary based on the specific requirements and implementation of Chassis.
