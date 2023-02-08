@@ -56,6 +56,10 @@ describe('Chassis', () => {
   })
 
   describe('validateSpec', () => {
+    beforeEach(() => {
+      jest.spyOn(console, 'log').mockImplementation(() => {})
+    })
+
     it('return true for valid input', async () => {
       const result = await chassis.validateSpec(resolve('__testdata__/spec/valid-input.json'))
       expect(result).toBe(true)

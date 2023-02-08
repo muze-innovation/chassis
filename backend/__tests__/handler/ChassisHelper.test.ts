@@ -1,4 +1,5 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+import { resolve } from 'path'
 import ChassisHelper from '@/src/handler/ChassisHelper'
 
 describe('Helper', () => {
@@ -56,6 +57,25 @@ describe('Helper', () => {
 
       expect(() => ChassisHelper.validateJsonSchema(schema, json)).toThrow()
     })
+
+    it('not throws error on invalid JSON and throwable is set to false', () => {
+      const schema = {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+          },
+          viewType: {
+            type: 'string',
+            enum: ['Banner'],
+          },
+        },
+      } as JSONSchema
+      const json = { id: 'recent_orders_shelf_content', viewType: 'QuickAccess' }
+      const result = ChassisHelper.validateJsonSchema(schema, json, false)
+
+      expect(result).toBe(false)
+    })
   })
 
   describe('validateSchemaDiff', () => {
@@ -97,6 +117,21 @@ describe('Helper', () => {
 
       expect(async () => await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema)).rejects.toThrow()
     })
+
+    it('not throws error on invalid schema diff and throwable is to false', async () => {
+      const sourceSchema = {
+        type: 'object',
+        properties: { asset: { type: 'string' }, placeholder: { type: 'string' } },
+      } as JSONSchema
+      const destinationSchema = {
+        type: 'object',
+        properties: { asset: { type: 'string' } },
+      } as JSONSchema
+
+      const result = await ChassisHelper.validateSchemaDiff(sourceSchema, destinationSchema, false)
+
+      expect(result).toBe(false)
+    })
   })
 
   describe('jsonStringify', () => {
@@ -119,6 +154,22 @@ describe('Helper', () => {
 
       expect(spy).toHaveBeenCalled()
       spy.mockRestore()
+    })
+  })
+
+  describe('generateJsonSchemaBySymbol', () => {
+    it('generate JSON schema of given symbol', async () => {
+      const file = resolve('__testdata__/ViewSpec.ts')
+      const symbol = 'Banner'
+
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+
+      await ChassisHelper.generateJsonSchemaBySymbol(file, symbol)
+
+      expect(consoleSpy).toBeDefined()
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('{'))
+
+      consoleSpy.mockRestore()
     })
   })
 })
