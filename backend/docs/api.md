@@ -1,6 +1,6 @@
-# Programmatic
+# API for Chassis
 
-- [Programmatic](#programmatic)
+- [API for Chassis](#api-for-chassis)
 - [Defined instance chassis](#defined-instance-chassis)
 - [Validate](#validate)
   - [Parameters](#parameters)
@@ -15,7 +15,7 @@
   - [Usage](#usage-2)
   - [Output](#output-2)
 
-# Defined instance chassis
+## Defined instance chassis
 
 ```ts
 import Chassis from 'chassis'
@@ -23,19 +23,20 @@ import Chassis from 'chassis'
 const chassis = new Chassis([resolve(__dirname, 'path/spec/Spec1.ts'), resolve(__dirname, 'path/spec/Spec2.ts')])
 ```
 
-# Validate
+## Validate
 
 This function allows you to validate a JSON file against a set of specification files.
 
-## Parameters
+### Parameters
+
 ```sh
 1. JsonOrSourcePath: object | string
 ```
 
-## Usage
+### Usage
 
 ```ts
-await chassis.validateSpec({ 
+await chassis.validateSpec({
   {
     "version": "1.0.0",
     "name": "default-landing-page",
@@ -65,7 +66,7 @@ await chassis.validateSpec({
 await chassis.validateSpec(resolve(__dirname, 'path/source.json'))
 ```
 
-## Output
+### Output
 
 `TRUE` output is a valid source
 
@@ -76,26 +77,26 @@ Validate Pass!
 `FALSE` output is an invalid source and will show an error table with description.
 ![ErrorTable](../asset/error-table.png)
 
-
-# Generate Specification Schema File by Symbol
+## Generate Specification Schema File by Symbol
 
 This function allows you to generating the specification schema file by specific symbol.
 
-## Parameters
+### Parameters
+
 ```sh
 1. symbol: string
 2. destinationPath?: string
 3. generateFile?: boolean
 ```
 
-## Usage
-
+### Usage
 
 ```ts
 await chassis.generateJsonSchemaBySymbol('Banner', './destinationPath')
 ```
 
-## Output
+### Output
+
 ```json
 {
   "type": "object",
@@ -107,27 +108,29 @@ await chassis.generateJsonSchemaBySymbol('Banner', './destinationPath')
     "error": { "type": "object", "properties": ["Object"], "required": ["Array"] },
     "attributes": { "anyOf": ["Array"] }
   },
-  "required": [ "attributes", "id", "payload", "viewType" ],
+  "required": ["attributes", "id", "payload", "viewType"],
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
 ```
 
-# Generate Specification All Schema File
+## Generate Specification All Schema File
 
 This function allows you to generating JSON schemas from specification files.
 
-## Parameters
+### Parameters
+
 ```sh
 1. destinationPath?: string
 ```
 
-## Usage
+### Usage
 
 ```ts
 await chassis.generateJsonSchemaFile('./destinationPath')
 ```
 
-## Output
+### Output
+
 ```json
 {
   "type": "object",
@@ -139,7 +142,7 @@ await chassis.generateJsonSchemaFile('./destinationPath')
     "error": { "type": "object", "properties": ["Object"], "required": ["Array"] },
     "attributes": { "anyOf": ["Array"] }
   },
-  "required": [ "attributes", "id", "payload", "viewType" ],
+  "required": ["attributes", "id", "payload", "viewType"],
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
 ```

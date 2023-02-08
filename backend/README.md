@@ -2,6 +2,19 @@
 
 Chassis helps validate the accuracy of the source, based on the specifications required by the user.
 
+- [Chassis for Backend](#chassis-for-backend)
+- [Overview](#overview)
+  - [Input](#input)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Key Features](#key-features)
+- [Installation](#installation)
+- [Usage Examples](#usage-examples)
+  - [CLI Usage](#cli-usage)
+  - [API Reference](#api-reference)
+- [Tutorials](#tutorials)
+  - [Step-by-Step Guide to Creating a UI in Chassis](#step-by-step-guide-to-creating-a-ui-in-chassis)
+
 ## Overview
 
 The purpose of a Chassis is to verify the accuracy of the source code used to create the front-end user interface.
@@ -23,7 +36,7 @@ subgraph Input
 end
 
 subgraph Output
-    output["Data(JSON)"]
+    output["Source(JSON)"]
     sdart["All Spec(JSONSchema)"]
 end
 
@@ -47,7 +60,7 @@ This is a flowchart that describes the process of how the Chassis Backend and Fr
 
 ### Input
 
-The Chassis Backend takes as input the ResolverSpec, ViewSpec, and ScreenSpec written in TypeScript, as well as the Source data in JSON format.
+The Chassis Backend takes as input the `ResolverSpec`, `ViewSpec`, and `ScreenSpec` written in TypeScript, as well as the `Source` data in JSON format.
 
 Read more about the input in the documentation.
 
@@ -56,15 +69,15 @@ Read more about the input in the documentation.
 
 ### Backend
 
-The Chassis Backend verifies the accuracy of the `Spec` and `Source`, and returns the `output data` in a validated JSON format, as well as the `all spec` file in the JSON Schema format.
+The Chassis Backend verifies the accuracy of the `Spec` and `Source`, and returns the output `Source` in a validated JSON format, as well as the `All Spec` file in the JSON Schema format.
 
 ### Frontend
 
-The Chassis Frontend receives the `output data` and `all spec` from the Chassis Backend, and uses this information to generate the user interface (UI).
+The Chassis Frontend receives the output `Source` and `All Spec` from the Chassis Backend, and uses this data to generate the user interface (UI).
 
 ## Key Features
 
-- Validate
+- Source Validation
 - Get Specification Schema by Symbol
 - Generate Specification Schema File by Symbol
 - Generate Specification All Schema File
@@ -109,7 +122,7 @@ await chassis.validateSpec(resolve(__dirname, 'path/source.json'))
 
 The API of Chassis enables programmatic data validation by importing the library, creating an instance with the spec files, and calling the `validateSpec` method with the `source` data's JSON path.
 
-You can read more about other programmatic features in the [API](./docs/programmatic.md).
+You can read more about other programmatic features in the [API](./docs/api.md).
 
 ## Tutorials
 
@@ -124,6 +137,7 @@ Example Banner :
 1. Create a `specification file` for the UI that validates the source format (JSON) as a TypeScript file. For example, the following is a `Banner` specification in [ViewSpec](./example/src/ViewSpec.ts) file:
 
 ```ts
+// ViewSpec.ts
 interface Banner extends ChassisViewSpec {
   id: string
   viewType: 'Banner'
@@ -137,6 +151,7 @@ interface Banner extends ChassisViewSpec {
 2. Create a `source file` that is the JSON data used to create the front-end UI. The source file uses the Banner specification to validate the data. For example [Source](./example/source.json) file:
 
 ```json
+// source.json
 {
   "version": "1.0.0",
   "name": "default-landing-page",
