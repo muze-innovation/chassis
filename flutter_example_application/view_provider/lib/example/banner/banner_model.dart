@@ -1,17 +1,20 @@
 import 'package:chassis/core.dart';
+import 'package:flutter/material.dart';
 import 'package:view_provider/src/view_provider_base.dart';
 
 class BannerModel {
   String id;
   String viewType;
   BannerAttributes attributes;
+  dynamic action;
   BannerModel(
-      {required this.id, required this.viewType, required this.attributes});
+      {required this.id, required this.viewType, required this.attributes, this.action});
 
   BannerModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         viewType = json['viewType'],
-        attributes = BannerAttributes.fromJson(json['attributes']);
+        attributes = BannerAttributes.fromJson(json['attributes']),
+        action = json['action'];
 }
 
 class BannerAttributes {

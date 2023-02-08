@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:view_provider/action/action.dart';
 import 'banner_model.dart';
 
 class BannerWidget extends StatefulWidget {
   final Stream<BannerItem> stream;
   final BannerModel model;
+  final IAction delegate;
 
-  const BannerWidget({Key? key, required this.stream, required this.model})
+
+  const BannerWidget({Key? key, required this.stream, required this.model, required this.delegate})
       : super(key: key);
 
   @override
@@ -37,7 +40,7 @@ class _BannerState extends State<BannerWidget> {
           case ConnectionState.done:
           case ConnectionState.active:
             if (snapshot.hasData) {
-              return _bannerMainView(snapshot.data!, model.attributes);
+              return _bannerMainView(snapshot.data!, model.attributes, model.action, widget.delegate, context);
             } else {
               return Container();
             }
@@ -73,20 +76,24 @@ class _BannerState extends State<BannerWidget> {
     return double.parse(value[0]) / double.parse(value[1]);
   }
 
-  Widget _bannerMainView(BannerItem item, BannerAttributes attrs) {
+  Widget _bannerMainView(BannerItem item, BannerAttributes attrs, dynamic action, IAction delegate, BuildContext context) {
+    print('Banner action: ${action}');
     return AspectRatio(
       aspectRatio: _getRatio(attrs.heightValue),
       child: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         width: double.infinity,
         child: Center(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              item.asset,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  const Text('Cannot display an image'),
+          child: GestureDetector(
+            onTap: () => delegate.onAction(context, action, null), // TODO: use data from json
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                item.asset,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Text('Cannot display an image'),
+              ),
             ),
           ),
         ),

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 /// Internal
 import 'package:data_provider/core.dart';
 import 'package:view_provider/core.dart';
+import 'package:view_provider/action/action.dart';
 import 'package:flutter_example_application/repository/repository.dart';
 import 'package:chassis/validator/schema_validator.dart';
+import 'package:flutter_example_application/action/action.dart';
 
 /// Chassis
 import 'package:chassis/core.dart';
@@ -22,7 +24,8 @@ class FoodLandingScreen extends StatefulWidget {
   }
 }
 
-class _FoodLandingScreenState extends State<FoodLandingScreen> {
+class _FoodLandingScreenState extends State<FoodLandingScreen>
+    implements IAction {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final IChassisRepository _chassisRepository = ChassisRepository();
@@ -37,7 +40,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
     // setup chassis
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final dataProvider = AppDataProvider();
-      final viewProvider = AppViewProvider();
+      final viewProvider = AppViewProvider(delegate: _FoodLandingScreenState());
       final schemaValidator = await SchemaValidator.create();
       _chassis = Chassis(
           dataProvider: dataProvider,
@@ -94,5 +97,13 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   void dispose() {
     _chassis.dispose();
     super.dispose();
+  }
+
+  @override
+  void onAction(BuildContext context, Map<String, dynamic> config,
+      Map<String, dynamic>? data) {
+    print('Food screen on action: $config');
+    ActionManager manager = ActionManager.fromJson(config);
+    manager.execute(context, data);
   }
 }

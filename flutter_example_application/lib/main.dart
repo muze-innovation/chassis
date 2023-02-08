@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
         MainScreen.routeName: (context) => const MainScreen(),
         HomeLandingScreen.routeName: (context) => const HomeLandingScreen(),
         FoodLandingScreen.routeName: (context) => const FoodLandingScreen(),
-        AccountLandingScreen.routeName: (context) =>
-            const AccountLandingScreen(),
+        AccountLandingScreen.routeName: (context) => const AccountLandingScreen(),
+        InboxLandingScreen.routeName: (context) => const InboxLandingScreen(),
       },
     );
   }
