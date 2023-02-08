@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node src/index.ts",
-    "update": "npm uninstall chassis & npm i ../chassis-0.0.1.tgz"
+    "update": "npm uninstall chassis & npm i ../chassis-0.0.1.tgz",
+    "compile:spec": "chassis",
+    "validate:spec": "chassis ..."
   },
   "keywords": [],
   "author": "",

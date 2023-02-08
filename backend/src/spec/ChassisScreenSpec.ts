@@ -1,7 +1,7 @@
-import { ChassisViewSpec } from './ChassisViewSpec'
+import type { ChassisViewSpec } from './ChassisViewSpec'
 
-export interface ChassisScreenSpec {
+export interface ChassisScreenSpec<VS extends ChassisViewSpec> {
   version: string
   name: string
-  items: ChassisViewSpec[]
+  items: VS[]
 }

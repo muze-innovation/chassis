@@ -137,6 +137,8 @@ Example Banner :
 1. Create a `specification file` for the UI that validates the source format (JSON) as a TypeScript file. For example, the following is a `Banner` specification in [ViewSpec](./example/src/ViewSpec.ts) file:
 
 ```ts
+import type ChassisViewSpec from 'chassis'
+
 // ViewSpec.ts
 interface Banner extends ChassisViewSpec {
   id: string
@@ -146,7 +148,14 @@ interface Banner extends ChassisViewSpec {
     placeholder: string
   }
 }
+
+// TODO: Add additional files for ResolverSpec.
+
 ```
+
+// TODO: Display example of json schema output. (Generate whole output as single json schema)
+
+// TODO: 
 
 2. Create a `source file` that is the JSON data used to create the front-end UI. The source file uses the Banner specification to validate the data. For example [Source](./example/source.json) file:
 

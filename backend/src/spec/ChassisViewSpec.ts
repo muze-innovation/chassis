@@ -1,10 +1,17 @@
-export interface ChassisViewSpec {
+import { ChassisResolverSpec, ChassisViewPayloadSource } from "./ChassisResolverSpec"
+
+// Try using Generic Typing? e.g. interface ChassisViewSpec<ParamType, PayloadType> { .. }
+export interface ChassisViewSpec<T> {
   id: string
   viewType: string
   parameters?: any
-  payload?: any
+  payload?: T
   error?: ChassisError
   attributes: ChassisViewAttribute
+}
+
+interface ChassisViewDefinition<T> extends Omit<ChassisViewSpec<T>, 'payload'> {
+  payload: ChassisViewPayloadSource<T>
 }
 
 interface FixedHeightPolicy {

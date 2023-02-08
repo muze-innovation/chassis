@@ -1,8 +1,8 @@
 import { resolve } from 'path'
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 import * as TJS from 'typescript-json-schema'
-import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
-import $RefParser from '@apidevtools/json-schema-ref-parser'
+import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+
 import ChassisHelper from './ChassisHelper'
 import ChassisConfig from './ChassisConfig'
 
@@ -24,16 +24,22 @@ export default class Chassis {
 
     this._program = TJS.getProgramFromFiles(
       [
+        // Chassis's own types.
         resolve(__dirname, ChassisConfig.screenSpecPath),
         resolve(__dirname, ChassisConfig.viewSpecPath),
         resolve(__dirname, ChassisConfig.resolverSpecPath),
-      ].concat(specPathResolves),
-      compilerOptions
+        // Customized types by application creator.
+        ...specPathResolves,
+        // Genrate inclusion file finalChassisViewSpec into temp file
+        // TODO: include the temp file here.
+      ],
+      compilerOptions,
     )
     this._generator = TJS.buildGenerator(this._program, settings)!
 
     // Initialize an empty error
     this._errors = []
+    // TODO: Remove the temp file?
   }
 
   /**
@@ -58,6 +64,7 @@ export default class Chassis {
     return jsonSchema
   }
 
+  // TODO: Remove me?
   public async generateJsonSchemaFile(destinationPath?: string): Promise<Record<string, JSONSchema>> {
     // Get all symbols
     const symbols = this._generator.getMainFileSymbols(this._program)
@@ -78,6 +85,7 @@ export default class Chassis {
     return jsonSchemas
   }
 
+  // Write file into IO
   private generateFile(jsonSchema: JSONSchema, symbol?: string, destinationPath?: string) {
     // If destination path is invalid
     if (!destinationPath) {
