@@ -50,7 +50,7 @@ yargs.command({
         alias: 's',
         type: 'string',
         demandOption: true,
-        describe: 'Symbol',
+        describe: 'Symbol of specification',
       }),
   handler: async argv => {
     await ChassisHelper.generateJsonSchemaBySymbol(argv.file, argv.symbol)
@@ -72,7 +72,7 @@ yargs.command({
         alias: 's',
         type: 'string',
         demandOption: true,
-        describe: 'Symbol',
+        describe: 'Symbol of specification',
       })
       .options('output', {
         alias: 'o',
