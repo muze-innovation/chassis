@@ -153,18 +153,16 @@ export default class ChassisHelper {
     output: string,
     isAllSpec: boolean = false
   ): Promise<void> {
-    // Generate schema
-    let schema: JSONSchema
-
     // Create new instance
     const chassis = new Chassis([resolve(file)])
 
     // If generate schema file for all spec
     if (isAllSpec) {
-      // Generate all schema
-      schema = await chassis.generateJsonSchemaFile(output)
+      // Generate schema file of all schema
+      await chassis.generateJsonSchemaFile(output)
     } else {
-      schema = await chassis.generateJsonSchemaBySymbol(symbol, output)
+      // Generate schema file by symbol
+      await chassis.generateJsonSchemaBySymbol(symbol, output)
     }
   }
 }
