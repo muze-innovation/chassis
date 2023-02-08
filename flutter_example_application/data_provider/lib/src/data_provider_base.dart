@@ -9,35 +9,49 @@ import '../model/banner_input.dart';
 import 'banner_data_provider.dart';
 
 abstract class DataProvider implements IDataProvider {
+  final List<StreamSubscription> _subscriptionRegisters = [];
   Stream<BannerOutput> getBanner(BannerInput banner);
-  Stream<QuickAccessItemOutput> getQuickAccessItem(StreamController controller);
+  Stream<QuickAccessItemOutput> getQuickAccessItem();
   @override
   void getData(StreamController<dynamic> controller, ChassisRequest request) {
     switch (request.resolvedWith) {
       case DataProviderConstans.getBanner:
-        controller.addStream(getBanner(BannerInput.fromJson(request.input))
-            .map((event) => event.toJson()));
+        final subscription =
+            getBanner(BannerInput.fromJson(request.input)).listen((event) {
+          controller.add(event.toJson());
+        });
+        _subscriptionRegisters.add(subscription);
         break;
       case DataProviderConstans.getQuickAccessItem:
-        controller.addStream(
-            getQuickAccessItem(controller).map((event) => event.toJson()));
+        final subscription = getQuickAccessItem().listen((event) {
+          controller.add(event.toJson());
+        });
+        _subscriptionRegisters.add(subscription);
         break;
       default:
     }
+  }
+
+  @override
+  void dispose() {
+    for (var subscription in _subscriptionRegisters) {
+      subscription.cancel();
+    }
+    _subscriptionRegisters.clear();
   }
 }
 
 class AppDataProvider extends DataProvider {
   final _bannerDataProvider = BannerDataProvider();
   final _quickAccessItemDataProvider = QuickAccessItemDataProvider();
+
   @override
   Stream<BannerOutput> getBanner(BannerInput banner) {
     return _bannerDataProvider.getData(banner.slug);
   }
 
   @override
-  Stream<QuickAccessItemOutput> getQuickAccessItem(
-      StreamController controller) {
-    return _quickAccessItemDataProvider.getData(controller);
+  Stream<QuickAccessItemOutput> getQuickAccessItem() {
+    return _quickAccessItemDataProvider.getData();
   }
 }

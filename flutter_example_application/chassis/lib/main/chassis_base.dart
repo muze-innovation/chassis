@@ -1,4 +1,6 @@
 /// Foundation library
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 /// External library
@@ -63,8 +65,6 @@ class Chassis {
       /// Add widget to the list of widgets
       widgets.add(_viewProvider.getView(subject.stream, item));
 
-      subject.stream.listen(print);
-
       /// Manage data by payload type
       switch (item.payload.type) {
         case PayloadType.static:
@@ -82,11 +82,11 @@ class Chassis {
   }
 
   // Close all the opened subjects.
-  void dispose() async {
+  dispose() {
     for (var subject in _subjects) {
-      await subject.drain();
       subject.close();
     }
+    _dataProvider.dispose();
     _subjects.clear();
   }
 

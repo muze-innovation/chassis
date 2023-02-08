@@ -12,6 +12,10 @@ class ProductRepository implements IProductRepository {
     return FirebaseFirestore.instance
         .collection('quickAccessItem')
         .doc('C31m6JDhRAkqItIzWsKP')
-        .snapshots();
+        .snapshots()
+        .map((event) {
+      print("ProductRepository: ${event.data()}");
+      return event;
+    });
   }
 }
