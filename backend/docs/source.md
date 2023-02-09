@@ -54,7 +54,7 @@ The source file is JSON data used to create the front-end UI. The following code
 }
 ```
 
-This source file uses the Banner specifications to validate the data.
+To validate the data in the screen section, use the [Screen Spec](./spec.md/#chassisscreenspec) criteria. Similarly, for the validation of items within the component, employ the Banner specifications.
 
 ```ts
 // ViewSpec.ts
