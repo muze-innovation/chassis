@@ -1,25 +1,29 @@
 # Specification
 
+A specification file for Chassis defines the `structure` and details of the views, attributes, and data used in a UI. It serves as a `blueprint` for rendering views and validates the data for correctness before it is used in the front-end.
+
 ## Overview
 
-This spec use [JSON Schema](https://json-schema.org/) syntax for validate the json.
+A specification file written in `TypeScript` is converted to a [JSON Schema](https://json-schema.org/) for validating [Source](../example/source.json) JSON data.
 
-## Schema
+### Example Json Schema
 
 - [ViewSpec](../example/spec/ViewSpec.json)
 - [ResolverSpec](../example/spec/ResovlerSpec.json)
 - [Banner](../example/spec/Banner.json)
 - [ScreenSpec](../example/spec/ScreenSpec.json)
 
-## Validation Tools
+### Validation Tools
 
 https://www.jsonschemavalidator.net/
 
-## Example
+## Base Spec
 
-[JSON Source/Output](../example/source.json)
+- [ChassisScreenSpec](#chassisscreenspec)
+- [ChassisViewSpec](#chassisviewspec)
+- [ChassisResolverSpec](#chassisresolverspec)
 
-## ChassisScreenSpec
+## Chassis Screen Spec
 
 ```ts
 export interface ChassisScreenSpec {
@@ -41,13 +45,11 @@ Example source.json:
 {
   "version": "1.0.0",
   "name": "default-landing-page",
-  "items": [
-    ...
-  ]
+  "items": []
 }
 ```
 
-## ChassisViewSpec
+## Chassis View Spec
 
 ```ts
 export interface ChassisViewSpec {
@@ -60,7 +62,36 @@ export interface ChassisViewSpec {
 }
 ```
 
-The ChassisViewSpec interface defines the structure of a single item in the screen. It has the following properties in [View Spec Field](#view-spec-field):
+The ChassisViewSpec interface defines the structure of a single item in the screen. It has the following properties:
+
+| Field                   | Required | Description                                                                      |
+| ----------------------- | :------: | -------------------------------------------------------------------------------- |
+| id                      |   Yes    | Unique identifier for each item                                                  |
+| viewType                |   Yes    | Specifies the type of component view [Banner, Quick Access, Shelf Content, etc.] |
+| attributes              |   Yes    | Defines the visual style of the component                                        |
+| attributes.heightPolicy |   Yes    | Specifies the height type of the view [fixed, ratio]                             |
+| attributes.heightValue  |   Yes    | Defines the height value of the view [50, "16:9"]                                |
+| parameters              |    No    | Additional data for rendering the component                                      |
+| payload                 |    No    | Data required for the component, can be static or remote from source             |
+| error                   |    No    | Defines the error type, can be "hide" or "error"                                 |
+
+### View Spec
+
+You can extend the ChassisViewSpec interface to create a specific view specification for a banner component. Here's an example:
+
+```ts
+// ViewSpec.ts
+interface Banner extends ChassisViewSpec {
+  id: string
+  viewType: 'Banner'
+  payload: {
+    asset: string
+    placeholder: string
+  }
+}
+```
+
+### Chassis View Attribute
 
 ```ts
 interface _ChassisViewAttribute {}
@@ -88,6 +119,8 @@ There are two types of `HeightPolicy` that can be applied to a view,
 
 - `RatioHeightPolicy` means heightValue is a string for component height in ratio form, e.g. `4:1`.
 
+### Chassis Error
+
 ```ts
 interface ChassisError {
   errorType: 'hide' | 'error'
@@ -96,36 +129,7 @@ interface ChassisError {
 
 ChassisError defines an error that may occur while resolving data for the view. It has a single property `errorType` which can be either `hide` or `error`, indicating how the error should be handled.
 
-### View Spec Field
-
-| Field                   | Required | Description                                                                      |
-| ----------------------- | :------: | -------------------------------------------------------------------------------- |
-| id                      |   Yes    | Unique identifier for each item                                                  |
-| viewType                |   Yes    | Specifies the type of component view [Banner, Quick Access, Shelf Content, etc.] |
-| attributes              |   Yes    | Defines the visual style of the component                                        |
-| attributes.heightPolicy |   Yes    | Specifies the height type of the view [fixed, ratio]                             |
-| attributes.heightValue  |   Yes    | Defines the height value of the view [50, "16:9"]                                |
-| parameters              |    No    | Additional data for rendering the component                                      |
-| payload                 |    No    | Data required for the component, can be static or remote from source             |
-| error                   |    No    | Defines the error type, can be "hide" or "error"                                 |
-
-### ViewSpec
-
-You can extend the ChassisViewSpec interface to create a specific view specification for a banner component. Here's an example:
-
-```ts
-// ViewSpec.ts
-interface Banner extends ChassisViewSpec {
-  id: string
-  viewType: 'Banner'
-  payload: {
-    asset: string
-    placeholder: string
-  }
-}
-```
-
-## ChassisResolverSpec
+## Chassis Resolver Spec
 
 ```ts
 export interface ChassisResolverSpec {
@@ -136,7 +140,7 @@ export interface ChassisResolverSpec {
 
 The ChassisResolverSpec interface defines two properties, `input` which is optional, and `output`, both of which are of type any, meaning they can hold any type of value.
 
-### ResolverSpec
+### Resolver Spec
 
 Extend the `ChassisResolverSpec` to write a resolver specification file. The file should contain require properties.
 
@@ -155,7 +159,7 @@ interface GetBanner extends ChassisResolverSpec {
 }
 ```
 
-### ChassisViewPayloadStatic
+### Chassis View Payload Static
 
 ```ts
 interface ChassisViewPayloadStatic {
@@ -178,7 +182,7 @@ The ChassisViewPayloadStatic interface defines a static payload with two propert
 }
 ```
 
-### ChassisViewPayloadRemote
+### Chassis View Payload Remote
 
 ```ts
 interface ChassisViewPayloadRemote {

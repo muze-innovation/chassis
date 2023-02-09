@@ -1,12 +1,8 @@
 # SOURCE JSON
 
-## Understanding Chassis Input and Output
+## Overview
 
-Chassis is a framework that allows for the validation of front-end UI components. It uses two components, specification and source files, to validate the user interface (UI) and provide error handling.
-
-### validation
-
-Chassis validates the front-end UI using two components: Specification files and Source files. If the validation returns TRUE, the front end will correctly render the UI component using the source in JSON format.
+The source JSON file for Chassis refers to the JSON data that provides input for the Chassis system. It is the input for the Chassis to render the views and components.
 
 ## Source Files
 
