@@ -26,11 +26,10 @@ class ActionManager {
     url = json?["url"] ?? '';
   }
 
-  void execute(
-    BuildContext context, Map<String, dynamic>? data) async => _execute(context, data);
+  void execute(BuildContext context, Map<String, dynamic>? data) async =>
+      _execute(context, data);
 
   void _execute(BuildContext context, Map<String, dynamic>? data) {
-    print('Action is executing...');
     switch (type) {
       case 'navigate':
         return _navigate(context);
@@ -56,9 +55,9 @@ class ActionManager {
     if (url == ActionUrl.back) {
       Navigator.pop(context);
     } else if (url == ActionUrl.backToHome) {
-        Navigator.popUntil(context, (route) => route.isFirst);
-        // Navigator.pushReplacementNamed(context, '/main_screen');
-    }else {
+      Navigator.popUntil(context, (route) => route.isFirst);
+      // Navigator.pushReplacementNamed(context, '/main_screen');
+    } else {
       Navigator.pushNamed(context, url, arguments: data);
     }
   }

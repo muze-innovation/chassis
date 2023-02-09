@@ -1,14 +1,16 @@
-import 'package:chassis/core.dart';
-import 'package:flutter/material.dart';
-import 'package:view_provider/src/view_provider_base.dart';
+import 'package:view_provider/action/action.dart';
 
 class BannerModel {
   String id;
   String viewType;
   BannerAttributes attributes;
-  dynamic action;
+  Map<String, dynamic>? action;
+  // BaseAction? action;
   BannerModel(
-      {required this.id, required this.viewType, required this.attributes, this.action});
+      {required this.id,
+      required this.viewType,
+      required this.attributes,
+      this.action});
 
   BannerModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],

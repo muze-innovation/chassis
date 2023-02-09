@@ -8,8 +8,11 @@ class BannerWidget extends StatefulWidget {
   final BannerModel model;
   final IAction delegate;
 
-
-  const BannerWidget({Key? key, required this.stream, required this.model, required this.delegate})
+  const BannerWidget(
+      {Key? key,
+      required this.stream,
+      required this.model,
+      required this.delegate})
       : super(key: key);
 
   @override
@@ -40,7 +43,8 @@ class _BannerState extends State<BannerWidget> {
           case ConnectionState.done:
           case ConnectionState.active:
             if (snapshot.hasData) {
-              return _bannerMainView(snapshot.data!, model.attributes, model.action, widget.delegate, context);
+              return _bannerMainView(snapshot.data!, model.attributes,
+                  model.action, widget.delegate, context);
             } else {
               return Container();
             }
@@ -76,8 +80,13 @@ class _BannerState extends State<BannerWidget> {
     return double.parse(value[0]) / double.parse(value[1]);
   }
 
-  Widget _bannerMainView(BannerItem item, BannerAttributes attrs, dynamic action, IAction delegate, BuildContext context) {
-    print('Banner action: ${action}');
+  Widget _bannerMainView(
+      BannerItem item,
+      BannerAttributes attrs,
+      Map<String, dynamic>? actionConfig,
+      IAction delegate,
+      BuildContext context) {
+    print('Banner action: ${actionConfig}');
     return AspectRatio(
       aspectRatio: _getRatio(attrs.heightValue),
       child: Container(
@@ -85,7 +94,9 @@ class _BannerState extends State<BannerWidget> {
         width: double.infinity,
         child: Center(
           child: GestureDetector(
-            onTap: () => delegate.onAction(context, action, null), // TODO: use data from json
+            onTap: () => actionConfig != null
+                ? delegate.onAction(context, actionConfig, null)
+                : null,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
