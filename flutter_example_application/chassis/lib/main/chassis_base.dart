@@ -105,10 +105,11 @@ class Chassis {
   }
 
   // Close all the opened subjects.
-  void dispose() async {
+  dispose() {
     for (var subject in _subjects) {
       subject.close();
     }
+    _dataProvider.dispose();
     _subjects.clear();
   }
 

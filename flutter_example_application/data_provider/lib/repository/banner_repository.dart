@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
@@ -17,6 +18,7 @@ class BannerRepository implements IBannerRepository {
     final url = Uri.parse('$_baseUrl/banner').replace(queryParameters: {
       'slug': slug,
     });
+
     final response = await client.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
