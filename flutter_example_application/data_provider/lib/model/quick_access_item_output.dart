@@ -6,13 +6,13 @@ class QuickAccessItemOutput {
         ?.map((e) => Item.fromJson(e as Map<String, dynamic>))
         .toList();
     if (item == null) {
-      throw UnsupportedError('Invalid data: $data -> "title" is missing');
+      throw UnsupportedError('Invalid data: $data -> "item" is missing');
     }
     return QuickAccessItemOutput(item: item);
   }
   Map<String, dynamic> toJson() {
     return {
-      'item': item.map((e) => e.toJson()),
+      'item': item.map((e) => e.toJson()).toList(),
     };
   }
 }
