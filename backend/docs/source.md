@@ -1,39 +1,60 @@
-# SOURCE/OUTPUT JSON
+# SOURCE JSON
 
-### Default field
+## Understanding Chassis Input and Output
 
-| Field                   | Mendatory |                                      Description                                       |
-| ----------------------- | :-------: | :------------------------------------------------------------------------------------: |
-| id                      |     Y     |                                  The ID of each item                                   |
-| viewType                |     Y     | Component view type [Banner, Quick Access, Shelf Content, Search Bar, Feed Content...] |
-| attributes              |     Y     |                The field is used to define the style of the component.                 |
-| attributes.heightPolicy |     Y     |                           View height type [ fixed , ratio ]                           |
-| attributes.heightValue  |     Y     |                             View height value [50, "16:9"]                             |
-| parameters              |           |                         The field is used to display directly.                         |
-| payload                 |           |   Data payloads that may need to be resolved (can be known by type static or remote)   |
+Chassis is a framework that allows for the validation of front-end UI components. It uses two components, specification and source files, to validate the user interface (UI) and provide error handling.
 
-## Example
+### validation
 
-[Specification](../example/spec/)
-[JSON Source/Output](../example/source.json)
+Chassis validates the front-end UI using two components: Specification files and Source files. If the validation returns TRUE, the front end will correctly render the UI component using the source in JSON format.
 
-![ImageUi](../asset/ui.jpg)
+## Source Files
 
-## Input(Spec,Source)
+The source file is JSON data used to create the front-end UI. The following code is an example of a source file in JSON format:
 
-Chassis input is comprised of two components: specification and source files.
+```json
+// source.json
+{
+  "version": "1.0.0",
+  "name": "default-landing-page",
+  "items": [
+    {
+      "id": "promo_banner_mid_year",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "static",
+        "data": {
+          "asset": "asset.png",
+          "placeholder": "lalala.png"
+        }
+      }
+    },
+    {
+      "id": "promo_banner_mid_month",
+      "viewType": "Banner",
+      "attributes": {
+        "heightPolicy": "ratio",
+        "heightValue": "4:1",
+        "color": "red"
+      },
+      "payload": {
+        "type": "remote",
+        "resolvedWith": "GetBanner",
+        "input": {
+          "slug": "best-seller"
+        }
+      }
+    }
+  ]
+}
+```
 
-### Display on UI
-
-Example Banner :
-
-![ImageBanner](../asset/banner.png)
-
-Chassis validation of the front-end UI is based on the [Spec](#Spec) and [Source](#Source) files. If the validation returns `TRUE`, the front end will correctly render the `Banner` using the source in JSON format.
-
-### Spec
-
-The specification file validates the source format (JSON) as a TypeScript file.
+This source file uses the Banner specifications to validate the data.
 
 ```ts
 // ViewSpec.ts
@@ -47,84 +68,57 @@ interface Banner extends ChassisViewSpec {
 }
 ```
 
-`Banner` fields, like `id`, must be specific data types. Chassis displays error if source `id` (in JSON) is not a `string`.
+## Payload and Resolver
 
-### Source
+Chassis Library is a front-end UI rendering tool that supports dynamic data. This document describes the payload and resolver functionality in Chassis.
 
-The source file is JSON data used to create the front-end UI.
+The payload is a key component of the Chassis front-end UI. It is the data used to create the UI. The payload type can be either static or remote.
 
-source.json
+### Static Payload
+
+In a static payload, the data is provided directly in the JSON format. For example:
 
 ```json
 {
-  "version": "1.0.0",
-  "name": "default-landing-page",
-  "items": [
-    {
-      "id": "promo_banner_super_brand_day",
-      "viewType": "Banner",
-      "attributes": {
-        "heightPolicy": "ratio",
-        "heightValue": "4:1"
-      },
-      "parameter": {
-        "title": "Special for you"
-      },
-      "payload": {
-        "type": "static",
-        "data": {
-          "asset": "asset.png",
-          "placeholder": "placeholder.png"
-        }
-      }
+  "payload": {
+    "type": "static",
+    "data": {
+      "asset": "asset.png",
+      "placeholder": "placeholder.png"
     }
-  ]
+  }
 }
 ```
 
-This object uses `Banner` specifications to validate.
+### Remote Payload
 
-## Problem
-
-Payload value may need resolving, `static` or `remote`. Normal specs can't validate `remote` type.
-
-source.json
+A remote payload, on the other hand, does not have the asset and placeholder fields, but it includes a resolvedWith field that maps to the resolver specification file. For example:
 
 ```json
 {
-  "id": "promo_banner_mid_month",
-  "viewType": "Banner",
-  "attributes": {
-    "heightPolicy": "ratio",
-    "heightValue": "4:1",
-  },
-  "parameter":{
-    "title":"Best Seller"
-  }
   "payload": {
     "type": "remote",
     "resolvedWith": "GetBanner",
-      "input": {
-        "slug": "best-seller"
-      }
+    "input": {
+      "slug": "best-seller"
+    }
   }
 }
 ```
 
-The `remote` payload type does not have the `assets` and `placeholder` fields to validate with `Banner` specifications, but it has an `resolvedWith` field to handle with the resolver spec file.
-
-## Solution
-
 ### Resolver
 
-Chassis handles dynamic values through the use of `Resolver`. It allows the user to specify a resolver specification file for input/output validation by mapping the spec to the `resolvedWith` field.
+Chassis supports dynamic values through the use of a resolver. The resolver allows the user to specify a resolver specification file for input/output validation. The resolver maps the specification to the resolvedWith field in the remote payload.
 
 ```json
 "resolvedWith": "GetBanner"
 ```
 
+The resolver specification file defines the output type (asset or placeholder) to validate with the payload in the main Banner specification.
+
+For example, the resolver specification file ResolverSpec.ts:
+
 ```ts
-// ResolverSpec.ts
 interface GetBanner {
   input: {
     slug: string
@@ -136,23 +130,6 @@ interface GetBanner {
 }
 ```
 
-```ts
-// ViewSpec.ts
-interface Banner {
-  id: string
-  viewType: 'Banner'
-  attributes: {
-    heightPolicy: 'ratio'
-    heightValue: string
-  }
-  parameter: {
-    title: string
-  }
-  payload: {
-    asset: string
-    placeholder: string
-  }
-}
-```
+By using the resolver, Chassis can validate dynamic payload data and ensure that the front-end UI is correctly rendered.
 
-Resolver spec defines output type (asset or placeholder) to validate with payload in Banner spec.
+Chassis Library provides a flexible and dynamic approach to front-end UI rendering. With the use of payload and resolver, Chassis can handle static and dynamic data in a secure and efficient manner.
