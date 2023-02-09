@@ -5,11 +5,11 @@ import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
 import ChassisHelper from './ChassisHelper'
 import ChassisConfig from './ChassisConfig'
+import { ChassisValidation } from '../model/ChassisValidation'
 
 export default class Chassis {
   private _generator: TJS.JsonSchemaGenerator
   private _program: TJS.Program
-  private _errors: [string, string][]
 
   /**
    * Initial json schema generator
@@ -31,9 +31,6 @@ export default class Chassis {
       compilerOptions
     )
     this._generator = TJS.buildGenerator(this._program, settings)!
-
-    // Initialize an empty error
-    this._errors = []
   }
 
   /**
@@ -99,7 +96,6 @@ export default class Chassis {
   public async validateSpec(json: object): Promise<boolean>
   public async validateSpec(sourcePath: string): Promise<boolean>
   public async validateSpec(jsonOrSourcePath: object | string): Promise<boolean> {
-    let isValid = true
     let data: object
 
     if (typeof jsonOrSourcePath === 'string') {
@@ -110,15 +106,16 @@ export default class Chassis {
     }
 
     // Validate Screen Spec
-    await this.validateScreenSpec(data)
+    const validateScreenSpec = await this.validateScreenSpec(data)
 
     // Validate ViewSpec
-    await this.validateViewSpec(data)
+    const validateViewSpec = await this.validateViewSpec(data)
 
-    if (this._errors.length) {
+    const isValid = validateScreenSpec.isValid && validateViewSpec.isValid
+    if (!isValid) {
       // Display an error table if there are any errors present
-      ChassisHelper.displayErrorTable(this._errors)
-      isValid = false
+      const errors = [...validateScreenSpec.errors, ...validateViewSpec.errors]
+      ChassisHelper.displayErrorTable(errors)
     }
 
     return isValid
@@ -130,20 +127,22 @@ export default class Chassis {
    * @returns Validation Result
    * @throws Validation Error
    */
-  public async validateScreenSpec(json: any): Promise<boolean> {
-    let isValid = true
+  public async validateScreenSpec(json: any): Promise<ChassisValidation> {
+    const errors: [string, string][] = []
     try {
       const schema = await this.generateJsonSchemaBySymbol(ChassisConfig.screenSpec)
       // Delete payload field from JsonSchema spec
       delete schema.properties?.items
-      return ChassisHelper.validateJsonSchema(schema, json)
+      ChassisHelper.validateJsonSchema(schema, json)
     } catch (error) {
       const err = error as Error
       // Record an error for the screen specification
-      this._errors.push([ChassisConfig.screenSpec, err.message])
-      isValid = false
+      errors.push([ChassisConfig.screenSpec, err.message])
     }
-    return isValid
+    return {
+      isValid: errors.length ? false : true,
+      errors: errors,
+    }
   }
 
   /**
@@ -153,8 +152,8 @@ export default class Chassis {
    * @throws Validation Error
    * @returns Validation Result
    */
-  public async validateViewSpec(json: any): Promise<boolean> {
-    let isValid = true
+  public async validateViewSpec(json: any): Promise<ChassisValidation> {
+    const errors: [string, string][] = []
     for (const shelf of json.items) {
       const { viewType, id, payload } = shelf
       try {
@@ -177,12 +176,14 @@ export default class Chassis {
       } catch (error) {
         const err = error as Error
         // Record an error for each shelf
-        this._errors.push([`${viewType}(${id})`, err.message])
-        isValid = false
+        errors.push([`${viewType}(${id})`, err.message])
       }
     }
 
-    return isValid
+    return {
+      isValid: errors.length ? false : true,
+      errors: errors,
+    }
   }
 
   /**
