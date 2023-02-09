@@ -30,6 +30,7 @@ abstract class BaseDataProvider implements DataProvider {
         controller.addStream(stream);
         break;
       default:
+        break;
     }
   }
 }

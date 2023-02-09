@@ -1,8 +1,3 @@
-class AssetsPathConstants {
-  static const viewSpecPath = 'assets/view_spec.json';
-  static const resolverSpecPath = 'assets/resolver_spec.json';
-}
-
 class ResovlerSpecConstants {
   static const input = "input";
   static const output = "output";
