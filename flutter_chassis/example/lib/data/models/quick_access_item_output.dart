@@ -5,7 +5,7 @@ class QuickAccessOutput {
             .map((e) => QuickAccessItem.fromJson(e));
   Map<String, dynamic> toJson() {
     return {
-      'item': item.map((e) => e.toJson()),
+      'item': item.map((e) => e.toJson()).toList(),
     };
   }
 }

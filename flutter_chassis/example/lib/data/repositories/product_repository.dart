@@ -1,3 +1,5 @@
+import '../../utils/readability.dart';
+
 mixin IProductRepository {
   Future<dynamic> getData();
 }
@@ -5,29 +7,11 @@ mixin IProductRepository {
 class ProductRepository implements IProductRepository {
   @override
   Future<dynamic> getData() {
-    return Future.delayed(const Duration(seconds: 3)).then((value) => {
-          "item": [
-            {
-              "asset":
-                  "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_recommend%2Fproduct_beef_wellington.png?alt=media&token=4d99d725-7339-4614-ad82-2457a0d5a53e",
-              "title": "Beef Wellington"
-            },
-            {
-              "asset":
-                  "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_recommend%2Fproduct_fried_noodles.png?alt=media&token=9c31eab9-d377-456d-b6cb-5ce807f1f0df",
-              "title": "มาม่าผัดขี้เมาไฟลุก"
-            },
-            {
-              "asset":
-                  "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_recommend%2Fproduct_keang.png?alt=media&token=20c6724f-151c-4e6e-9128-3f20849608d9",
-              "title": "เขียง"
-            },
-            {
-              "asset":
-                  "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_recommend%2Fproduct_omelet.png?alt=media&token=51926881-c612-42c4-b128-a77d64368fe6",
-              "title": "Pizza Home"
-            }
-          ]
-        });
+    return Readability.readFrom('assets/product.json').then((data) {
+      if (data == null) {
+        throw UnsupportedError('Invalid data: $data -> "data" is missing');
+      }
+      return data;
+    });
   }
 }
