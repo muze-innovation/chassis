@@ -6,12 +6,11 @@ mixin IProductRepository {
 
 class ProductRepository implements IProductRepository {
   @override
-  Future<dynamic> getData() {
-    return Readability.readFrom('assets/product.json').then((data) {
-      if (data == null) {
-        throw UnsupportedError('Invalid data: $data -> "data" is missing');
-      }
+  Future<dynamic> getData() async {
+    final products =
+        await Readability.readFrom('assets/products.json').then((data) {
       return data;
     });
+    return Future.delayed(const Duration(seconds: 3)).then((value) => products);
   }
 }
