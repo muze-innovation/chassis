@@ -85,18 +85,21 @@ class Chassis {
         continue;
       }
 
-      /// Add widget to the list of widgets
-      widgets.add(_viewProvider.getView(validatedTransfrom, item));
+      Widget? widget = _viewProvider.getView(validatedTransfrom, item);
+      if (widget != null) {
+        /// Add widget to the list of widgets
+        widgets.add(widget);
 
-      /// Manage data by payload type
-      switch (item.payload.type) {
-        case PayloadType.static:
-          subject.add(item.payload.data);
-          break;
-        case PayloadType.remote:
-          final request = ChassisRequest.fromJson(item.payload.toJson());
-          _dataProvider.getData(subject, request);
-          break;
+        /// Manage data by payload type
+        switch (item.payload.type) {
+          case PayloadType.static:
+            subject.add(item.payload.data);
+            break;
+          case PayloadType.remote:
+            final request = ChassisRequest.fromJson(item.payload.toJson());
+            _dataProvider.getData(subject, request);
+            break;
+        }
       }
     }
 
