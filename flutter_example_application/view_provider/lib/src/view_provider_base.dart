@@ -5,7 +5,6 @@ import 'package:view_provider/example/banner/banner_model.dart';
 import 'package:view_provider/example/banner/banner_widget.dart';
 import 'package:view_provider/example/quick_access/quick_access_model.dart';
 import 'package:view_provider/example/quick_access/quick_access_widget.dart';
-import 'package:view_provider/src/chassis_widget_model.dart';
 import 'package:view_provider/src/view_type_constant.dart';
 import 'package:view_provider/action/action.dart';
 
