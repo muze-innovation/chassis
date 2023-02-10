@@ -21,7 +21,11 @@ https://www.jsonschemavalidator.net/
 
 - [Chassis Screen Spec](#chassisscreenspec)
 - [Chassis View Spec](#chassisviewspec)
+  - [View Spec](#view-spec)
+  - [Chassis View Attribute](#chassis-view-attribute)
+  - [Chassis Error](#chassis-error)
 - [Chassis Resolver Spec](#chassisresolverspec)
+  - [Resolver Spec](#resolver-spec)
 - [Payload Spec](#payload-spec)
   - [Chassis View Payload Static](#chassis-view-payload-static)
   - [Chassis View Payload Remote](#chassis-view-payload-remote)

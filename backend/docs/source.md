@@ -1,5 +1,12 @@
 # SOURCE JSON
 
+- [Overview](#overview)
+- [Source File](#source-file)
+- [Payload and Resolver](#payload-and-resolver)
+  - [Static Payload](#static-payload)
+  - [Remote Payload](#remote-payload)
+  - [Resolver](#resolver)
+
 ## Overview
 
 The Chassis uses a `source` JSON file as `input` to render views and components.
