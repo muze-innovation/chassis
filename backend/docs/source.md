@@ -72,7 +72,9 @@ The payload is a key component of the Chassis front-end UI. It is the data used 
 
 ### Static Payload
 
-In a static payload, the data is provided directly in the JSON format. For example:
+In Chassis, a static payload is a type of payload where the data is provided directly in JSON format. The data is not retrieved from a remote source, but instead is embedded in the JSON file. The type field in the payload is set to "static" and the data field contains the actual data to be used in the front-end UI. For example:
+
+json
 
 ```json
 {
@@ -86,9 +88,11 @@ In a static payload, the data is provided directly in the JSON format. For examp
 }
 ```
 
+Static payloads are useful when the data needed to render the UI is already known and does not change dynamically.
+
 ### Remote Payload
 
-A remote payload, on the other hand, does not have the asset and placeholder fields, but it includes a resolvedWith field that maps to the resolver specification file. For example:
+A remote payload in Chassis is a type of UI data that uses a resolver to validate dynamic values and ensure proper rendering of the front-end. It does not contain the asset and placeholder fields, unlike a static payload, but has a "resolvedWith" field to reference a resolver specification file. For example:
 
 ```json
 {

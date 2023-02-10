@@ -138,7 +138,7 @@ Example Banner :
 
 ![ImageBanner](./asset/banner.png)
 
-1. Create a `specification file` for the UI that validates the source format (JSON) as a TypeScript file. For example, the following is a `Banner` specification in [ViewSpec](./example/src/ViewSpec.ts) file:
+1. In creating a UI component specification, you define a `specification file` that validates the source JSON, as a `TypeScript` file. For example, the [ViewSpec](./example/src/ViewSpec.ts) file includes a `Banner` that defines the properties of a banner component.
 
 ```ts
 // ViewSpec.ts
@@ -151,6 +151,14 @@ interface Banner extends ChassisViewSpec {
   }
 }
 ```
+
+The `Banner` extends `ChassisViewSpec`, which provides `base` properties for the component.
+
+### Guide
+
+For guidance on creating other view component specification files, refer to the `ChassisViewSpec` definition in the file documentation.
+
+- [ChassisViewSpec](./docs/spec.md/#chassis-view-spec)
 
 2. Create a `source file` that is the JSON data used to create the front-end UI. The source file uses the Banner specification to validate the data. For example [Source](./example/source.json) file:
 
