@@ -27,10 +27,11 @@ const chassis = new Chassis([resolve(__dirname, 'path/spec/Spec1.ts'), resolve(_
 
 This function allows you to validate a JSON file against a set of specification files.
 
-### Parameters
+### Method
 
-```sh
-1. JsonOrSourcePath: object | string
+```ts
+public async validateSpec(json: object): Promise<boolean>
+public async validateSpec(sourcePath: string): Promise<boolean>
 ```
 
 ### Usage
@@ -66,7 +67,7 @@ await chassis.validateSpec({
 await chassis.validateSpec(resolve(__dirname, 'path/source.json'))
 ```
 
-### Output
+### Log Output
 
 `TRUE` output is a valid source
 
@@ -81,12 +82,10 @@ Validate Pass!
 
 This function allows you to generating the specification schema file by specific symbol.
 
-### Parameters
+### Method
 
-```sh
-1. symbol: string
-2. destinationPath?: string
-3. generateFile?: boolean
+```ts
+public async generateJsonSchemaBySymbol(symbol: string,destinationPath?: string,generateFile = false): Promise<JSONSchema>
 ```
 
 ### Usage
@@ -117,10 +116,10 @@ await chassis.generateJsonSchemaBySymbol('Banner', './destinationPath')
 
 This function allows you to generating JSON schemas from specification files.
 
-### Parameters
+### Method
 
-```sh
-1. destinationPath?: string
+```ts
+public async generateJsonSchemaFile(destinationPath?: string): Promise<Record<string, JSONSchema>>
 ```
 
 ### Usage

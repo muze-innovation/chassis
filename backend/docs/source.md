@@ -89,7 +89,7 @@ In Chassis, a `static` payload is when the data is `directly` provided in the [s
 
 ### Remote Payload
 
-A `remote` payload in Chassis is a type of UI data that uses a resolver to validate `dynamic` values and ensure proper rendering of the front-end. For example:
+A `remote` payload in Chassis is a type of UI data that uses a resolver to validate `dynamic` values. For example:
 
 ```json
 {
@@ -105,9 +105,7 @@ A `remote` payload in Chassis is a type of UI data that uses a resolver to valid
 
 It does not contain the `data` fields, unlike a [Static Payload](#static-payload)
 
-- `resolvedWith` field to reference a [ResolverSpec](./spec.md/#resolver-spec) file.
-
-The front-end uses `resolvedWith` field keys to resolve the `dynamic` data that the view component needs for rendering.
+- `resolvedWith` field to reference a [ResolverSpec](./spec.md/#resolver-spec) file.The front-end uses `resolvedWith` field keys to resolve the `dynamic` data that the view component needs for rendering.
 
 ### Resolver
 
