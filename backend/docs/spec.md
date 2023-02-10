@@ -1,6 +1,6 @@
 # Specification
 
-A Chassis `specification file` outlines the `structure` and components of a UI, serving as a blueprint for view rendering and `data validation` before it is displayed in the front-end.
+A Chassis `specification file` outlines the `structure` and components of a UI, serving as a blueprint for view rendering and data validation before it is displayed in the front-end.
 
 ## Overview
 
@@ -53,7 +53,7 @@ export interface ChassisScreenSpec {
 
 - `version`: a string indicating the specification file version.
 - `name`: a string naming the screen.
-- `items`: an array of ChassisViewSpec objects representing UI components for screen rendering.
+- `items`: an array of `ChassisViewSpec` objects representing UI components for screen rendering.
 
 ## Chassis View Spec
 
@@ -104,6 +104,8 @@ It has the following properties:
 
 ### Chassis View Attribute
 
+`ChassisViewAttribute` is defines the visual style of the component. This allows the attributes property of the `ChassisViewSpec`.
+
 ```ts
 interface _ChassisViewAttribute {}
 
@@ -122,8 +124,6 @@ interface RatioHeightPolicy {
 }
 ```
 
-`ChassisViewAttribute` is defines the visual style of the component. This allows the attributes property of the `ChassisViewSpec`.
-
 There are two types of `HeightPolicy` that can be applied to a view,
 
 - `FixedHeightPolicy` means heightValue is a number to set a fixed component height, e.g. `100`.
@@ -132,13 +132,15 @@ There are two types of `HeightPolicy` that can be applied to a view,
 
 ### Chassis Error
 
+`ChassisError` handles UI display errors that result from data validation.
+
 ```ts
 interface ChassisError {
   errorType: 'hide' | 'error'
 }
 ```
 
-`ChassisError` handles UI display errors that result from data validation. The errorType property can either be set to `hide` or `error`."
+The errorType property can either be set to `hide` or `error`.
 
 ## Chassis Resolver Spec
 
@@ -146,9 +148,7 @@ interface ChassisError {
 
 ### Resolver Spec
 
-Write a `resolver specification` file by extending the `ChassisResolverSpec`.
-
-For example [ResolverSpec](../example/src/ResolverSpec.ts):
+Write a `resolver specification` file by extending the `ChassisResolverSpec`.For example [ResolverSpec](../example/src/ResolverSpec.ts):
 
 ```ts
 // ResolverSpec.ts
@@ -166,6 +166,7 @@ interface GetBanner extends ChassisResolverSpec {
 The required properties should be included in the file .You can view the spec in the [ChassisResolverSpec](../src/spec/ChassisResolverSpec.ts)
 
 ```ts
+// ChassisResolverSpec.ts
 export interface ChassisResolverSpec {
   input?: any
   output: any
@@ -174,8 +175,8 @@ export interface ChassisResolverSpec {
 
 The `ChassisResolverSpec` defines two properties:
 
-- `input` optional property defines the properties of `input required to resolve` the data for the view component.
-- `output` property defines the type of `output returned` from the resolver, which is used to validate the payload data required for displaying the UI of the view component.
+- `input` optional property defines the properties of `input` required to resolve the data for the view component.
+- `output` property defines the type of `output` returned from the resolver, which is used to validate the payload data required for displaying the UI of the view component.
 
 ## Payload Spec
 
@@ -213,7 +214,7 @@ interface ChassisViewPayloadStatic {
 
 ### Chassis View Payload Remote
 
-A `remote` payload, on the other hand, does not have the `data` field, but it includes a `resolvedWith` field that maps to the [Resolver Spec](#resolver-spec) file.
+`Remote` payload enables `dynamic` rendering of UI with data not in `source` JSON, without the data field but with a `resolvedWith` field linking to the [Resolver Spec](#resolver-spec).
 
 ```json
 {
@@ -226,8 +227,6 @@ A `remote` payload, on the other hand, does not have the `data` field, but it in
   }
 }
 ```
-
-The `remote` payload allows for the `dynamic` rendering of the front-end UI with data that is not included directly in the source JSON.
 
 This is [ChassisViewPayloadRemote](../src/spec/ChassisResolverSpec.ts) that used to validate the payload type as `remote`.
 

@@ -156,14 +156,11 @@ The `Banner` extends `ChassisViewSpec`, which provides `base` properties for the
 
 ### Guide
 
-For guidance on creating other view component specification files, refer to the `ChassisViewSpec` definition in the file documentation.
-
-- [ChassisViewSpec](./docs/spec.md/#chassis-view-spec)
+For guidance on creating other view component specification files, refer to the [ChassisViewSpec](./docs/spec.md/#chassis-view-spec) definition in the file documentation.
 
 2. Create a `source file` that is the JSON data used to create the front-end UI. The source file uses the Banner specification to validate the data. For example [Source](./example/source.json) file:
 
 ```json
-// source.json
 {
   "version": "1.0.0",
   "name": "default-landing-page",
