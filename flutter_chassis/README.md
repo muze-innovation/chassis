@@ -40,28 +40,28 @@ There are 3 main parts of Chassis including Chassis Core, Data Provider and View
 
 	View Provider manages and arranges view to show by the response from the server.
 In view_provider_base.dart
-```.../flutter_example_application/view_provider/lib/src/view_provider_base.dart```
+`.../flutter_example_application/view_provider/lib/src/view_provider_base.dart`
 there will be the generated code by the viewType from the server to create the application's view provider abstract class
 
-	    abstract  class  ViewProvider  implements  IViewProvider {
-	        final  IAction delegate;
-	        ViewProvider({required  this.delegate});
-	        Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate);
-        
-		    @override
-		    Widget  getView(Stream stream,  ChassisItem item) {
-			    switch (item.viewType) {
-			    case  ViewTypeConstant.Banner:
-				    var bannerModel =  BannerModel.fromJson(item.toJson());
-				    var broadcastStream = stream.map<BannerItem>((data) =>  BannerItem.fromJson(data));
-				    return  getBannerView(broadcastStream, bannerModel, delegate);
-			    default:
-				    return  Container();
-			    }
-		    }
-	    }
+	```dart
+    abstract  class  ViewProvider  implements  IViewProvider {
+        final  IAction delegate;
+        ViewProvider({required  this.delegate});
+        Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate);
 
-
+        @override
+        Widget  getView(Stream stream,  ChassisItem item) {
+            switch (item.viewType) {
+            case  ViewTypeConstant.Banner:
+                var bannerModel =  BannerModel.fromJson(item.toJson());
+                var broadcastStream = stream.map<BannerItem>((data) =>  BannerItem.fromJson(data));
+                return  getBannerView(broadcastStream, bannerModel, delegate);
+            default:
+            return  Container();
+            }
+        }
+    }
+    ```
 
    
 
@@ -71,15 +71,18 @@ there will be the generated code by the viewType from the server to create the a
 	what the user needs to do is just implement `AppViewProvider` class which extends from `ViewProvider`
 	
 
-	    abstrat class  AppViewProvider  extends  ViewProvider {
-		    final IAction delegate;
-		    AppViewProvider({required  this.delegate}): super(delegate: delegate);
-		    @override
-		    Widget getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate) {
-			    //Implement your code here
-			    return {{BannerView}};
-		    }
-	    }
+	```dart
+    abstrat class AppViewProvider extends ViewProvider {
+        final IAction delegate;
+        AppViewProvider({required this.delegate}): super(delegate: delegate);
+        
+        @override
+        Widget getBannerView(Stream<BannerItem> stream, BannerModel model, IAction delegate) {
+            //Implement your code here
+            return {{BannerView}};
+        }
+    }
+    ```
 
 	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate)` which is the method that will be generated automatically.
 
