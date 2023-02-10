@@ -10,30 +10,178 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
+# Chassis
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+  
 
-## Features
+A server-driven UI (SDUI) platform implemented by using flutter. Chassis enabled users to rapidly launch mobile applications across iOS and Android.
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Chassis provide a shelf-based application which drives by the response from the server. Define the {{blah blah specs}} then chassis will be generated based code for the application including Data Provider and View Provider.
 
-## Getting started
+  
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Getting Started
+
+  
+
+### How it works
+
+  
+
+There are 3 main parts of Chassis including Chassis Core, Data Provider and View Provider.
+
+  
+
+1. Chassis 
+2. Data Provider
+3. View Provider
+
+  
+
+	View Provider manages and arranges view to show by the response from the server.
+In view_provider_base.dart
+```.../flutter_example_application/view_provider/lib/src/view_provider_base.dart```
+there will be the generated code by the viewType from the server to create the application's view provider abstract class
+
+	    abstract  class  ViewProvider  implements  IViewProvider {
+	        final  IAction delegate;
+	        ViewProvider({required  this.delegate});
+	        Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate);
+        
+		    @override
+		    Widget  getView(Stream stream,  ChassisItem item) {
+			    switch (item.viewType) {
+			    case  ViewTypeConstant.Banner:
+				    var bannerModel =  BannerModel.fromJson(item.toJson());
+				    var broadcastStream = stream.map<BannerItem>((data) =>  BannerItem.fromJson(data));
+				    return  getBannerView(broadcastStream, bannerModel, delegate);
+			    default:
+				    return  Container();
+			    }
+		    }
+	    }
+
+
+
+   
+
+	 `Widget getBannerView(Stream<BannerItem> stream, BannerModel model, IAction delegate);` will be generated with `BannerItem model` 
+ `Widget getView(Stream stream, ChassisItem item)` managed to return the view that the server requested by `viewType` and cast data to the view's model.
+
+	what the user needs to do is just implement `AppViewProvider` class which extends from `ViewProvider`
+	
+
+	    abstrat class  AppViewProvider  extends  ViewProvider {
+		    final IAction delegate;
+		    AppViewProvider({required  this.delegate}): super(delegate: delegate);
+		    @override
+		    Widget getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate) {
+			    //Implement your code here
+			    return {{BannerView}};
+		    }
+	    }
+
+	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate)` which is the method that will be generated automatically.
+
+
+### Prerequisites
+
+  
+
+The things you need before installing the software.
+
+  
+
+* You need this
+
+* And you need this
+
+* Oh, and don't forget this
+
+  
+
+### Installation
+
+  
+
+A step by step guide that will tell you how to get the development environment up and running.
+
+  
+
+```
+
+$ First step
+
+$ Another step
+
+$ Final step
+
+```
+
+  
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+  
 
-```dart
-const like = 'sample';
+A few examples of useful commands and/or tasks.
+
+  
+
 ```
 
-## Additional information
+$ First example
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+$ Second example
+
+$ And keep this in mind
+
+```
+
+  
+
+## Deployment
+
+  
+
+Additional notes on how to deploy this on a live or release system. Explaining the most important branches, what pipelines they trigger and how to update the database (if anything special).
+
+  
+
+### Server
+
+  
+
+* Live:
+
+* Release:
+
+* Development:
+
+  
+
+### Branches
+
+  
+
+* Master:
+
+* Feature:
+
+* Bugfix:
+
+* etc...
+
+  
+
+## Additional Documentation and Acknowledgments
+
+  
+
+* Project folder on server:
+
+* Confluence link:
+
+* Asana board:
+
+* etc...
