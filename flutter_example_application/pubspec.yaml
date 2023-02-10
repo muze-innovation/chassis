@@ -51,6 +51,7 @@ dependencies:
   cloud_firestore: ^4.3.1
   flutter_rx_stream_builder: ^2.0.1
   rxdart: ^0.27.7
+  url_launcher: ^6.1.9
 
 
 dev_dependencies:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 mixin ActionType {
   String type = '';
@@ -42,16 +42,16 @@ class ActionManager {
 
   void _navigate(BuildContext context) async {
     Uri uri = Uri.parse(url);
-    // js.context.callMethod("open", ["https://google.com"]);
-    // if (await canLaunchUrl(uri)) {
-    //   await launchUrl(uri);
-    // } else {
-    // }
+    print('Navigate to $uri');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $uri';
+    }
   }
 
   void _goToRoute(BuildContext context, Map<String, dynamic>? data) async {
-    print('Go to route $url');
-    print('Route params $data');
+    print('Go to route $url with params $data');
     if (url == ActionUrl.back) {
       Navigator.pop(context);
     } else if (url == ActionUrl.backToHome) {
