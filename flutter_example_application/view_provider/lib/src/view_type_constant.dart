@@ -1,4 +1,4 @@
 class ViewTypeConstant {
-  static const Banner = "Banner";
-  static const QuickAccess = "QuickAccess";
+  static const banner = "Banner";
+  static const quickAccess = "QuickAccess";
 }
