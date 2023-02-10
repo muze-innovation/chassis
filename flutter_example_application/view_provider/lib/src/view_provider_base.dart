@@ -9,22 +9,18 @@ import 'package:view_provider/src/view_type_constant.dart';
 import 'package:view_provider/action/action.dart';
 
 abstract class ViewProvider implements IViewProvider {
-  final IAction delegate;
-  ViewProvider({required this.delegate});
-
-  Widget getBannerView(Stream<BannerItem> stream, BannerModel model, IAction delegate);
+  Widget getBannerView(Stream<BannerItem> stream, BannerModel model);
   Widget getQuickAccessView(
       Stream<QuickAccessPayloadData> stream, QuickAccessModel model);
 
   @override
   Widget? getView(Stream stream, ChassisItem item) {
-    print('Chassis item action: ${item.action}');
     switch (item.viewType) {
       case ViewTypeConstant.banner:
         var bannerModel = BannerModel.fromJson(item.toJson());
         var broadcastStream =
             stream.map<BannerItem>((data) => BannerItem.fromJson(data));
-        return getBannerView(broadcastStream, bannerModel, delegate);
+        return getBannerView(broadcastStream, bannerModel);
       case ViewTypeConstant.quickAccess:
         var quickAccessModel = QuickAccessModel.fromJson(item.toJson());
         var broadcastStream = stream.map<QuickAccessPayloadData>(
@@ -38,13 +34,18 @@ abstract class ViewProvider implements IViewProvider {
 
 //User's Implemented ViewProvider
 class AppViewProvider extends ViewProvider {
+  // Can pass action delegator here if want to handle it.
   final IAction delegate;
-  AppViewProvider({required this.delegate}): super(delegate: delegate);
-
+  AppViewProvider({required this.delegate});
 
   @override
-  Widget getBannerView(Stream<BannerItem> stream, BannerModel model, IAction delegate) {
-    return BannerWidget(stream: stream, model: model, delegate: delegate);
+  Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
+    // return BannerWidget(stream: stream, model: model, delegate: delegate);
+    return InheritedBanner(
+        stream: stream,
+        model: model,
+        delegate: delegate,
+        child: InheritedBannerDemo());
   }
 
   @override
