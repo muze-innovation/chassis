@@ -201,15 +201,15 @@ For guidance on creating other view component specification files, refer to the 
 }
 ```
 
-3. If the payload value requires resolving, such as with a `remote` type,create a resolver specification file to handle the `dynamic` values. For example:
+3. If the payload value requires resolving, such as with a `remote` type,create a resolver specification file to handle the `dynamic` values.
 
-In the resolver specification file mapping it to the `resolvedWith` field in the `source` file.
+For example,the `resolvedWith` field in the `source` file:
 
 ```json
 "resolvedWith": "GetBanner"
 ```
 
-Let's call this file [ResolverSpec](./example/src/ResolverSpec.ts).
+Let's create this file for validation [ResolverSpec](./example/src/ResolverSpec.ts).
 
 ```ts
 // ResolverSpec.ts
@@ -224,11 +224,11 @@ interface GetBanner extends ChassisResolverSpec {
 }
 ```
 
-The `GetBanner` extends `ChassisResolverSpec`, which provides `base` properties for the component.
+The `GetBanner` extends `ChassisResolverSpec`, which provides `base` properties for the resolver.
 
 ### Guide
 
-You can read more about what each type of payload means in the [Payload](./docs/source.md/#payload-and-resolver) and detailed guidelines for creating other specs in the [ResolverSpec](./docs/spec.md/#chassis-resolver-spec).
+You can read more about what each type of payload means in the [Payload](./docs/source.md/#payload-and-resolver) and detailed guidelines for creating other resolver specs in the [ResolverSpec](./docs/spec.md/#chassis-resolver-spec).
 
 4. Run [Chassis validation](#usage-examples) on the front-end UI using the `Spec` and `Source` files. If the validation returns `TRUE`, the front-end will correctly render the UI using the source in JSON format.
 

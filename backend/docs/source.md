@@ -119,7 +119,7 @@ The resolver allows the user to specify a [ResolverSpec](../example/src/Resolver
 
 ```ts
 // ResolverSpec.ts
-interface GetBanner {
+interface GetBanner extends ChassisResolverSpec {
   input: {
     slug: string
   }
