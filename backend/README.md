@@ -84,7 +84,6 @@ The Chassis Frontend receives the output `Source` and `All Spec` from the Chassi
 - Source Validation
 - Get Specification Schema by Symbol
 - Generate Specification Schema File by Symbol
-- Generate Specification All Schema File
 
 ## Installation
 

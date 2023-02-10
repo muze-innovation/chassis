@@ -10,10 +10,6 @@
   - [Method](#method-1)
   - [Usage](#usage-1)
   - [Output](#output-1)
-- [Generate Specification All Schema File](#generate-specification-all-schema-file)
-  - [Method](#method-2)
-  - [Usage](#usage-2)
-  - [Output](#output-2)
 
 ## Defined instance chassis
 
@@ -92,40 +88,6 @@ public async generateJsonSchemaBySymbol(symbol: string,destinationPath?: string,
 
 ```ts
 await chassis.generateJsonSchemaBySymbol('Banner', './destinationPath')
-```
-
-### Output
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "id": { "type": "string" },
-    "viewType": { "type": "string", "enum": ["Array"] },
-    "payload": { "type": "object", "properties": ["Object"], "required": ["Array"] },
-    "parameters": {},
-    "error": { "type": "object", "properties": ["Object"], "required": ["Array"] },
-    "attributes": { "anyOf": ["Array"] }
-  },
-  "required": ["attributes", "id", "payload", "viewType"],
-  "$schema": "http://json-schema.org/draft-07/schema#"
-}
-```
-
-## Generate Specification All Schema File
-
-This function allows you to generating JSON schemas from specification files.
-
-### Method
-
-```ts
-public async generateJsonSchemaFile(destinationPath?: string): Promise<Record<string, JSONSchema>>
-```
-
-### Usage
-
-```ts
-await chassis.generateJsonSchemaFile('./destinationPath')
 ```
 
 ### Output
