@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:view_provider/src/chassis_model.dart';
 
 abstract class ChassisWidget extends Widget {
   const ChassisWidget(this.stream, this.config, {super.key});
 
-  final Stream<dynamic> stream;
-  final Map<String, dynamic> config;
+  final Stream<PayloadData> stream;
+  final ChassisModel config;
 
   @override
   ChassisElement createElement() => ChassisElement(this);
@@ -27,7 +28,7 @@ class ChassisElement extends ComponentElement {
 
   @override
   Widget build() {
-    var chassisWidget = (widget as ChassisWidget);
+    var chassisWidget = widget as ChassisWidget;
     return StreamBuilder(
       stream: chassisWidget.stream,
       builder: (context, snapshot) {

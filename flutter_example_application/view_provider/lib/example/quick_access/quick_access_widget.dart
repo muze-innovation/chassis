@@ -2,10 +2,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:view_provider/example/quick_access/quick_access_model.dart';
+import 'package:view_provider/src/chassis_model.dart';
 
 class QuickAccessWidget extends StatefulWidget {
-  final Stream<QuickAccessPayloadData> stream;
-  final QuickAccessModel model;
+  final Stream<PayloadData> stream;
+  final ChassisModel model;
 
   const QuickAccessWidget({Key? key, required this.stream, required this.model})
       : super(key: key);
@@ -24,7 +25,7 @@ class _QuickAccessState extends State<QuickAccessWidget> {
   Widget build(BuildContext context) {
     log(widget.model.toString(), name: 'QuickAccess - Build');
     var model = widget.model;
-    return StreamBuilder<QuickAccessPayloadData>(
+    return StreamBuilder<PayloadData>(
       stream: widget.stream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -44,25 +45,25 @@ class _QuickAccessState extends State<QuickAccessWidget> {
   }
 
   Widget _quickAccessSection(
-    QuickAccessPayloadData payload,
-    QuickAccessParameters params,
+    PayloadData payload,
+    Parameters? params,
   ) {
     return Column(
       children: [
         _titleView(params),
-        _quickAccessMainView(payload.item ?? <QuickAccessItem>[]),
+        _quickAccessMainView(payload.items),
       ],
     );
   }
 
-  Widget _titleView(QuickAccessParameters params) {
+  Widget _titleView(Parameters? params) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
           Expanded(
             child: Text(
-              params.title,
+              params?.title ?? '',
               style: Theme.of(context).textTheme.headlineSmall,
               overflow: TextOverflow.ellipsis,
             ),
@@ -76,25 +77,29 @@ class _QuickAccessState extends State<QuickAccessWidget> {
     );
   }
 
-  Widget _quickAccessMainView(List<QuickAccessItem> payload) {
+  Widget _quickAccessMainView(List<Item> payload) {
     return SizedBox(
       height: 140,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        separatorBuilder: (context, index) {
-          return const Padding(padding: EdgeInsets.all(8));
-        },
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        itemCount: payload.length,
-        itemBuilder: (context, index) {
-          return _listItem(payload[index]);
-        },
-      ),
+      child: payload.isEmpty
+          ? const Center(
+              child: Text('Empty payload'),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              separatorBuilder: (context, index) {
+                return const Padding(padding: EdgeInsets.all(8));
+              },
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: payload.length,
+              itemBuilder: (context, index) {
+                return _listItem(payload[index]);
+              },
+            ),
     );
   }
 
-  Widget _listItem(QuickAccessItem item) {
+  Widget _listItem(Item item) {
     return SizedBox(
       width: 80,
       child: InkWell(
@@ -111,14 +116,14 @@ class _QuickAccessState extends State<QuickAccessWidget> {
                 elevation: 4,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(item.asset),
+                  child: Image.network(item.asset ?? ''),
                 ),
               ),
             ),
             const Padding(padding: EdgeInsets.all(4)),
             Center(
               child: Text(
-                item.title,
+                item.title ?? '',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption,
               ),

@@ -7,6 +7,7 @@ class ChassisItem {
       this.attributes,
       this.parameters,
       this.action,
+      this.error,
       required this.payload});
 
   final String id;
@@ -14,6 +15,7 @@ class ChassisItem {
   final dynamic attributes;
   final dynamic parameters;
   final dynamic action;
+  final dynamic error;
   final ChassisPayload payload;
 
   ChassisItem.fromJson(Map<String, dynamic> json)
@@ -22,6 +24,7 @@ class ChassisItem {
         attributes = json['attributes'],
         parameters = json['parameters'],
         action = json['action'],
+        error = json['error'],
         payload = ChassisPayload.fromJson(json['payload']);
 
   Map<String, dynamic> toJson() {
@@ -31,6 +34,7 @@ class ChassisItem {
       'attributes': attributes,
       'parameters': parameters,
       'action': action,
+      if (error != null) 'error': error,
       'payload': payload.toJson(),
     };
   }

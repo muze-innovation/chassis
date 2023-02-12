@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:view_provider/action/action.dart';
+import 'package:view_provider/src/chassis_model.dart';
 import 'banner_model.dart';
 
 class BannerWidget extends StatefulWidget {
@@ -81,11 +82,12 @@ class _BannerState extends State<BannerWidget> {
   }
 
   Widget _bannerMainView(
-      BannerItem item,
-      BannerAttributes attrs,
-      Map<String, dynamic>? actionConfig,
-      IAction delegate,
-      BuildContext context) {
+    BannerItem item,
+    BannerAttributes attrs,
+    Map<String, dynamic>? actionConfig,
+    IAction delegate,
+    BuildContext context,
+  ) {
     print('Banner action: ${actionConfig}');
     return AspectRatio(
       aspectRatio: _getRatio(attrs.heightValue),
@@ -114,19 +116,19 @@ class _BannerState extends State<BannerWidget> {
 }
 
 class InheritedBanner extends InheritedWidget {
-  final Stream<BannerItem> stream;
-  final BannerModel model;
+  final Stream<PayloadData> stream;
+  final ChassisModel model;
   final IAction delegate;
 
   final Widget child;
 
-  InheritedBanner(
-      {Key? key,
-      required this.stream,
-      required this.model,
-      required this.delegate,
-      required this.child})
-      : super(key: key, child: child);
+  const InheritedBanner({
+    Key? key,
+    required this.stream,
+    required this.model,
+    required this.delegate,
+    required this.child,
+  }) : super(key: key, child: child);
 
   static InheritedBanner? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<InheritedBanner>();
@@ -141,8 +143,8 @@ class InheritedBannerDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = InheritedBanner.of(context)!;
-    BannerModel model = state.model;
-    return StreamBuilder<BannerItem>(
+    ChassisModel model = state.model;
+    return StreamBuilder<PayloadData>(
       stream: state.stream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -154,8 +156,13 @@ class InheritedBannerDemo extends StatelessWidget {
           case ConnectionState.done:
           case ConnectionState.active:
             if (snapshot.hasData) {
-              return _bannerMainView(snapshot.data!, model.attributes,
-                  model.action, state.delegate, context);
+              return _bannerMainView(
+                snapshot.data!,
+                model.attributes,
+                model.action?.toJson(),
+                state.delegate,
+                context,
+              );
             } else {
               return Container();
             }
@@ -166,12 +173,12 @@ class InheritedBannerDemo extends StatelessWidget {
     );
   }
 
-  Widget _bannerLoadingView(BannerAttributes attrs) {
+  Widget _bannerLoadingView(Attributes? attrs) {
     return Shimmer.fromColors(
       baseColor: Colors.grey.shade900,
       highlightColor: Colors.grey.shade100,
       child: AspectRatio(
-        aspectRatio: _getRatio(attrs.heightValue),
+        aspectRatio: _getRatio(attrs?.heightValue),
         child: Container(
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           width: double.infinity,
@@ -186,19 +193,20 @@ class InheritedBannerDemo extends StatelessWidget {
     );
   }
 
-  double _getRatio(String raio) {
-    var value = raio.split(':');
+  double _getRatio(String ratio) {
+    var value = ratio.split(':');
     return double.parse(value[0]) / double.parse(value[1]);
   }
 
   Widget _bannerMainView(
-      BannerItem item,
-      BannerAttributes attrs,
-      Map<String, dynamic>? actionConfig,
-      IAction delegate,
-      BuildContext context) {
+    PayloadData item,
+    Attributes? attrs,
+    Map<String, dynamic>? actionConfig,
+    IAction delegate,
+    BuildContext context,
+  ) {
     return AspectRatio(
-      aspectRatio: _getRatio(attrs.heightValue),
+      aspectRatio: _getRatio(attrs?.heightValue),
       child: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         width: double.infinity,
@@ -210,7 +218,7 @@ class InheritedBannerDemo extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                item.asset,
+                item.asset ?? '',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) =>
                     const Text('Cannot display an image'),
