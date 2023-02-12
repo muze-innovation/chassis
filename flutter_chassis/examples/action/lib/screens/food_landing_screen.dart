@@ -7,6 +7,7 @@ import '../data/data_provider.dart';
 import '../repositories/chassis_repository.dart';
 import '../utils/readability.dart';
 import '../view/view_provider.dart';
+import '../action/action.dart';
 
 class FoodLandingScreen extends StatefulWidget {
   static const routeName = '/food_landing_screen';
@@ -20,7 +21,8 @@ class FoodLandingScreen extends StatefulWidget {
   }
 }
 
-class _FoodLandingScreenState extends State<FoodLandingScreen> {
+class _FoodLandingScreenState extends State<FoodLandingScreen>
+    implements ActionDelegate {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final IChassisRepository _chassisRepository = ChassisRepository();
@@ -44,7 +46,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
 
     // init Chassis
     final dataProvider = AppDataProvider();
-    final viewProvider = AppViewProvider();
+    final viewProvider = AppViewProvider(delegate: _FoodLandingScreenState());
     _chassis = Chassis(
         dataProvider: dataProvider,
         viewProvider: viewProvider,
@@ -99,5 +101,12 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   void dispose() {
     _chassis.dispose();
     super.dispose();
+  }
+
+  @override
+  void onAction(BuildContext context, Map<String, dynamic> config,
+      Map<String, dynamic>? data) {
+    ActionManager manager = ActionManager.fromJson(config);
+    manager.execute(context, data);
   }
 }

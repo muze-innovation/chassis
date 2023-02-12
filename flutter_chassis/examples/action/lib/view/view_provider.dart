@@ -11,6 +11,7 @@ import 'models/banner_model.dart';
 import 'models/quick_access_model.dart';
 import 'widgets/banner_widget.dart';
 import 'widgets/quick_access_widget.dart';
+import '../action/action.dart';
 
 /// Auto-generate from the Chassis-backend
 abstract class BaseViewProvider implements ViewProvider {
@@ -41,9 +42,15 @@ abstract class BaseViewProvider implements ViewProvider {
 
 /// The application must extends `BaseViewProvider` by themself
 class AppViewProvider extends BaseViewProvider {
+  // Can pass action delegator here if needed.
+  final ActionDelegate delegate;
+  AppViewProvider({required this.delegate});
+
+  // Return any types of widget
   @override
   Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
-    return BannerView(stream: stream, model: model);
+    return InheritedBanner(
+        stream: stream, model: model, delegate: delegate, child: Banner());
   }
 
   @override

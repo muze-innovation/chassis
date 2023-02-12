@@ -43,7 +43,11 @@
               },
               "type": "static"
           },
-          "viewType": "Banner"
+          "viewType": "Banner",
+          "action": {
+            "type": "navigate",
+            "url": "https://www.google.com"
+          }
       },
       {
           "attributes": {
@@ -61,10 +65,6 @@
           "viewType": "QuickAccess"
       },
       {
-          "action": {
-              "type": "route",
-              "url": "/inbox_landing_screen"
-          },
           "attributes": {
               "color": "red",
               "heightPolicy": "ratio",
@@ -78,7 +78,11 @@
               "resolvedWith": "GetBanner",
               "type": "remote"
           },
-          "viewType": "Banner"
+          "viewType": "Banner",
+          "action": {
+            "type": "route",
+            "url": "/.."
+        }
       }
   ],
   "name": "default-landing-page",

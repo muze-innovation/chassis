@@ -6,12 +6,14 @@ class ChassisItem {
       required this.viewType,
       this.attributes,
       this.parameters,
+      this.action,
       required this.payload});
 
   final String id;
   final String viewType;
   final dynamic attributes;
   final dynamic parameters;
+  final dynamic action;
   final ChassisPayload payload;
 
   ChassisItem.fromJson(Map<String, dynamic> json)
@@ -19,6 +21,7 @@ class ChassisItem {
         viewType = json['viewType'],
         attributes = json['attributes'],
         parameters = json['parameters'],
+        action = json['action'],
         payload = ChassisPayload.fromJson(json['payload']);
 
   Map<String, dynamic> toJson() {
@@ -27,6 +30,7 @@ class ChassisItem {
       'viewType': viewType,
       'attributes': attributes,
       'parameters': parameters,
+      'action': action,
       'payload': payload.toJson(),
     };
   }
