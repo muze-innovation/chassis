@@ -45,9 +45,7 @@ there will be the generated code by the viewType from the server to create the a
 
 	```dart
     abstract  class  ViewProvider  implements  IViewProvider {
-        final  IAction delegate;
-        ViewProvider({required  this.delegate});
-        Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate);
+        Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model);
 
         @override
         Widget  getView(Stream stream,  ChassisItem item) {
@@ -65,7 +63,7 @@ there will be the generated code by the viewType from the server to create the a
 
    
 
-	 `Widget getBannerView(Stream<BannerItem> stream, BannerModel model, IAction delegate);` will be generated with `BannerItem model` 
+	 `Widget getBannerView(Stream<BannerItem> stream, BannerModel model);` will be generated with `BannerItem model` 
  `Widget getView(Stream stream, ChassisItem item)` managed to return the view that the server requested by `viewType` and cast data to the view's model.
 
 	what the user needs to do is just implement `AppViewProvider` class which extends from `ViewProvider`
@@ -73,18 +71,15 @@ there will be the generated code by the viewType from the server to create the a
 
 	```dart
     abstrat class AppViewProvider extends ViewProvider {
-        final IAction delegate;
-        AppViewProvider({required this.delegate}): super(delegate: delegate);
-        
         @override
-        Widget getBannerView(Stream<BannerItem> stream, BannerModel model, IAction delegate) {
+        Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
             //Implement your code here
             return {{BannerView}};
         }
     }
     ```
 
-	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate)` which is the method that will be generated automatically.
+	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model)` which is the method that will be generated automatically.
 
 
 ### Prerequisites
