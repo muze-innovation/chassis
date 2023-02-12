@@ -31,8 +31,8 @@ class InheritedBanner extends InheritedWidget {
   }
 }
 
-class InheritedBannerDemo extends StatelessWidget {
-  const InheritedBannerDemo({Key? key}) : super(key: key);
+class BannerView extends StatelessWidget {
+  const BannerView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

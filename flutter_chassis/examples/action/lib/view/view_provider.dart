@@ -50,7 +50,7 @@ class AppViewProvider extends BaseViewProvider {
   @override
   Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
     return InheritedBanner(
-        stream: stream, model: model, delegate: delegate, child: Banner());
+        stream: stream, model: model, delegate: delegate, child: BannerView());
   }
 
   @override
