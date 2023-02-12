@@ -1,0 +1,498 @@
+{
+  "Banner": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "viewType": {
+        "type": "string",
+        "enum": [
+          "Banner"
+        ]
+      },
+      "payload": {
+        "type": "object",
+        "properties": {
+          "asset": {
+            "type": "string"
+          },
+          "placeholder": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "asset",
+          "placeholder"
+        ]
+      },
+      "parameters": {},
+      "error": {
+        "type": "object",
+        "properties": {
+          "errorType": {
+            "enum": [
+              "error",
+              "hide"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "errorType"
+        ]
+      },
+      "attributes": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "fixed"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "ratio"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "required": [
+      "attributes",
+      "id",
+      "payload",
+      "viewType"
+    ]
+  },
+  "ChassisError": {
+    "type": "object",
+    "properties": {
+      "errorType": {
+        "enum": [
+          "error",
+          "hide"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "errorType"
+    ]
+  },
+  "ChassisViewAttribute": {
+    "anyOf": [
+      {
+        "allOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "heightPolicy": {
+                "type": "string",
+                "enum": [
+                  "fixed"
+                ]
+              },
+              "heightValue": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "heightPolicy",
+              "heightValue"
+            ]
+          }
+        ]
+      },
+      {
+        "allOf": [
+          {
+            "type": "object"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "heightPolicy": {
+                "type": "string",
+                "enum": [
+                  "ratio"
+                ]
+              },
+              "heightValue": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "heightPolicy",
+              "heightValue"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "_ChassisViewAttribute": {
+    "type": "object"
+  },
+  "FixedHeightPolicy": {
+    "type": "object",
+    "properties": {
+      "heightPolicy": {
+        "type": "string",
+        "enum": [
+          "fixed"
+        ]
+      },
+      "heightValue": {
+        "type": "number"
+      }
+    },
+    "required": [
+      "heightPolicy",
+      "heightValue"
+    ]
+  },
+  "RatioHeightPolicy": {
+    "type": "object",
+    "properties": {
+      "heightPolicy": {
+        "type": "string",
+        "enum": [
+          "ratio"
+        ]
+      },
+      "heightValue": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "heightPolicy",
+      "heightValue"
+    ]
+  },
+  "QuickAccess": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "viewType": {
+        "type": "string",
+        "enum": [
+          "QuickAccess"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "payload": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "asset": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "asset",
+                "title"
+              ]
+            }
+          }
+        },
+        "required": [
+          "item"
+        ]
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "errorType": {
+            "enum": [
+              "error",
+              "hide"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "errorType"
+        ]
+      },
+      "attributes": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "fixed"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "ratio"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "required": [
+      "attributes",
+      "id",
+      "payload",
+      "viewType"
+    ]
+  },
+  "QuickAccessItem": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "asset": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "asset",
+      "title"
+    ]
+  },
+  "ShelfContent": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "viewType": {
+        "type": "string",
+        "enum": [
+          "ShelfContent"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "payload": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "asset": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "asset",
+                "title"
+              ]
+            }
+          }
+        },
+        "required": [
+          "item"
+        ]
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "errorType": {
+            "enum": [
+              "error",
+              "hide"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "errorType"
+        ]
+      },
+      "attributes": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "fixed"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "ratio"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "required": [
+      "attributes",
+      "id",
+      "payload",
+      "viewType"
+    ]
+  },
+  "ShelfContentItem": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "asset": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "asset",
+      "title"
+    ]
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
