@@ -150,8 +150,7 @@ there will be the generated code by the viewType from the server to create the a
 
 	what the user needs to do is just implement `AppViewProvider` class which extends from `ViewProvider`
 	
-
-	```dart
+```dart
     abstrat class AppViewProvider extends ViewProvider {
         final IAction delegate;
         AppViewProvider({required this.delegate}): super(delegate: delegate);
@@ -162,7 +161,7 @@ there will be the generated code by the viewType from the server to create the a
             return {{BannerView}};
         }
     }
-    ```
+```
 
 	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model,  IAction delegate)` which is the method that will be generated automatically.
 
