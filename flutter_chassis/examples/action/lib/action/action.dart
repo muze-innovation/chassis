@@ -36,6 +36,7 @@ class ActionManager {
     }
   }
 
+  // Handle navigating to outside websites
   void _navigate(BuildContext context) async {
     Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -45,6 +46,7 @@ class ActionManager {
     }
   }
 
+  // Handle routing to another page
   void _goToRoute(BuildContext context, Map<String, dynamic>? data) async {
     if (url == ActionUrl.back) {
       Navigator.pop(context);
