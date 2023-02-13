@@ -23,7 +23,17 @@
       "name": "flutter_chassis (profile mode)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+
+      // The entry script to execute when running the app.
+		  // Set to a "web" in a Dart web app to run in web move.
+		  // Set to "test" in an app with tests to run all tests.
+      "program": "example/lib/main.dart",
+
+      // Arguments to be passed to the Dart or Flutter app.
+      "args": [
+        "--no-sound-null-safety"
+      ],
     },
     {
       "name": "flutter_chassis (release mode)",

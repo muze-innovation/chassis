@@ -32,9 +32,89 @@ There are 3 main parts of Chassis including Chassis Core, Data Provider and View
 
   
 
-1. Chassis 
-2. Data Provider
-3. View Provider
+#### 1. Chassis 
+#### 2. Data Provider
+   
+
+    Data provide allows you stream response and validate output form your server.
+###### In data_provider.dart
+`../data/data_provider.dart` There are 2 classes consisting of `BassDataProvider class` and `AppDataProvider class`.
+
+###### BassDataProvider Class
+There will be generated code by playload type `remote` from the server to create the application's data provider abstract class. Function `getData` will be add stream output by `request.resolvedWith`.
+```dart
+abstract class BaseDataProvider implements DataProvider {
+  Stream<BannerOutput> getBanner(BannerInput banner);
+  Stream<QuickAccessOutput> getQuickAccessItem();
+
+  @override
+  void getData(StreamController<dynamic> controller, ChassisRequest request) {
+    switch (request.resolvedWith) {
+      case DataProviderConstans.getBanner:
+        final input = BannerInput.fromJson(request.input);
+        final stream = getBanner(input).map((event) => event.toJson());
+        controller.addStream(stream);
+        break;
+      case DataProviderConstans.getQuickAccessItem:
+        final stream = getQuickAccessItem().map((event) => event.toJson());
+        controller.addStream(stream);
+        break;
+      default:
+        break;
+    }
+  }
+}
+```
+###### AppDataProvider Class
+There will be extends `BaseDataProvider` create by your self to allows handle your method for deliver `Stream<Output>` to function `getData`.
+```dart
+class AppDataProvider extends BaseDataProvider {
+  final _bannerRepository = BannerRepository();
+  final _productRepository = ProductRepository();
+
+  @override
+  Stream<BannerOutput> getBanner(BannerInput banner) {
+    return _bannerRepository
+        .getData(banner.slug)
+        .asStream()
+        .map((event) => BannerOutput.fromJson(event));
+  }
+
+  @override
+  Stream<QuickAccessOutput> getQuickAccessItem() {
+    return _productRepository
+        .getData()
+        .asStream()
+        .map((event) => QuickAccessOutput.fromJson(event));
+  }
+```
+###### Input Model
+There will be generated model class by playload type `remote` and `request.resolvedWith` from the server if your method is requeied for example `../models/banner_input.dart`.
+```dart
+class BannerInput {
+  final String slug;
+  BannerInput.fromJson(Map<String, dynamic> json) : slug = json['slug'];
+}
+```
+###### Output Model
+There will be generated model class by playload type `remote` and `request.resolvedWith` from the server to validate output form your method for example `../models/banner_output.dart`.
+```dart
+class BannerOutput {
+  final String asset;
+  final String placeholder;
+  BannerOutput.fromJson(Map<String, dynamic> json)
+      : asset = json['asset'],
+        placeholder = json['placeholder'];
+  Map<String, dynamic> toJson() {
+    return {
+      'asset': asset,
+      'placeholder': placeholder,
+    };
+  }
+}
+```
+
+#### 3. View Provider
 
   
 
@@ -43,7 +123,7 @@ In view_provider_base.dart
 `.../flutter_example_application/view_provider/lib/src/view_provider_base.dart`
 there will be the generated code by the viewType from the server to create the application's view provider abstract class
 
-	```dart
+```dart
     abstract  class  ViewProvider  implements  IViewProvider {
         Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model);
 
@@ -59,7 +139,7 @@ there will be the generated code by the viewType from the server to create the a
             }
         }
     }
-    ```
+```
 
    
 
@@ -68,8 +148,7 @@ there will be the generated code by the viewType from the server to create the a
 
 	what the user needs to do is just implement `AppViewProvider` class which extends from `ViewProvider`
 	
-
-	```dart
+```dart
     abstrat class AppViewProvider extends ViewProvider {
         @override
         Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
@@ -77,7 +156,7 @@ there will be the generated code by the viewType from the server to create the a
             return {{BannerView}};
         }
     }
-    ```
+```
 
 	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model)` which is the method that will be generated automatically.
 
