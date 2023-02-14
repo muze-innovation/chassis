@@ -27,6 +27,7 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
   Iterable<Widget> _items = [];
   bool _isLoading = true;
   late Chassis _chassis;
+  late AppDataProvider _dataProvider;
 
   @override
   void initState() {
@@ -43,10 +44,10 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
         SchemaValidator(resolverSpec: resolverSpec, viewSpec: viewSpec);
 
     // init Chassis
-    final dataProvider = AppDataProvider();
+    _dataProvider = AppDataProvider();
     final viewProvider = AppViewProvider();
     _chassis = Chassis(
-        dataProvider: dataProvider,
+        dataProvider: _dataProvider,
         viewProvider: viewProvider,
         schemaValidator: schemaValidator);
 
@@ -97,7 +98,9 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
 
   @override
   void dispose() {
+    _dataProvider.dispose();
     _chassis.dispose();
+
     super.dispose();
   }
 }

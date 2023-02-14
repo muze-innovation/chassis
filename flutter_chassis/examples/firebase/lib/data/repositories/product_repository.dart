@@ -1,16 +1,21 @@
-import '../../utils/readability.dart';
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 mixin IProductRepository {
-  Future<dynamic> getData();
+  Stream streamProductReccomend();
 }
 
 class ProductRepository implements IProductRepository {
   @override
-  Future<dynamic> getData() async {
-    final products =
-        await Readability.readFrom('assets/products.json').then((data) {
-      return data;
+  Stream streamProductReccomend() {
+    return FirebaseFirestore.instance
+        .collection('quickAccessItem')
+        .doc('C31m6JDhRAkqItIzWsKP')
+        .snapshots()
+        .map((event) {
+      print("ProductRepository: ${event.data()}");
+      return event;
     });
-    return Future.delayed(const Duration(seconds: 3)).then((value) => products);
   }
 }
