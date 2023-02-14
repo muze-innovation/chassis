@@ -41,7 +41,7 @@ class AppDataProvider extends BaseDataProvider {
   final _productRepository = ProductRepository();
   final List<StreamSubscription> _subscriptionRegisters = [];
 
-  //Modify `getData` function for fix firebase issue
+  /// Modify `getData` function for fix firebase issue
   @override
   void getData(StreamController<dynamic> controller, ChassisRequest request) {
     switch (request.resolvedWith) {
