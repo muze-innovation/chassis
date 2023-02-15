@@ -39,31 +39,6 @@ abstract class BaseDataProvider implements DataProvider {
 class AppDataProvider extends BaseDataProvider {
   final _bannerRepository = BannerRepository();
   final _productRepository = ProductRepository();
-  final List<StreamSubscription> _subscriptionRegisters = [];
-
-  /// Modify `getData` function for fix firebase issue
-  @override
-  void getData(StreamController<dynamic> controller, ChassisRequest request) {
-    switch (request.resolvedWith) {
-      case DataProviderConstans.getBanner:
-        final input = BannerInput.fromJson(request.input);
-        final stream = getBanner(input).map((event) => event.toJson());
-        final subscription = stream.listen((event) {
-          controller.add(event);
-        });
-        _subscriptionRegisters.add(subscription);
-        break;
-      case DataProviderConstans.getQuickAccessItem:
-        final stream = getQuickAccessItem().map((event) => event.toJson());
-        final subscription = stream.listen((event) {
-          controller.add(event);
-        });
-        _subscriptionRegisters.add(subscription);
-        break;
-      default:
-        break;
-    }
-  }
 
   @override
   Stream<BannerOutput> getBanner(BannerInput banner) {
@@ -78,12 +53,5 @@ class AppDataProvider extends BaseDataProvider {
     return _productRepository
         .streamProductReccomend()
         .map((event) => QuickAccessOutput.fromJson(event.data()));
-  }
-
-  void dispose() {
-    for (var subscription in _subscriptionRegisters) {
-      subscription.cancel();
-    }
-    _subscriptionRegisters.clear();
   }
 }

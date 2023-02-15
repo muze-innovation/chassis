@@ -98,7 +98,6 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
 
   @override
   void dispose() {
-    _dataProvider.dispose();
     _chassis.dispose();
 
     super.dispose();

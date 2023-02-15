@@ -2,3 +2,6 @@
 flutter_chassis/examples/firebase/android/app/google-services.json
 flutter_chassis/examples/firebase/ios/Runner/GoogleService-Info.plist
 flutter_chassis/examples/firebase/lib/firebase_options.dart
+flutter_chassis/android/local.properties
+flutter_chassis/android/local.properties
+flutter_chassis/android/local.properties
