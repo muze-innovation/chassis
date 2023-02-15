@@ -17,13 +17,13 @@ A server-driven UI (SDUI) platform implemented by using flutter. Chassis enabled
 
 Chassis provide a shelf-based application which drives by the response from the server. Define the {{blah blah specs}} then chassis will be generated based code for the application including Data Provider and View Provider.
 
-<br />
+
 
 ## Benefits
 - Ensuring quality of data from the API.
 - Easy to read the code between business logic and presentation logic.
 
-<br />
+
 
 ## Prerequisites
 
@@ -35,8 +35,9 @@ Chassis provide a shelf-based application which drives by the response from the 
 
 * Do not support validate spec yet.
 
-<br />
-<br />
+
+
+
 
 # Documentation
 
@@ -45,8 +46,9 @@ Chassis provide a shelf-based application which drives by the response from the 
   - [Action](/examples/action/README.md)
   - [Firebase Realtime](/examples/.../README.md)
 
-<br />
-<br />
+
+
+
 
 # Installation
 
