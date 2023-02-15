@@ -1,0 +1,4 @@
+enum PayloadType {
+  static,
+  remote,
+}
