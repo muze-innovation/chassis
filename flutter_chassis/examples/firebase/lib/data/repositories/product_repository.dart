@@ -10,8 +10,8 @@ class ProductRepository implements IProductRepository {
   @override
   Stream streamProductReccomend() {
     return FirebaseFirestore.instance
-        .collection('quickAccessItem')
-        .doc('C31m6JDhRAkqItIzWsKP')
+        .collection('quickAccessItem') // document ID
+        .doc('C31m6JDhRAkqItIzWsKP') // document ID
         .snapshots()
         .map((event) {
       print("ProductRepository: ${event.data()}");
