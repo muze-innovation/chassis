@@ -10,255 +10,57 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
-# Chassis
 
-  
 
+
+## Introduction
 A server-driven UI (SDUI) platform implemented by using flutter. Chassis enabled users to rapidly launch mobile applications across iOS and Android.
 
 Chassis provide a shelf-based application which drives by the response from the server. Define the {{blah blah specs}} then chassis will be generated based code for the application including Data Provider and View Provider.
 
-  
+### Benefits
+- Ensuring quality of data from the API.
+- Easy to read the code between business logic and presentation logic.
 
-## Getting Started
 
-  
 
-### How it works
+## Documentation
 
-  
+- [Getting Started](/flutter_chassis/examples/basic/README.md)
+- Use Cases
+  - [Action](/flutter_chassis/examples/action/README.md)
+  - [Firebase Realtime](/flutter_chassis/examples/.../README.md)
 
-There are 3 main parts of Chassis including Chassis Core, Data Provider and View Provider.
 
-  
 
-#### 1. Chassis 
-#### 2. Data Provider
-   
+## Prerequisites
 
-    Data provide allows you stream response and validate output form your server.
-###### In data_provider.dart
-`../data/data_provider.dart` There are 2 classes consisting of `BassDataProvider class` and `AppDataProvider class`.
+| Language | Minimum Version | Installation | Status |
+| -------- | --------------- | ------------ | ------ |
+| Dart | 2.9.1 | [pub.dev](https://pub.dev) | dev |
 
-###### BassDataProvider Class
-There will be generated code by playload type `remote` from the server to create the application's data provider abstract class. Function `getData` will be add stream output by `request.resolvedWith`.
-```dart
-abstract class BaseDataProvider implements DataProvider {
-  Stream<BannerOutput> getBanner(BannerInput banner);
-  Stream<QuickAccessOutput> getQuickAccessItem();
+**Known Issues**
 
-  @override
-  void getData(StreamController<dynamic> controller, ChassisRequest request) {
-    switch (request.resolvedWith) {
-      case DataProviderConstans.getBanner:
-        final input = BannerInput.fromJson(request.input);
-        final stream = getBanner(input).map((event) => event.toJson());
-        controller.addStream(stream);
-        break;
-      case DataProviderConstans.getQuickAccessItem:
-        final stream = getQuickAccessItem().map((event) => event.toJson());
-        controller.addStream(stream);
-        break;
-      default:
-        break;
-    }
-  }
-}
+* Do not support validate spec yet.
+
+
+
+## Installation
+
+Run this command:
+
+With Dart:
 ```
-###### AppDataProvider Class
-There will be extends `BaseDataProvider` create by your self to allows handle your method for deliver `Stream<Output>` to function `getData`.
-```dart
-class AppDataProvider extends BaseDataProvider {
-  final _bannerRepository = BannerRepository();
-  final _productRepository = ProductRepository();
-
-  @override
-  Stream<BannerOutput> getBanner(BannerInput banner) {
-    return _bannerRepository
-        .getData(banner.slug)
-        .asStream()
-        .map((event) => BannerOutput.fromJson(event));
-  }
-
-  @override
-  Stream<QuickAccessOutput> getQuickAccessItem() {
-    return _productRepository
-        .getData()
-        .asStream()
-        .map((event) => QuickAccessOutput.fromJson(event));
-  }
-```
-###### Input Model
-There will be generated model class by playload type `remote` and `request.resolvedWith` from the server if your method is requeied for example `../models/banner_input.dart`.
-```dart
-class BannerInput {
-  final String slug;
-  BannerInput.fromJson(Map<String, dynamic> json) : slug = json['slug'];
-}
-```
-###### Output Model
-There will be generated model class by playload type `remote` and `request.resolvedWith` from the server to validate output form your method for example `../models/banner_output.dart`.
-```dart
-class BannerOutput {
-  final String asset;
-  final String placeholder;
-  BannerOutput.fromJson(Map<String, dynamic> json)
-      : asset = json['asset'],
-        placeholder = json['placeholder'];
-  Map<String, dynamic> toJson() {
-    return {
-      'asset': asset,
-      'placeholder': placeholder,
-    };
-  }
-}
+ $ dart pub add flutter_chassis
 ```
 
-#### 3. View Provider
-
-  
-
-	View Provider manages and arranges view to show by the response from the server.
-In view_provider_base.dart
-`.../flutter_example_application/view_provider/lib/src/view_provider_base.dart`
-there will be the generated code by the viewType from the server to create the application's view provider abstract class
-
-```dart
-    abstract  class  ViewProvider  implements  IViewProvider {
-        Widget  getBannerView(Stream<BannerItem> stream,  BannerModel model);
-
-        @override
-        Widget  getView(Stream stream,  ChassisItem item) {
-            switch (item.viewType) {
-            case  ViewTypeConstant.Banner:
-                var bannerModel =  BannerModel.fromJson(item.toJson());
-                var broadcastStream = stream.map<BannerItem>((data) =>  BannerItem.fromJson(data));
-                return  getBannerView(broadcastStream, bannerModel, delegate);
-            default:
-            return  Container();
-            }
-        }
-    }
+With Flutter:
+```
+ $ flutter pub add flutter_chassis
 ```
 
-   
-
-	 `Widget getBannerView(Stream<BannerItem> stream, BannerModel model);` will be generated with `BannerItem model` 
- `Widget getView(Stream stream, ChassisItem item)` managed to return the view that the server requested by `viewType` and cast data to the view's model.
-
-	what the user needs to do is just implement `AppViewProvider` class which extends from `ViewProvider`
-	
-```dart
-    abstrat class AppViewProvider extends ViewProvider {
-        @override
-        Widget getBannerView(Stream<BannerItem> stream, BannerModel model) {
-            //Implement your code here
-            return {{BannerView}};
-        }
-    }
+This will add a line like this to your package's pubspec.yaml (and run an implicit dart pub get):
 ```
-
-	implement the user's app banner view in `Widget getBannerView(Stream<BannerItem> stream,  BannerModel model)` which is the method that will be generated automatically.
-
-
-### Prerequisites
-
-  
-
-The things you need before installing the software.
-
-  
-
-* You need this
-
-* And you need this
-
-* Oh, and don't forget this
-
-  
-
-### Installation
-
-  
-
-A step by step guide that will tell you how to get the development environment up and running.
-
-  
-
+dependencies:
+  flutter_chassis: ^0.0.1-dev.1
 ```
-
-$ First step
-
-$ Another step
-
-$ Final step
-
-```
-
-  
-
-## Usage
-
-  
-
-A few examples of useful commands and/or tasks.
-
-  
-
-```
-
-$ First example
-
-$ Second example
-
-$ And keep this in mind
-
-```
-
-  
-
-## Deployment
-
-  
-
-Additional notes on how to deploy this on a live or release system. Explaining the most important branches, what pipelines they trigger and how to update the database (if anything special).
-
-  
-
-### Server
-
-  
-
-* Live:
-
-* Release:
-
-* Development:
-
-  
-
-### Branches
-
-  
-
-* Master:
-
-* Feature:
-
-* Bugfix:
-
-* etc...
-
-  
-
-## Additional Documentation and Acknowledgments
-
-  
-
-* Project folder on server:
-
-* Confluence link:
-
-* Asana board:
-
-* etc...
