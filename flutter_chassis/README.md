@@ -10,8 +10,6 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
-# Chassis
-
 ## Introduction
 A server-driven UI (SDUI) platform implemented by using flutter. Chassis enabled users to rapidly launch mobile applications across iOS and Android.
 
@@ -23,7 +21,21 @@ Chassis provide a shelf-based application which drives by the response from the 
 - Easy to read the code between business logic and presentation logic.
 
 
-### Prerequisites
+<br />
+
+
+## Documentation
+
+- [Getting Started](/flutter_chassis/examples/basic/README.md)
+- Use Cases
+  - [Action](/flutter_chassis/examples/action/README.md)
+  - [Firebase Realtime](/flutter_chassis/examples/.../README.md)
+
+
+<br />
+
+
+## Prerequisites
 
 | Language | Minimum Version | Installation | Status |
 | -------- | --------------- | ------------ | ------ |
@@ -32,17 +44,6 @@ Chassis provide a shelf-based application which drives by the response from the 
 #### Known Issues
 
 * Do not support validate spec yet.
-
-
-<br />
-
-
-## Documentation
-
-- [Getting Started](/examples/basic/README.md)
-- Use Cases
-  - [Action](/examples/action/README.md)
-  - [Firebase Realtime](/examples/.../README.md)
 
 
 <br />
@@ -57,14 +58,10 @@ With Dart:
  $ dart pub add flutter_chassis
 ```
 
-<br />
-
 With Flutter:
 ```
  $ flutter pub add flutter_chassis
 ```
-
-<br />
 
 This will add a line like this to your package's pubspec.yaml (and run an implicit dart pub get):
 ```
