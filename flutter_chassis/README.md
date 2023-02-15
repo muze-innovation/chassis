@@ -10,18 +10,18 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
+
+
+
 ## Introduction
 A server-driven UI (SDUI) platform implemented by using flutter. Chassis enabled users to rapidly launch mobile applications across iOS and Android.
 
 Chassis provide a shelf-based application which drives by the response from the server. Define the {{blah blah specs}} then chassis will be generated based code for the application including Data Provider and View Provider.
 
-
 ### Benefits
 - Ensuring quality of data from the API.
 - Easy to read the code between business logic and presentation logic.
 
-
-<br />
 
 
 ## Documentation
@@ -32,8 +32,6 @@ Chassis provide a shelf-based application which drives by the response from the 
   - [Firebase Realtime](/flutter_chassis/examples/.../README.md)
 
 
-<br />
-
 
 ## Prerequisites
 
@@ -41,12 +39,10 @@ Chassis provide a shelf-based application which drives by the response from the 
 | -------- | --------------- | ------------ | ------ |
 | Dart | 2.9.1 | [pub.dev](https://pub.dev) | dev |
 
-#### Known Issues
+**Known Issues**
 
 * Do not support validate spec yet.
 
-
-<br />
 
 
 ## Installation
@@ -68,4 +64,3 @@ This will add a line like this to your package's pubspec.yaml (and run an implic
 dependencies:
   flutter_chassis: ^0.0.1-dev.1
 ```
-
