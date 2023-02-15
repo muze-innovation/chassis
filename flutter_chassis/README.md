@@ -16,6 +16,8 @@ and the Flutter guide for
 ## Introduction
 A server-driven UI (SDUI) platform implemented by using flutter. Chassis enabled users to rapidly launch mobile applications across iOS and Android.
 
+![chassis-workflow](/flutter_chassis/assets/chassis_frontend-workflow.jpg)
+
 Chassis provide a shelf-based application which drives by the response from the server. Define the {{blah blah specs}} then chassis will be generated based code for the application including Data Provider and View Provider.
 
 ### Benefits
