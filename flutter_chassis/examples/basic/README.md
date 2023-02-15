@@ -1,20 +1,19 @@
-# Basic Project
+A `Basic` project is an example project to show you how to use the Chassis library.
 
-A `Basic` project is an example project to show you how to use the `Chassis` library.
 
-# Getting Started
 
-## Step 1: Making an instance of a Chassis
+## Getting Started
 
-The easiest way to use this library. `Chassis` allow you to make instance with `DataProvider`, `ViewProvider`, and `SchemaValidator`
 
-#### **There are 3 main parts of Chassis including**
 
->`Chassis Core` get view and data from providers, and validate data before sending it to the view.
+### Step 1: Making an instance of a Chassis
+
+The easiest way to use this library. Chassis allow you to make instance with `DataProvider`, `ViewProvider`, and `SchemaValidator`
+- `Data Provide` allows you stream response and validate output form your server.
+- `View Provider` manages and arranges view to show by the response from the server.
+- `SchemaValidator` uses the JSON schema to validate the response from the server before sending it to view.
+
 <br />
->`Data Provide` allows you stream response and validate output form your server.
-<br />
->`View Provider` manages and arranges view to show by the response from the server.
 
 ```dart
 /*
@@ -40,10 +39,11 @@ _chassis = Chassis(
     viewProvider: viewProvider,
     schemaValidator: schemaValidator);
 ```
-<br />
 
-## Step 2: Implement DataProvider
-The `DataProvider` will call by `Chassis` when it need to get data to view from server.  It has a class is `BaseDataProvider` class that generated from the Chassis backend. The usually `Chassis` will send/receive data from `DataProvider` in dynamic type.
+
+
+### Step 2: Implement DataProvider
+The `DataProvider` will call by Chassis when it need to get data to view from server.  It has a class is `BaseDataProvider` that generated from the Chassis backend. The usually Chassis will send/receive data from DataProvider in dynamic type.
 
 Create a new class to extend the `BassDataProvider` *(we create the `AppDataProvider` in the example project)* and implement the method that does not have a definition (implementation), and the `void getData(StreamController<dynamic> controller, ChassisRequest request)` method you must not to do anything.
 
@@ -125,15 +125,15 @@ class BannerOutput {
 }
 ```
 
-<br />
 
-## Step 3: Implement ViewProvider
 
-The `ViewProvider` will call by `Chassis` when it need to get view by `viewType`. 
+### Step 3: Implement ViewProvider
 
-It has a class is `BaseViewProvider`, that generate from the Chassis backend. The usually Chassis will send the Stream to `ViewProvider` to receive the data, and `ViewProvider` will provide some view to `Chassis`.
+The `ViewProvider` will call by Chassis when it need to get view by `viewType`. 
 
-Create a new class to extend the `BaseViewProvider` *(we create the `AppViewProvider` in the example project)* and implement the method that does not have a definition (implementation), and the `Widget  getView(Stream stream,  ChassisItem item)` method you must not to do anything.
+It has a class is `BaseViewProvider`, that generate from the Chassis backend. The usually Chassis will send the Stream to ViewProvider to receive the data, and ViewProvider will provide some view to Chassis.
+
+Create a new class to extend the `BaseViewProvider` *(we create the `AppViewProvider` in the example project)* and implement the method that does not have a definition (implementation), and the `Widget getView(Stream stream, ChassisItem item)` method you must not to do anything.
 
 ```dart
 /*
