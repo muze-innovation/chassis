@@ -104,9 +104,9 @@ class _FoodLandingScreenState extends State<FoodLandingScreen>
   }
 
   @override
-  void onAction(BuildContext context, Map<String, dynamic> config,
+  Future<bool> onAction(BuildContext context, Map<String, dynamic> config,
       Map<String, dynamic>? data) {
     ActionManager manager = ActionManager.fromJson(config);
-    manager.execute(context, data);
+    return manager.execute(context, data);
   }
 }
