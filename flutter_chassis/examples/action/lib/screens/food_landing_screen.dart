@@ -37,12 +37,8 @@ class _FoodLandingScreenState extends State<FoodLandingScreen>
   }
 
   setupChassis() async {
-    // init schema validator
-    final resolverSpec =
-        await Readability.readFrom('assets/resolver_spec.json');
-    final viewSpec = await Readability.readFrom('assets/view_spec.json');
-    final schemaValidator =
-        SchemaValidator(resolverSpec: resolverSpec, viewSpec: viewSpec);
+    final schema = await Readability.readFrom('assets/schema.json');
+    final schemaValidator = SchemaValidator(schema: schema);
 
     // init Chassis
     final dataProvider = AppDataProvider();
@@ -104,9 +100,9 @@ class _FoodLandingScreenState extends State<FoodLandingScreen>
   }
 
   @override
-  void onAction(BuildContext context, Map<String, dynamic> config,
+  Future<bool> onAction(BuildContext context, Map<String, dynamic> config,
       Map<String, dynamic>? data) {
     ActionManager manager = ActionManager.fromJson(config);
-    manager.execute(context, data);
+    return manager.execute(context, data);
   }
 }

@@ -3,7 +3,6 @@ import 'dart:async';
 
 /// Packages
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 /// Local Files
 import '../models/chassis_item.dart';
@@ -49,7 +48,7 @@ class Chassis {
   late ISchemaValidator _schemaValidator;
 
   /// Declarations of private property in Chassis
-  final List<BehaviorSubject> _subjects = [];
+  final List<StreamController> _controller = [];
 
   /// ## Constructor - Initial Setting
   ///
@@ -92,39 +91,33 @@ class Chassis {
       return null;
     }
 
-    /// Create StreamController
-    final subject = BehaviorSubject();
-    _subjects.add(subject);
+    /// Create StreamController for buffering event.
+    final controller = StreamController();
 
-    /// Validate response spec
-    final validatedTransfrom = subject.stream.transform(_validateOutput(item));
+    /// Use StreamTransformer to validate spec of response.
+    final validateOutputStream =
+        controller.stream.transform(_validateOutput(item));
+
+    /// Get view from ViewProvider, and link view with data by using Stream.
+    final widget = _viewProvider.getView(validateOutputStream, item);
 
     /// Manage data by payload type
     switch (item.payload.type) {
       case PayloadType.static:
-        subject.add(item.payload.data);
+        controller.add(item.payload.data);
         break;
       case PayloadType.remote:
         final request = ChassisRequest.fromJson(item.payload.toJson());
-        _dataProvider.getData(subject, request);
+        _dataProvider.getData(controller, request);
         break;
     }
-
-    /// Get view from ViewProvider,
-    /// and link view with data by using Stream
-    final widget = _viewProvider.getView(validatedTransfrom, item);
 
     /// Return widget
     return widget;
   }
 
   // Close all the opened subjects.
-  void dispose() async {
-    for (var subject in _subjects) {
-      subject.close();
-    }
-    _subjects.clear();
-  }
+  void dispose() async {}
 
   /// ## Private Methods
   // Validate Spec

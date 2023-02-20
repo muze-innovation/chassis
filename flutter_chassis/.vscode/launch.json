@@ -12,7 +12,7 @@
       // The entry script to execute when running the app.
 		  // Set to a "web" in a Dart web app to run in web move.
 		  // Set to "test" in an app with tests to run all tests.
-      "program": "example/lib/main.dart",
+      "program": "examples/basic/lib/main.dart",
 
       // Arguments to be passed to the Dart or Flutter app.
       "args": [
@@ -28,7 +28,7 @@
       // The entry script to execute when running the app.
 		  // Set to a "web" in a Dart web app to run in web move.
 		  // Set to "test" in an app with tests to run all tests.
-      "program": "example/lib/main.dart",
+      "program": "examples/basic/lib/main.dart",
 
       // Arguments to be passed to the Dart or Flutter app.
       "args": [

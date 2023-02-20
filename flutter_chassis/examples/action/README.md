@@ -20,7 +20,7 @@ Action of each section can be handled in many ways according to user's preferenc
 Creating a mixin for delegator.
 ```dart
 mixin ActionDelegate {
-  void onAction(BuildContext context, Map<String, dynamic> config,
+  Future<bool> onAction(BuildContext context, Map<String, dynamic> config,
       Map<String, dynamic>? data);
 }
 ```
@@ -30,6 +30,7 @@ Creating a class for handling actions.
 class ActionManager {
   String type = '';
   String url = '';
+  static final Future<bool> _successFuture = Future(() => true);
 
   ActionManager({required this.type, required this.url});
 
@@ -38,10 +39,10 @@ class ActionManager {
     url = json?["url"] ?? '';
   }
 
-  void execute(BuildContext context, Map<String, dynamic>? data) async =>
+  Future<bool> execute(BuildContext context, Map<String, dynamic>? data) async =>
       _execute(context, data);
 
-  void _execute(BuildContext context, Map<String, dynamic>? data) {
+  Future<bool> _execute(BuildContext context, Map<String, dynamic>? data) {
     switch (type) {
       case 'navigate':
         return _navigate(context);
@@ -52,16 +53,16 @@ class ActionManager {
     }
   }
 
-  void _navigate(BuildContext context) async {
+  Future<bool> _navigate(BuildContext context) async {
     Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+      return await launchUrl(uri);
     } else {
       throw 'Could not launch $uri';
     }
   }
 
-  void _goToRoute(BuildContext context, Map<String, dynamic>? data) async {
+  Future<bool> _goToRoute(BuildContext context, Map<String, dynamic>? data) async {
     if (url == ActionUrl.back) {
       Navigator.pop(context);
     } else if (url == ActionUrl.backToHome) {
@@ -69,6 +70,7 @@ class ActionManager {
     } else {
       Navigator.pushNamed(context, url, arguments: data);
     }
+    return _successFuture;
   }
 }
 ```
@@ -87,9 +89,9 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> implements Action
   }
   
   @override
-  void onAction(BuildContext context, Map<String, dynamic> config, Map<String, dynamic>? data) {
+  Future<bool> onAction(BuildContext context, Map<String, dynamic> config, Map<String, dynamic>? data) {
     ActionManager manager = ActionManager.fromJson(config);
-    manager.execute(context, data);
+    return manager.execute(context, data);
   }
 }
 ```
