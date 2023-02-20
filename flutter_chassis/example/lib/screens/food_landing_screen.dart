@@ -36,11 +36,8 @@ class _FoodLandingScreenState extends State<FoodLandingScreen> {
 
   setupChassis() async {
     // init schema validator
-    final resolverSpec =
-        await Readability.readFrom('assets/resolver_spec.json');
-    final viewSpec = await Readability.readFrom('assets/view_spec.json');
-    final schemaValidator =
-        SchemaValidator(resolverSpec: resolverSpec, viewSpec: viewSpec);
+    final schema = await Readability.readFrom('assets/schema.json');
+    final schemaValidator = SchemaValidator(schema: schema);
 
     // init Chassis
     final dataProvider = AppDataProvider();
