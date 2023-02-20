@@ -68,8 +68,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   assets:
-    - assets/view_spec.json
-    - assets/resolver_spec.json
+    - assets/schema.json
     - assets/source.json
     - assets/products.json
     - assets/banner.json
