@@ -69,6 +69,41 @@
       "output"
     ]
   },
+  "GetForYouItem": {
+    "type": "object",
+    "properties": {
+      "output": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "asset": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "asset",
+                "title"
+              ]
+            }
+          }
+        },
+        "required": [
+          "item"
+        ]
+      },
+      "input": {}
+    },
+    "required": [
+      "output"
+    ]
+  },
   "ContentItem": {
     "type": "object",
     "properties": {

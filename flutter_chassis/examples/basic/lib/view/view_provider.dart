@@ -33,6 +33,12 @@ abstract class BaseViewProvider implements ViewProvider {
             (data) => QuickAccessPayloadData.fromJson(data));
         return getQuickAccessView(broadcastStream, quickAccessModel);
 
+      case ViewType.gridProduct:
+        var quickAccessModel = QuickAccessModel.fromJson(item.toJson());
+        var broadcastStream = stream.map<QuickAccessPayloadData>(
+            (data) => QuickAccessPayloadData.fromJson(data));
+        return getQuickAccessView(broadcastStream, quickAccessModel);
+
       default:
         return Container();
     }

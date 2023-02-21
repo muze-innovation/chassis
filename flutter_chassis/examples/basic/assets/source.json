@@ -79,7 +79,22 @@
               "type": "remote"
           },
           "viewType": "Banner"
-      }
+      },
+      {
+        "attributes": {
+            "heightPolicy": "fixed",
+            "heightValue": 200
+        },
+        "id": "grid_product",
+        "parameters": {
+            "title": "For You"
+        },
+        "payload": {
+            "resolvedWith": "GridProductItem",
+            "type": "remote"
+        },
+        "viewType": "GridProduct"
+    }
   ],
   "name": "default-landing-page",
   "version": "1.0.0"

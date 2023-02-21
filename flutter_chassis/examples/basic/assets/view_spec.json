@@ -494,5 +494,146 @@
       "title"
     ]
   },
+  "ForYou": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "viewType": {
+        "type": "string",
+        "enum": [
+          "QuickAccess"
+        ]
+      },
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "payload": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "asset": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "asset",
+                "title"
+              ]
+            }
+          }
+        },
+        "required": [
+          "item"
+        ]
+      },
+      "error": {
+        "type": "object",
+        "properties": {
+          "errorType": {
+            "enum": [
+              "error",
+              "hide"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "errorType"
+        ]
+      },
+      "attributes": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "fixed"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          },
+          {
+            "allOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "heightPolicy": {
+                    "type": "string",
+                    "enum": [
+                      "ratio"
+                    ]
+                  },
+                  "heightValue": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "heightPolicy",
+                  "heightValue"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "required": [
+      "attributes",
+      "id",
+      "payload",
+      "viewType"
+    ]
+  },
+  "ForYouItem": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "asset": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "asset",
+      "title"
+    ]
+  },
   "$schema": "http://json-schema.org/draft-07/schema#"
 }

@@ -16,6 +16,7 @@ import 'repositories/product_repository.dart';
 abstract class BaseDataProvider implements DataProvider {
   Stream<BannerOutput> getBanner(BannerInput banner);
   Stream<QuickAccessOutput> getQuickAccessItem();
+  Stream<QuickAccessOutput> getForYouItem();
 
   @override
   void getData(StreamController<dynamic> controller, ChassisRequest request) {
@@ -26,6 +27,10 @@ abstract class BaseDataProvider implements DataProvider {
         controller.addStream(stream);
         break;
       case DataProviderConstans.getQuickAccessItem:
+        final stream = getQuickAccessItem().map((event) => event.toJson());
+        controller.addStream(stream);
+        break;
+      case DataProviderConstans.getForYouItem:
         final stream = getQuickAccessItem().map((event) => event.toJson());
         controller.addStream(stream);
         break;
@@ -50,6 +55,14 @@ class AppDataProvider extends BaseDataProvider {
 
   @override
   Stream<QuickAccessOutput> getQuickAccessItem() {
+    return _productRepository
+        .getData()
+        .asStream()
+        .map((event) => QuickAccessOutput.fromJson(event));
+  }
+
+  @override
+  Stream<QuickAccessOutput> getForYouItem() {
     return _productRepository
         .getData()
         .asStream()
