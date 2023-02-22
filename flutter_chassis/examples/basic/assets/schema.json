@@ -1,287 +1,328 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "oneOf": [
-        {
-            "$ref": "#/definitions/Banner"
-        },
-        {
-            "$ref": "#/definitions/Banner/PayloadData"
-        },
-      	{
-            "$ref": "#/definitions/QuickAccess"
-        },
-      	{
-            "$ref": "#/definitions/QuickAccess/PayloadData"
-        }
+      {
+        "$ref": "#/views"
+      },
+      {
+        "$ref": "#/payloads"
+      }
     ],
-    "definitions": {
-        "QuickAccess": {
-            "type": "object",
-            "properties": {
-                "attributes": {
-                    "$ref": "#/definitions/QuickAccess/Attributes"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "parameters": {
-                    "$ref": "#/definitions/QuickAccess/Parameters"
-                },
-                "payload": {
-                    "$ref": "#/definitions/QuickAccess/Payload"
-                },
-                "viewType": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "attributes",
-                "id",
-                "payload",
-                "viewType"
-            ],
-            "Attributes": {
-                "type": "object",
-                "properties": {
-                    "heightPolicy": {
-                        "type": "string"
-                    },
-                    "heightValue": {
-                        "type": "number"
-                    }
-                },
-                "required": [
-                    "heightPolicy",
-                    "heightValue"
-                ],
-                "title": "Attributes"
-            },
-            "Parameters": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "title"
-                ],
-                "title": "Parameters"
-            },
-            "Payload": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": [
-                            "static",
-                            "remote"
-                        ]
-                    }
-                },
-                "required": [
-                    "type"
-                ],
-                "if": {
-                    "properties": {
-                        "type": {
-                            "const": "static"
-                        }
-                    }
-                },
-                "then": {
-                    "required": [
-                        "data"
-                    ],
-                    "properties": {
-                        "data": {
-                            "$ref": "#/definitions/QuickAccess/PayloadData"
-                        }
-                    }
-                },
-                "else": {
-                    "required": [
-                        "resolvedWith"
-                    ],
-                    "properties": {
-                        "input": {
-                            "$ref": "#/definitions/QuickAccess/PayloadInput"
-                        },
-                        "resolvedWith": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "PayloadData": {
-                "type": "object",
-                "properties": {
-                    "item": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "title": {
-                                    "type": "string"
-                                },
-                                "asset": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "asset",
-                                "title"
-                            ]
-                        }
-                    }
-                },
-                "required": [
-                    "item"
-                ]
-            },
-            "PayloadInput": {}
-        },
-        "Banner": {
-            "type": "object",
-            "properties": {
-                "attributes": {
-                    "$ref": "#/definitions/Banner/Attributes"
-                },
-                "error": {
-                    "$ref": "#/definitions/Banner/Error"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "payload": {
-                    "$ref": "#/definitions/Banner/Payload"
-                },
-                "viewType": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "attributes",
-                "id",
-                "payload",
-                "viewType"
-            ],
-            "Attributes": {
-                "type": "object",
-                "properties": {
-                    "heightPolicy": {
-                        "type": "string"
-                    },
-                    "heightValue": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "heightPolicy",
-                    "heightValue"
-                ],
-                "title": "Attributes"
-            },
-            "Action": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "type": "string"
-                    },
-                    "url": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "type",
-                    "url"
-                ]
-            },
-            "Error": {
-                "type": "object",
-                "properties": {
-                    "errorType": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "errorType"
-                ]
-            },
-            "Payload": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": [
-                            "static",
-                            "remote"
-                        ]
-                    }
-                },
-                "required": [
-                    "type"
-                ],
-                "if": {
-                    "properties": {
-                        "type": {
-                            "const": "static"
-                        }
-                    }
-                },
-                "then": {
-                    "required": [
-                        "data"
-                    ],
-                    "properties": {
-                        "data": {
-                            "$ref": "#/definitions/Banner/PayloadData"
-                        }
-                    }
-                },
-                "else": {
-                    "required": [
-                        "input",
-                        "resolvedWith"
-                    ],
-                    "properties": {
-                        "input": {
-                            "$ref": "#/definitions/Banner/PayloadInput"
-                        },
-                        "resolvedWith": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "PayloadData": {
-                "type": "object",
-                "properties": {
-                    "asset": {
-                        "type": "string"
-                    },
-                    "placeholder": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "asset",
-                    "placeholder"
-                ],
-                "title": "Data"
-            },
-            "PayloadInput": {
-                "type": "object",
-                "properties": {
-                    "slug": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "slug"
-                ],
-                "title": "Input"
-            }
+    "views": {
+      "type": "object",
+      "properties": {
+        "viewType": {
+          "type": "string"
         }
+      },
+      "required": [
+        "viewType"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "viewType": {
+                "const": "Banner"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/Banner"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "viewType": {
+                "const": "QuickAccess"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/QuickAccess"
+          }
+        }
+      ]
+    },
+    "payloads": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/Banner/PayloadData"
+        },
+        {
+          "$ref": "#/definitions/QuickAccess/PayloadData"
+        }
+      ]
+    },
+    "definitions": {
+      "QuickAccess": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/definitions/QuickAccess/Attributes"
+          },
+          "id": {
+            "type": "string"
+          },
+          "parameters": {
+            "$ref": "#/definitions/QuickAccess/Parameters"
+          },
+          "payload": {
+            "$ref": "#/definitions/QuickAccess/Payload"
+          },
+          "viewType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "attributes",
+          "id",
+          "payload",
+          "viewType"
+        ],
+        "Attributes": {
+          "type": "object",
+          "properties": {
+            "heightPolicy": {
+              "type": "string"
+            },
+            "heightValue": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "heightPolicy",
+            "heightValue"
+          ],
+          "title": "Attributes"
+        },
+        "Parameters": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "title": "Parameters"
+        },
+        "Payload": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "static",
+                "remote"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "if": {
+            "properties": {
+              "type": {
+                "const": "static"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/definitions/QuickAccess/PayloadData"
+              }
+            }
+          },
+          "else": {
+            "required": [
+              "resolvedWith"
+            ],
+            "properties": {
+              "input": {
+                "$ref": "#/definitions/QuickAccess/PayloadInput"
+              },
+              "resolvedWith": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "PayloadData": {
+          "type": "object",
+          "properties": {
+            "item": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "asset": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "asset",
+                  "title"
+                ]
+              }
+            }
+          },
+          "required": [
+            "item"
+          ]
+        },
+        "PayloadInput": {}
+      },
+      "Banner": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "$ref": "#/definitions/Banner/Attributes"
+          },
+          "error": {
+            "$ref": "#/definitions/Banner/Error"
+          },
+          "id": {
+            "type": "string"
+          },
+          "payload": {
+            "$ref": "#/definitions/Banner/Payload"
+          },
+          "viewType": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "attributes",
+          "id",
+          "payload",
+          "viewType"
+        ],
+        "Attributes": {
+          "type": "object",
+          "properties": {
+            "heightPolicy": {
+              "type": "string"
+            },
+            "heightValue": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "heightPolicy",
+            "heightValue"
+          ],
+          "title": "Attributes"
+        },
+        "Action": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "url"
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "errorType": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "errorType"
+          ]
+        },
+        "Payload": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "static",
+                "remote"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "if": {
+            "properties": {
+              "type": {
+                "const": "static"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "data"
+            ],
+            "properties": {
+              "data": {
+                "$ref": "#/definitions/Banner/PayloadData"
+              }
+            }
+          },
+          "else": {
+            "required": [
+              "input",
+              "resolvedWith"
+            ],
+            "properties": {
+              "input": {
+                "$ref": "#/definitions/Banner/PayloadInput"
+              },
+              "resolvedWith": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "PayloadData": {
+          "type": "object",
+          "properties": {
+            "asset": {
+              "type": "string"
+            },
+            "placeholder": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "asset",
+            "placeholder"
+          ],
+          "title": "Data"
+        },
+        "PayloadInput": {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "slug"
+          ],
+          "title": "Input"
+        }
+      }
     }
-}
+  }
