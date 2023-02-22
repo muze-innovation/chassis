@@ -1,0 +1,20 @@
+targets:
+  $default:
+    builders:
+      reflectable:
+        generate_for:
+          - lib/main.dart
+          - test/**_test.dart
+        options:
+          formatted: true
+      chassis_annotation|chassis_builder:
+        enabled: true
+
+builders:
+  chassis_builder:
+    target: ":chassis_generator"
+    import: "package:chassis_generator/builders.dart"
+    builder_factories: ["chassisBuilder"]
+    build_extensions: { ".dart": [".chassis.dart"] }
+    auto_apply: dependents
+    build_to: source
