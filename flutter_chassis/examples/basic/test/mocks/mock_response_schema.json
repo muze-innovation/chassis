@@ -1,0 +1,24 @@
+{
+    "itemsValid": {
+        "item": [
+            {
+                "asset": "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_category%2Fproduct_grilled_chicken.png?alt=media&token=40d1a407-167d-42e3-ab38-a6cffdee56fb",
+                "title": "ข้าวเหนียวไก่ยาง"
+            },
+            {
+                "asset": "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_category%2Fproduct_papaya_salad.png?alt=media&token=aa3b6e01-0723-41ae-9eb2-5cb042caaf7d",
+                "title": "สลัดผักเพื่อสุขภาพ"
+            }
+        ]
+    },
+    "itemsInValid": {
+        "item": [
+            {
+                "asset": "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_category%2Fproduct_grilled_chicken.png?alt=media&token=40d1a407-167d-42e3-ab38-a6cffdee56fb"
+            },
+            {
+                "asset": "https://firebasestorage.googleapis.com/v0/b/nattariit.appspot.com/o/product_category%2Fproduct_papaya_salad.png?alt=media&token=aa3b6e01-0723-41ae-9eb2-5cb042caaf7d"
+            }
+        ]
+    }
+}
